@@ -45,7 +45,7 @@ public class PawnTicketService {
         LocalDate expiryDate = pawnDate.plusMonths(request.getPeriodMonths());
         String ticketNumber = ticketNumberGenerator.generate();
 
-        PawnTicket ticket = PawnTicket.builder()
+        PawnTicket newTicket = PawnTicket.builder()
                 .ticketNumber(ticketNumber)
                 .customer(customer)
                 .shop(customer.getShop())
@@ -59,18 +59,22 @@ public class PawnTicketService {
                 .notes(request.getNotes())
                 .build();
 
-        // Generate QR code pointing to the ticket lookup URL, using the ticket number
         String qrContent = "GOLDVAULT-TICKET:" + ticketNumber;
-        ticket.setQrCode(qrCodeUtil.generateQrBase64(qrContent));
+        newTicket.setQrCode(qrCodeUtil.generateQrBase64(qrContent));
 
-        // Attach gold items
-        List<GoldItem> items = request.getGoldItems().stream()
-                .map(itemReq -> toGoldItemEntity(itemReq, ticket))
-                .toList();
-        ticket.setGoldItems(items);
+        List<GoldItem> items = buildGoldItems(request.getGoldItems(), newTicket);
+        newTicket.setGoldItems(items);
 
-        ticket = pawnTicketRepository.save(ticket);
-        return toResponse(ticket);
+        PawnTicket savedTicket = pawnTicketRepository.save(newTicket);
+        return toResponse(savedTicket);
+    }
+
+    private List<GoldItem> buildGoldItems(List<GoldItemRequest> requests, PawnTicket ticket) {
+        List<GoldItem> result = new java.util.ArrayList<>();
+        for (GoldItemRequest req : requests) {
+            result.add(toGoldItemEntity(req, ticket));
+        }
+        return result;
     }
 
     public PawnTicketResponse getById(Long id) {
@@ -115,8 +119,8 @@ public class PawnTicketService {
         }
 
         ticket.setStatus(TicketStatus.REDEEMED);
-        ticket = pawnTicketRepository.save(ticket);
-        return toResponse(ticket);
+        PawnTicket saved = pawnTicketRepository.save(ticket);
+        return toResponse(saved);
     }
 
     /** Marks all active, past-expiry tickets as EXPIRED. Intended to run on a daily schedule. */
