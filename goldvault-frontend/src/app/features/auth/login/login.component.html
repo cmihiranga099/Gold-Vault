@@ -1,0 +1,51 @@
+<div class="login-page">
+    <div class="login-card">
+      <div class="login-header">
+        <h1>GoldVault</h1>
+        <p>Digital Pawn &amp; Gold Marketplace</p>
+      </div>
+  
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
+        <div class="field">
+          <label for="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            pInputText
+            formControlName="username"
+            placeholder="Enter your username"
+            class="w-full"
+          />
+        </div>
+  
+        <div class="field">
+          <label for="password">Password</label>
+          <p-password
+            id="password"
+            formControlName="password"
+            [feedback]="false"
+            [toggleMask]="true"
+            placeholder="Enter your password"
+            styleClass="w-full"
+            inputStyleClass="w-full"
+          />
+        </div>
+  
+        @if (errorMessage()) {
+          <p-message severity="error" [text]="errorMessage()!" styleClass="w-full" />
+        }
+  
+        <p-button
+          type="submit"
+          label="Log In"
+          styleClass="w-full"
+          [loading]="loading()"
+        />
+      </form>
+  
+      <div class="login-footer">
+        <span>Don't have an account?</span>
+        <a routerLink="/auth/register">Register as a customer</a>
+      </div>
+    </div>
+  </div>

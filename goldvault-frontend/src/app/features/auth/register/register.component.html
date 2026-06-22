@@ -1,0 +1,47 @@
+<div class="login-page">
+    <div class="login-card">
+      <div class="login-header">
+        <h1>Create Account</h1>
+        <p>Register as a GoldVault customer</p>
+      </div>
+  
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
+        <div class="field">
+          <label for="fullName">Full Name</label>
+          <input id="fullName" type="text" pInputText formControlName="fullName" class="w-full" />
+        </div>
+  
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" type="text" pInputText formControlName="username" class="w-full" />
+        </div>
+  
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" type="email" pInputText formControlName="email" class="w-full" />
+        </div>
+  
+        <div class="field">
+          <label for="password">Password</label>
+          <p-password
+            id="password"
+            formControlName="password"
+            [toggleMask]="true"
+            styleClass="w-full"
+            inputStyleClass="w-full"
+          />
+        </div>
+  
+        @if (errorMessage()) {
+          <p-message severity="error" [text]="errorMessage()!" styleClass="w-full" />
+        }
+  
+        <p-button type="submit" label="Create Account" styleClass="w-full" [loading]="loading()" />
+      </form>
+  
+      <div class="login-footer">
+        <span>Already have an account?</span>
+        <a routerLink="/auth/login">Log in</a>
+      </div>
+    </div>
+  </div>
