@@ -1,0 +1,47 @@
+<app-topnav />
+
+<div class="form-page">
+  <a routerLink="/shop/customers" class="back-link">
+    <i class="pi pi-arrow-left"></i> Back to customers
+  </a>
+
+  <div class="form-card gv-card gv-ticket-edge">
+    <span class="gv-eyebrow">New customer</span>
+    <h1>Register a customer</h1>
+    <p class="form-sub">Add a new customer profile under your shop.</p>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-body">
+      <div class="field">
+        <label for="fullName">Full name</label>
+        <input id="fullName" type="text" pInputText formControlName="fullName" class="w-full" />
+      </div>
+
+      <div class="field">
+        <label for="nic">NIC number</label>
+        <input id="nic" type="text" pInputText formControlName="nic" placeholder="e.g. 200012345678 or 991234567V" class="w-full" />
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input id="phone" type="text" pInputText formControlName="phone" class="w-full" />
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" type="email" pInputText formControlName="email" class="w-full" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="address">Address</label>
+        <input id="address" type="text" pInputText formControlName="address" class="w-full" />
+      </div>
+
+      @if (errorMessage()) {
+        <p-message severity="error" [text]="errorMessage()!" styleClass="w-full" />
+      }
+
+      <p-button type="submit" label="Register customer" styleClass="gv-submit-btn" [loading]="loading()" />
+    </form>
+  </div>
+</div>

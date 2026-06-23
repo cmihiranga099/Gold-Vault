@@ -1,0 +1,136 @@
+.detail-page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: var(--gv-space-6) var(--gv-space-4);
+  }
+  
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gv-space-2);
+    font-size: 0.875rem;
+    color: var(--gv-stone);
+    text-decoration: none;
+    margin-bottom: var(--gv-space-5);
+  
+    &:hover { color: var(--gv-ink); }
+    i { font-size: 0.75rem; }
+  }
+  
+  .detail-loading {
+    display: flex;
+    justify-content: center;
+    padding: var(--gv-space-10) 0;
+  }
+  
+  .detail-empty {
+    padding: var(--gv-space-8) var(--gv-space-5);
+    text-align: center;
+    color: var(--gv-stone);
+  }
+  
+  .profile-card {
+    padding: var(--gv-space-6);
+    margin-bottom: var(--gv-space-4);
+  }
+  
+  .profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--gv-space-5);
+  
+    h1 {
+      font-size: 1.5rem;
+      margin-top: var(--gv-space-1);
+    }
+  }
+  
+  .profile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--gv-space-4);
+    margin-bottom: var(--gv-space-5);
+  
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .profile-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  
+  .field-label {
+    font-size: 0.75rem;
+    color: var(--gv-stone-light);
+  }
+  
+  .field-value {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--gv-ink);
+  }
+  
+  .grant-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gv-space-2);
+    padding: var(--gv-space-3) var(--gv-space-4);
+    background: var(--gv-ink);
+    color: var(--gv-white);
+    border-radius: var(--gv-radius-sm);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+  
+    &:hover { background: var(--gv-ink-soft); }
+    i { font-size: 0.8rem; }
+  }
+  
+  .tickets-card {
+    padding: var(--gv-space-5);
+  
+    h2 {
+      font-size: 1.1rem;
+      margin-bottom: var(--gv-space-4);
+    }
+  }
+  
+  .empty-text {
+    color: var(--gv-stone-light);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  
+  .ticket-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gv-space-2);
+  }
+  
+  .ticket-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--gv-space-3);
+    background: var(--gv-paper-dim);
+    border-radius: var(--gv-radius-sm);
+    text-decoration: none;
+    color: var(--gv-ink);
+  
+    &:hover { background: var(--gv-line); }
+  }
+  
+  .ticket-number {
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  
+  .ticket-amount {
+    font-size: 0.875rem;
+    color: var(--gv-jade);
+    font-weight: 600;
+  }

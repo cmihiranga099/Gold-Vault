@@ -1,0 +1,60 @@
+<app-topnav />
+
+<div class="shop-page">
+  <div class="shop-header">
+    <div>
+      <span class="gv-eyebrow">Shop portal</span>
+      <h1>Customers</h1>
+    </div>
+    <a routerLink="/shop/customers/new" class="action-link action-link-primary">
+      <i class="pi pi-user-plus"></i> Register customer
+    </a>
+  </div>
+
+  <div class="search-bar">
+    <span class="search-input-wrap">
+      <i class="pi pi-search"></i>
+      <input
+        type="text"
+        pInputText
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="searchTerm.set($event)"
+        (keyup.enter)="onSearch()"
+        placeholder="Search by name..."
+        class="w-full"
+      />
+    </span>
+    <p-button label="Search" (onClick)="onSearch()" />
+  </div>
+
+  @if (loading()) {
+    <div class="shop-loading">
+      <p-progressSpinner strokeWidth="3" />
+    </div>
+  } @else if (errorMessage()) {
+    <div class="shop-empty gv-card">
+      <p>{{ errorMessage() }}</p>
+    </div>
+  } @else if (customers().length === 0) {
+    <div class="shop-empty gv-card">
+      <p>No customers found.</p>
+    </div>
+  } @else {
+    <div class="customer-list">
+      @for (customer of customers(); track customer.id) {
+        <a [routerLink]="['/shop/customers', customer.id]" class="customer-row gv-card">
+          <div class="customer-main">
+            <span class="customer-name">{{ customer.fullName }}</span>
+            <span class="customer-nic gv-mono">{{ customer.nic }}</span>
+          </div>
+          <div class="customer-meta">
+            @if (customer.phone) {
+              <span class="customer-phone">{{ customer.phone }}</span>
+            }
+            <p-tag [value]="customer.kycStatus" [severity]="kycSeverity(customer.kycStatus)" />
+          </div>
+        </a>
+      }
+    </div>
+  }
+</div>

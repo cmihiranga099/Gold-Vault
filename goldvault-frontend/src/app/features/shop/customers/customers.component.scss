@@ -1,0 +1,124 @@
+.shop-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--gv-space-6) var(--gv-space-4);
+  }
+  
+  .shop-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: var(--gv-space-5);
+    flex-wrap: wrap;
+    gap: var(--gv-space-4);
+  
+    h1 {
+      font-size: 1.75rem;
+      margin-top: var(--gv-space-1);
+    }
+  }
+  
+  .action-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gv-space-2);
+    padding: var(--gv-space-2) var(--gv-space-4);
+    border-radius: var(--gv-radius-sm);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s ease;
+  
+    i { font-size: 0.8rem; }
+  }
+  
+  .action-link-primary {
+    background: var(--gv-ink);
+    color: var(--gv-white);
+  
+    &:hover { background: var(--gv-ink-soft); }
+  }
+  
+  .search-bar {
+    display: flex;
+    gap: var(--gv-space-3);
+    margin-bottom: var(--gv-space-5);
+  }
+  
+  .search-input-wrap {
+    position: relative;
+    flex: 1;
+  
+    i {
+      position: absolute;
+      left: var(--gv-space-3);
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gv-stone-light);
+      font-size: 0.85rem;
+    }
+  
+    input {
+      padding-left: var(--gv-space-8) !important;
+    }
+  }
+  
+  .shop-loading {
+    display: flex;
+    justify-content: center;
+    padding: var(--gv-space-10) 0;
+  }
+  
+  .shop-empty {
+    padding: var(--gv-space-8) var(--gv-space-5);
+    text-align: center;
+    color: var(--gv-stone);
+  }
+  
+  .customer-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gv-space-3);
+  }
+  
+  .customer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--gv-space-4) var(--gv-space-5);
+    text-decoration: none;
+    color: var(--gv-ink);
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+  
+    &:hover {
+      box-shadow: var(--gv-shadow-md);
+      transform: translateY(-1px);
+    }
+  }
+  
+  .customer-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  
+  .customer-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  
+  .customer-nic {
+    font-size: 0.8rem;
+    color: var(--gv-stone);
+  }
+  
+  .customer-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--gv-space-3);
+  }
+  
+  .customer-phone {
+    font-size: 0.85rem;
+    color: var(--gv-stone);
+  }

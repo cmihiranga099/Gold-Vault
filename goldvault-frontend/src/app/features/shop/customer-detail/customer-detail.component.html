@@ -1,0 +1,67 @@
+<app-topnav />
+
+<div class="detail-page">
+  <a routerLink="/shop/customers" class="back-link">
+    <i class="pi pi-arrow-left"></i> Back to customers
+  </a>
+
+  @if (loading()) {
+    <div class="detail-loading">
+      <p-progressSpinner strokeWidth="3" />
+    </div>
+  } @else if (errorMessage()) {
+    <div class="detail-empty gv-card">
+      <p>{{ errorMessage() }}</p>
+    </div>
+  } @else if (customer()) {
+    <div class="profile-card gv-card">
+      <div class="profile-header">
+        <div>
+          <span class="gv-eyebrow">Customer profile</span>
+          <h1>{{ customer()!.fullName }}</h1>
+        </div>
+        <p-tag [value]="customer()!.kycStatus" />
+      </div>
+
+      <div class="profile-grid">
+        <div class="profile-field">
+          <span class="field-label">NIC</span>
+          <span class="field-value gv-mono">{{ customer()!.nic }}</span>
+        </div>
+        <div class="profile-field">
+          <span class="field-label">Phone</span>
+          <span class="field-value">{{ customer()!.phone || '—' }}</span>
+        </div>
+        <div class="profile-field">
+          <span class="field-label">Email</span>
+          <span class="field-value">{{ customer()!.email || '—' }}</span>
+        </div>
+        <div class="profile-field">
+          <span class="field-label">Address</span>
+          <span class="field-value">{{ customer()!.address || '—' }}</span>
+        </div>
+      </div>
+
+      <a [routerLink]="['/shop/tickets/new']" [queryParams]="{ customerId: customer()!.id }" class="grant-link">
+        <i class="pi pi-plus"></i> Grant a new ticket to this customer
+      </a>
+    </div>
+
+    <div class="tickets-card gv-card">
+      <h2>Pawn tickets</h2>
+      @if (tickets().length === 0) {
+        <p class="empty-text">No tickets yet for this customer.</p>
+      } @else {
+        <div class="ticket-list">
+          @for (ticket of tickets(); track ticket.id) {
+            <a [routerLink]="['/shop/tickets', ticket.id]" class="ticket-row">
+              <span class="ticket-number gv-mono">{{ ticket.ticketNumber }}</span>
+              <span class="ticket-amount gv-mono">LKR {{ formatCurrency(ticket.outstandingBalance) }}</span>
+              <p-tag [value]="ticket.status" [severity]="statusSeverity(ticket.status)" />
+            </a>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

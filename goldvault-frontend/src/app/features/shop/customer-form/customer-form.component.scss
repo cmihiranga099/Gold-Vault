@@ -1,0 +1,68 @@
+.form-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: var(--gv-space-6) var(--gv-space-4);
+  }
+  
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gv-space-2);
+    font-size: 0.875rem;
+    color: var(--gv-stone);
+    text-decoration: none;
+    margin-bottom: var(--gv-space-5);
+  
+    &:hover { color: var(--gv-ink); }
+    i { font-size: 0.75rem; }
+  }
+  
+  .form-card {
+    padding: var(--gv-space-6);
+  
+    h1 {
+      font-size: 1.5rem;
+      margin: var(--gv-space-1) 0;
+    }
+  }
+  
+  .form-sub {
+    color: var(--gv-stone);
+    font-size: 0.9rem;
+    margin: 0 0 var(--gv-space-5);
+  }
+  
+  .form-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gv-space-4);
+  }
+  
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gv-space-4);
+  
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gv-space-2);
+  
+    label {
+      font-size: 0.825rem;
+      font-weight: 600;
+      color: var(--gv-ink);
+    }
+  }
+  
+  :host ::ng-deep .gv-submit-btn .p-button {
+    background: var(--gv-ink) !important;
+    border-color: var(--gv-ink) !important;
+  
+    &:hover { background: var(--gv-ink-soft) !important; }
+  }
