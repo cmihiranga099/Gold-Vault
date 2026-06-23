@@ -6,13 +6,17 @@ import jakarta.validation.Valid;
 import lk.goldvault.backend.dto.request.ShopRegistrationRequest;
 import lk.goldvault.backend.dto.response.ApiResponse;
 import lk.goldvault.backend.dto.response.ShopResponse;
+import lk.goldvault.backend.enums.ShopStatus;
 import lk.goldvault.backend.service.ShopManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/shops")
@@ -29,5 +33,13 @@ public class PublicShopController {
         return ResponseEntity.ok(ApiResponse.success(
                 "Shop registered successfully. Awaiting admin approval.",
                 shopManagementService.register(request)));
+    }
+
+    @GetMapping("/active")
+    @Operation(summary = "List active shops",
+            description = "Public listing used to populate shop choices during customer registration")
+    public ResponseEntity<ApiResponse<List<ShopResponse>>> getActiveShops() {
+        return ResponseEntity.ok(ApiResponse.success(
+                shopManagementService.getByStatus(ShopStatus.ACTIVE)));
     }
 }

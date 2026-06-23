@@ -23,6 +23,29 @@
       </div>
 
       <div class="field">
+        <label for="nic">NIC number</label>
+        <input id="nic" type="text" pInputText formControlName="nic" placeholder="e.g. 200012345678 or 991234567V" class="w-full" />
+      </div>
+
+      <div class="field">
+        <label for="shopId">Register with shop</label>
+        <p-select
+          id="shopId"
+          formControlName="shopId"
+          [options]="shops()"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Select a pawn shop"
+          styleClass="w-full"
+        />
+      </div>
+
+      <div class="field">
+        <label for="phone">Phone (optional)</label>
+        <input id="phone" type="text" pInputText formControlName="phone" placeholder="07X XXX XXXX" class="w-full" />
+      </div>
+
+      <div class="field">
         <label for="username">Username</label>
         <input id="username" type="text" pInputText formControlName="username" placeholder="Choose a username" class="w-full" />
       </div>
