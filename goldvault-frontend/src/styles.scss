@@ -1,13 +1,114 @@
+@import './styles/tokens';
+
+/* ============================================================
+   Fonts
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--gv-paper);
+  color: var(--gv-ink);
+  font-family: var(--gv-font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--gv-font-display);
+  font-weight: 600;
+  margin: 0;
+  color: var(--gv-ink);
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: var(--gv-jade);
+}
+
+/* ============================================================
+   Signature motif — "ticket stub" perforated edge
+   Used sparingly: login card, ticket detail cards only.
+   ============================================================ */
+.gv-ticket-edge {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background-image: radial-gradient(circle, var(--gv-paper) 2.5px, transparent 2.6px);
+    background-size: 16px 6px;
+    background-position: 8px 0;
   }
-  
-  html, body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* ============================================================
+   Utility classes
+   ============================================================ */
+.w-full { width: 100%; }
+
+.gv-mono {
+  font-family: var(--gv-font-mono);
+  letter-spacing: 0.02em;
+}
+
+.gv-eyebrow {
+  font-family: var(--gv-font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gv-gold-deep);
+}
+
+.gv-card {
+  background: var(--gv-white);
+  border: 1px solid var(--gv-line);
+  border-radius: var(--gv-radius-md);
+  box-shadow: var(--gv-shadow-sm);
+}
+
+/* ============================================================
+   PrimeNG overrides — keep components on-brand
+   ============================================================ */
+.p-button {
+  font-family: var(--gv-font-body) !important;
+  font-weight: 600 !important;
+  border-radius: var(--gv-radius-sm) !important;
+}
+
+.p-component {
+  font-family: var(--gv-font-body);
+}
+
+.p-inputtext, .p-password input {
+  border-radius: var(--gv-radius-sm) !important;
+  border-color: var(--gv-line) !important;
+  font-family: var(--gv-font-body) !important;
+
+  &:enabled:focus {
+    border-color: var(--gv-gold) !important;
+    box-shadow: 0 0 0 1px var(--gv-gold-soft) !important;
   }
-  
-  .w-full {
-    width: 100%;
+}
+
+.p-message {
+  border-radius: var(--gv-radius-sm) !important;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
+}
