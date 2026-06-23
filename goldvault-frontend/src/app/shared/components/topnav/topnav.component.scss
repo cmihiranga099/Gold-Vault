@@ -1,0 +1,35 @@
+@import '../../../../styles/tokens';
+
+.gv-topnav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--gv-space-3) var(--gv-space-6);
+  background: var(--gv-ink);
+  box-shadow: var(--gv-shadow-md);
+}
+
+.gv-topnav-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-2);
+
+  span {
+    font-family: var(--gv-font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--gv-white);
+  }
+}
+
+.gv-topnav-user {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-3);
+}
+
+.gv-topnav-name {
+  font-size: 0.9rem;
+  color: var(--gv-gold-soft);
+  font-weight: 500;
+}

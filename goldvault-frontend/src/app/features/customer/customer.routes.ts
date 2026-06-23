@@ -6,6 +6,10 @@ export const CUSTOMER_ROUTES: Routes = [
     loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent)
   },
   {
+    path: 'tickets/:id',
+    loadComponent: () => import('./ticket-detail/ticket-detail.component').then(m => m.TicketDetailComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'

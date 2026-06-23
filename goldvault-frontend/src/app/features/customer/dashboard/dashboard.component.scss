@@ -1,0 +1,143 @@
+@import '../../../../styles/tokens';
+
+.dash-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--gv-space-6) var(--gv-space-4);
+}
+
+.dash-header {
+  margin-bottom: var(--gv-space-6);
+
+  h1 {
+    font-size: 1.75rem;
+    margin-top: var(--gv-space-1);
+  }
+}
+
+.dash-loading {
+  display: flex;
+  justify-content: center;
+  padding: var(--gv-space-10) 0;
+}
+
+.dash-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gv-space-4);
+  margin-bottom: var(--gv-space-6);
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.summary-card {
+  padding: var(--gv-space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-2);
+}
+
+.summary-label {
+  font-size: 0.8rem;
+  color: var(--gv-stone);
+  font-weight: 500;
+}
+
+.summary-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--gv-ink);
+}
+
+.summary-muted {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--gv-stone-light);
+}
+
+.dash-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-3);
+}
+
+.dash-empty {
+  padding: var(--gv-space-8) var(--gv-space-5);
+  text-align: center;
+  color: var(--gv-stone);
+
+  p {
+    margin: 0;
+  }
+}
+
+.dash-empty-sub {
+  margin-top: var(--gv-space-2) !important;
+  font-size: 0.875rem;
+  color: var(--gv-stone-light);
+}
+
+.ticket-row {
+  padding: var(--gv-space-4) var(--gv-space-5);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+
+  &:hover {
+    box-shadow: var(--gv-shadow-md);
+    transform: translateY(-1px);
+  }
+}
+
+.ticket-row-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--gv-space-3);
+}
+
+.ticket-number {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--gv-ink);
+}
+
+.ticket-row-details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gv-space-3);
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ticket-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  color: var(--gv-stone-light);
+}
+
+.detail-value {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--gv-ink);
+
+  &.overdue {
+    color: var(--gv-brick);
+  }
+}
+
+.overdue-tag {
+  margin-left: var(--gv-space-2);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--gv-brick);
+}

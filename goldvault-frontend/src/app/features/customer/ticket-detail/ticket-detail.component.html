@@ -1,0 +1,112 @@
+<app-topnav />
+
+<div class="detail-page">
+  <a routerLink="/customer/dashboard" class="back-link">
+    <i class="pi pi-arrow-left"></i> Back to your tickets
+  </a>
+
+  @if (loading()) {
+    <div class="detail-loading">
+      <p-progressSpinner strokeWidth="3" />
+    </div>
+  } @else if (errorMessage()) {
+    <div class="detail-empty gv-card">
+      <p>{{ errorMessage() }}</p>
+    </div>
+  } @else if (ticket()) {
+    <div class="detail-grid">
+      <!-- Left column: ticket info -->
+      <div class="detail-main">
+        <div class="detail-card gv-card gv-ticket-edge">
+          <div class="detail-card-header">
+            <div>
+              <span class="gv-eyebrow">Pawn ticket</span>
+              <h1 class="gv-mono">{{ ticket()!.ticketNumber }}</h1>
+            </div>
+            <p-tag [value]="ticket()!.status" [severity]="statusSeverity(ticket()!.status)" />
+          </div>
+
+          <div class="detail-stats">
+            <div class="stat">
+              <span class="stat-label">Loan amount</span>
+              <span class="stat-value gv-mono">LKR {{ formatCurrency(ticket()!.loanAmount) }}</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Outstanding balance</span>
+              <span class="stat-value gv-mono" [class.overdue]="ticket()!.overdue">
+                LKR {{ formatCurrency(ticket()!.outstandingBalance) }}
+              </span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Interest rate</span>
+              <span class="stat-value">{{ ticket()!.interestRate }}% ({{ ticket()!.interestType }})</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Pawned on</span>
+              <span class="stat-value">{{ ticket()!.pawnDate | date:'MMM d, y' }}</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Due date</span>
+              <span class="stat-value" [class.overdue]="ticket()!.overdue">
+                {{ ticket()!.expiryDate | date:'MMM d, y' }}
+              </span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Days elapsed</span>
+              <span class="stat-value">{{ ticket()!.daysElapsed }} days</span>
+            </div>
+          </div>
+
+          @if (ticket()!.notes) {
+            <p class="detail-notes">{{ ticket()!.notes }}</p>
+          }
+        </div>
+
+        <div class="detail-card gv-card">
+          <h2>Pawned items</h2>
+          <div class="items-list">
+            @for (item of ticket()!.goldItems; track item.id) {
+              <div class="item-row">
+                <div>
+                  <span class="item-desc">{{ item.description }}</span>
+                  <span class="item-meta">{{ item.goldType }} &middot; {{ item.purity }} &middot; {{ item.weightGrams }}g</span>
+                </div>
+                @if (item.estimatedValue) {
+                  <span class="item-value gv-mono">LKR {{ formatCurrency(item.estimatedValue) }}</span>
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="detail-card gv-card">
+          <h2>Payment history</h2>
+          @if (payments().length === 0) {
+            <p class="detail-empty-text">No payments recorded yet.</p>
+          } @else {
+            <div class="payment-list">
+              @for (payment of payments(); track payment.id) {
+                <div class="payment-row">
+                  <div>
+                    <span class="payment-type">{{ payment.paymentType }}</span>
+                    <span class="payment-date">{{ payment.paymentDate | date:'MMM d, y, h:mm a' }}</span>
+                  </div>
+                  <span class="payment-amount gv-mono">LKR {{ formatCurrency(payment.amount) }}</span>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Right column: QR code -->
+      <div class="detail-side">
+        <div class="qr-card gv-card">
+          <span class="gv-eyebrow">Show at shop</span>
+          <img [src]="'data:image/png;base64,' + ticket()!.qrCode" alt="Ticket QR code" class="qr-image" />
+          <p class="qr-hint">Present this code at the shop to redeem or make a payment.</p>
+        </div>
+      </div>
+    </div>
+  }
+</div>

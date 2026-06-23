@@ -1,0 +1,72 @@
+<app-topnav />
+
+<div class="dash-page">
+  <div class="dash-header">
+    <span class="gv-eyebrow">Customer portal</span>
+    <h1>Your pawn tickets</h1>
+  </div>
+
+  @if (loading()) {
+    <div class="dash-loading">
+      <p-progressSpinner styleClass="gv-spinner" strokeWidth="3" />
+    </div>
+  } @else if (errorMessage()) {
+    <div class="dash-empty">
+      <p>{{ errorMessage() }}</p>
+    </div>
+  } @else {
+    <div class="dash-summary">
+      <div class="summary-card gv-card">
+        <span class="summary-label">Active tickets</span>
+        <span class="summary-value">{{ activeTickets().length }}</span>
+      </div>
+      <div class="summary-card gv-card">
+        <span class="summary-label">Total outstanding</span>
+        <span class="summary-value gv-mono">LKR {{ formatCurrency(totalOutstanding()) }}</span>
+      </div>
+      <div class="summary-card gv-card">
+        <span class="summary-label">Next due date</span>
+        @if (nextDueTicket()) {
+          <span class="summary-value">{{ nextDueTicket()!.expiryDate | date:'MMM d, y' }}</span>
+        } @else {
+          <span class="summary-value summary-muted">No active tickets</span>
+        }
+      </div>
+    </div>
+
+    <div class="dash-list">
+      @if (tickets().length === 0) {
+        <div class="dash-empty gv-card">
+          <p>You don't have any pawn tickets yet.</p>
+          <p class="dash-empty-sub">Visit your registered pawn shop to pledge gold and get a ticket.</p>
+        </div>
+      } @else {
+        @for (ticket of tickets(); track ticket.id) {
+          <div class="ticket-row gv-card" [routerLink]="['/customer/tickets', ticket.id]">
+            <div class="ticket-row-main">
+              <span class="ticket-number gv-mono">{{ ticket.ticketNumber }}</span>
+              <p-tag [value]="ticket.status" [severity]="statusSeverity(ticket.status)" />
+            </div>
+            <div class="ticket-row-details">
+              <div class="ticket-detail">
+                <span class="detail-label">Loan amount</span>
+                <span class="detail-value gv-mono">LKR {{ formatCurrency(ticket.loanAmount) }}</span>
+              </div>
+              <div class="ticket-detail">
+                <span class="detail-label">Outstanding</span>
+                <span class="detail-value gv-mono">LKR {{ formatCurrency(ticket.outstandingBalance) }}</span>
+              </div>
+              <div class="ticket-detail">
+                <span class="detail-label">Due date</span>
+                <span class="detail-value" [class.overdue]="ticket.overdue">
+                  {{ ticket.expiryDate | date:'MMM d, y' }}
+                  @if (ticket.overdue) { <span class="overdue-tag">Overdue</span> }
+                </span>
+              </div>
+            </div>
+          </div>
+        }
+      }
+    </div>
+  }
+</div>

@@ -17,8 +17,8 @@ html, body {
   color: var(--gv-ink);
   font-family: var(--gv-font-body);
   -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
 }
-
 h1, h2, h3, h4 {
   font-family: var(--gv-font-display);
   font-weight: 600;
