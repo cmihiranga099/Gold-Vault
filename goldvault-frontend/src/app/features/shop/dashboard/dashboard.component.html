@@ -1,0 +1,85 @@
+<app-topnav />
+
+<div class="shop-page">
+  <div class="shop-header">
+    <div>
+      <span class="gv-eyebrow">Shop portal</span>
+      <h1>Dashboard</h1>
+    </div>
+    <div class="shop-actions">
+      <a routerLink="/shop/customers" class="action-link">
+        <i class="pi pi-users"></i> Customers
+      </a>
+      <a routerLink="/shop/tickets/new" class="action-link action-link-primary">
+        <i class="pi pi-plus"></i> Grant ticket
+      </a>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="shop-loading">
+      <p-progressSpinner strokeWidth="3" />
+    </div>
+  } @else if (errorMessage()) {
+    <div class="shop-empty gv-card">
+      <p>{{ errorMessage() }}</p>
+    </div>
+  } @else if (summary()) {
+    <div class="stat-grid">
+      <div class="stat-card gv-card stat-card-highlight">
+        <span class="stat-label">Today's collection</span>
+        <span class="stat-value gv-mono">LKR {{ formatCurrency(summary()!.todayCollection) }}</span>
+        <span class="stat-sub">{{ summary()!.todayPaymentCount }} payment(s) today</span>
+      </div>
+
+      <div class="stat-card gv-card">
+        <span class="stat-label">Active tickets</span>
+        <span class="stat-value">{{ summary()!.activeTickets }}</span>
+      </div>
+
+      <div class="stat-card gv-card" [class.stat-card-warning]="summary()!.expiringSoonCount > 0">
+        <span class="stat-label">Expiring within 7 days</span>
+        <span class="stat-value">{{ summary()!.expiringSoonCount }}</span>
+      </div>
+
+      <div class="stat-card gv-card" [class.stat-card-danger]="summary()!.expiredTickets > 0">
+        <span class="stat-label">Expired tickets</span>
+        <span class="stat-value">{{ summary()!.expiredTickets }}</span>
+      </div>
+
+      <div class="stat-card gv-card">
+        <span class="stat-label">Total customers</span>
+        <span class="stat-value">{{ summary()!.totalCustomers }}</span>
+      </div>
+
+      <div class="stat-card gv-card">
+        <span class="stat-label">Total outstanding loans</span>
+        <span class="stat-value gv-mono">LKR {{ formatCurrency(summary()!.totalOutstandingLoans) }}</span>
+      </div>
+    </div>
+
+    <div class="quick-links">
+      <a routerLink="/shop/tickets" class="quick-link gv-card">
+        <i class="pi pi-ticket"></i>
+        <div>
+          <span class="quick-link-title">All tickets</span>
+          <span class="quick-link-sub">View and manage pawn tickets</span>
+        </div>
+      </a>
+      <a routerLink="/shop/customers" class="quick-link gv-card">
+        <i class="pi pi-users"></i>
+        <div>
+          <span class="quick-link-title">Customers</span>
+          <span class="quick-link-sub">Search or register customers</span>
+        </div>
+      </a>
+      <a routerLink="/shop/gold-rates" class="quick-link gv-card">
+        <i class="pi pi-chart-line"></i>
+        <div>
+          <span class="quick-link-title">Gold rates</span>
+          <span class="quick-link-sub">Publish today's buying rates</span>
+        </div>
+      </a>
+    </div>
+  }
+</div>
