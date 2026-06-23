@@ -39,7 +39,8 @@ public class JwtUtil {
                 .claim("userId", user.getId())
                 .claim("fullName", user.getFullName())
                 .claim("shopId", user.getShopId())
-                .setIssuedAt(new Date())
+.claim("customerId", user.getCustomerId())
+.setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();

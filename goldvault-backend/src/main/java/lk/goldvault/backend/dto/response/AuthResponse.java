@@ -13,4 +13,5 @@ public class AuthResponse {
     private String fullName;
     private String role;
     private Long shopId;
+    private Long customerId;
 }

@@ -40,10 +40,14 @@ public class AppUser extends BaseEntity implements UserDetails {
     private UserRole role;
 
     @Column(name = "shop_id")
-    private Long shopId;
+private Long shopId;
 
-    @Column(nullable = false)
-    private boolean enabled = true;
+@Column(name = "customer_id")
+private Long customerId;
+
+@Column(nullable = false)
+@Builder.Default
+private boolean enabled = true;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
