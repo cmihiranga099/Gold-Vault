@@ -2,11 +2,16 @@ package lk.goldvault.backend.service;
 
 import lk.goldvault.backend.dto.request.CustomerRequest;
 import lk.goldvault.backend.dto.response.CustomerResponse;
+import lk.goldvault.backend.dto.response.PagedResponse;
 import lk.goldvault.backend.entity.Customer;
 import lk.goldvault.backend.entity.PawnShop;
 import lk.goldvault.backend.repository.CustomerRepository;
 import lk.goldvault.backend.repository.PawnShopRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,6 +70,20 @@ public class CustomerService {
                 .stream()
                 .map(this::toResponse)
                 .toList();
+    }
+
+    /** Paginated customer listing, sorted by most recently created first. */
+    public PagedResponse<CustomerResponse> getByShopPaged(Long shopId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<Customer> result = customerRepository.findByShopId(shopId, pageable);
+        return PagedResponse.from(result.map(this::toResponse));
+    }
+
+    /** Paginated search by name or NIC, case-insensitive partial match. */
+    public PagedResponse<CustomerResponse> searchPaged(Long shopId, String term, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<Customer> result = customerRepository.search(shopId, term, pageable);
+        return PagedResponse.from(result.map(this::toResponse));
     }
 
     public CustomerResponse update(Long id, CustomerRequest request) {
