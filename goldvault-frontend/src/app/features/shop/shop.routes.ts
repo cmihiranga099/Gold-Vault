@@ -22,6 +22,10 @@ export const SHOP_ROUTES: Routes = [
     loadComponent: () => import('./grant-ticket/grant-ticket.component').then(m => m.GrantTicketComponent)
   },
   {
+    path: 'tickets/:id',
+    loadComponent: () => import('./ticket-detail/ticket-detail.component').then(m => m.ShopTicketDetailComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'

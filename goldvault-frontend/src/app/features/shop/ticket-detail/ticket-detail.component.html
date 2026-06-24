@@ -1,8 +1,8 @@
 <app-topnav />
 
 <div class="detail-page">
-  <a routerLink="/customer/dashboard" class="back-link">
-    <i class="pi pi-arrow-left"></i> Back to your tickets
+  <a routerLink="/shop/dashboard" class="back-link">
+    <i class="pi pi-arrow-left"></i> Back to dashboard
   </a>
 
   @if (loading()) {
@@ -15,13 +15,15 @@
     </div>
   } @else if (ticket()) {
     <div class="detail-grid">
-      <!-- Left column: ticket info -->
       <div class="detail-main">
         <div class="detail-card gv-card gv-ticket-edge">
           <div class="detail-card-header">
             <div>
               <span class="gv-eyebrow">Pawn ticket</span>
               <h1 class="gv-mono">{{ ticket()!.ticketNumber }}</h1>
+              <a [routerLink]="['/shop/customers', ticket()!.customerId]" class="customer-link">
+                {{ ticket()!.customerName }} &middot; {{ ticket()!.customerNic }}
+              </a>
             </div>
             <p-tag [value]="ticket()!.status" [severity]="statusSeverity(ticket()!.status)" />
           </div>
@@ -60,6 +62,10 @@
           @if (ticket()!.notes && ticket()!.notes!.trim().length > 1) {
             <p class="detail-notes">{{ ticket()!.notes }}</p>
           }
+
+          @if (ticket()!.status === 'ACTIVE' || ticket()!.status === 'EXPIRED') {
+            <p-button label="Collect payment" icon="pi pi-money-bill" styleClass="gv-submit-btn" (onClick)="openPaymentDialog()" />
+          }
         </div>
 
         <div class="detail-card gv-card">
@@ -89,7 +95,7 @@
                 <div class="payment-row">
                   <div>
                     <span class="payment-type">{{ payment.paymentType }}</span>
-                    <span class="payment-date">{{ payment.paymentDate | date:'MMM d, y, h:mm a' }}</span>
+                    <span class="payment-date">{{ payment.paymentDate | date:'MMM d, y, h:mm a' }} &middot; {{ payment.paymentMethod }}</span>
                   </div>
                   <span class="payment-amount gv-mono">LKR {{ formatCurrency(payment.amount) }}</span>
                 </div>
@@ -99,14 +105,70 @@
         </div>
       </div>
 
-      <!-- Right column: QR code -->
       <div class="detail-side">
         <div class="qr-card gv-card">
-          <span class="gv-eyebrow">Show at shop</span>
+          <span class="gv-eyebrow">Ticket QR</span>
           <img [src]="'data:image/png;base64,' + ticket()!.qrCode" alt="Ticket QR code" class="qr-image" />
-          <p class="qr-hint">Present this code at the shop to redeem or make a payment.</p>
         </div>
       </div>
     </div>
   }
 </div>
+
+<p-dialog
+  header="Collect payment"
+  [(visible)]="showPaymentDialog"
+  [modal]="true"
+  [style]="{ width: '420px' }"
+>
+  <form [formGroup]="paymentForm" (ngSubmit)="submitPayment()" class="payment-form">
+    <div class="field">
+      <label for="paymentType">Payment type</label>
+      <p-select
+        inputId="paymentType"
+        formControlName="paymentType"
+        [options]="paymentTypes"
+        optionLabel="label"
+        optionValue="value"
+        styleClass="w-full"
+      />
+    </div>
+
+    <div class="field">
+      <label for="amount">Amount (LKR)</label>
+      <p-inputNumber
+        inputId="amount"
+        formControlName="amount"
+        mode="decimal"
+        [minFractionDigits]="2"
+        styleClass="w-full"
+      />
+    </div>
+
+    <div class="field">
+      <label for="paymentMethod">Payment method</label>
+      <p-select
+        inputId="paymentMethod"
+        formControlName="paymentMethod"
+        [options]="paymentMethods"
+        optionLabel="label"
+        optionValue="value"
+        styleClass="w-full"
+      />
+    </div>
+
+    <div class="field">
+      <label for="referenceNumber">Reference number (optional)</label>
+      <input id="referenceNumber" type="text" pInputText formControlName="referenceNumber" class="w-full" />
+    </div>
+
+    @if (paymentError()) {
+      <p-message severity="error" [text]="paymentError()!" styleClass="w-full" />
+    }
+    @if (paymentSuccess()) {
+      <p-message severity="success" [text]="paymentSuccess()!" styleClass="w-full" />
+    }
+
+    <p-button type="submit" label="Record payment" styleClass="gv-submit-btn w-full" [loading]="paymentLoading()" />
+  </form>
+</p-dialog>

@@ -1,0 +1,163 @@
+import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { TagModule } from 'primeng/tag';
+import { ButtonModule } from 'primeng/button';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { DialogModule } from 'primeng/dialog';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
+import { MessageModule } from 'primeng/message';
+import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
+import { TicketService } from '../../../core/services/ticket.service';
+import { PaymentService } from '../../../core/services/payment.service';
+import { PawnTicketResponse } from '../../../core/models/ticket.model';
+import { PaymentResponse, PaymentType, PaymentMethod } from '../../../core/models/payment.model';
+
+@Component({
+  selector: 'app-shop-ticket-detail',
+  standalone: true,
+  imports: [
+    CommonModule, ReactiveFormsModule, RouterLink,
+    TagModule, ButtonModule, ProgressSpinnerModule, DialogModule,
+    InputNumberModule, InputTextModule, SelectModule, MessageModule,
+    TopnavComponent
+  ],
+  templateUrl: './ticket-detail.component.html',
+  styleUrl: './ticket-detail.component.scss'
+})
+export class ShopTicketDetailComponent implements OnInit {
+  ticket = signal<PawnTicketResponse | null>(null);
+  payments = signal<PaymentResponse[]>([]);
+  loading = signal(true);
+  errorMessage = signal<string | null>(null);
+
+  showPaymentDialog = false;
+  paymentLoading = signal(false);
+  paymentError = signal<string | null>(null);
+  paymentSuccess = signal<string | null>(null);
+
+  paymentTypes: { label: string; value: PaymentType }[] = [
+    { label: 'Interest only', value: 'INTEREST' },
+    { label: 'Partial payment', value: 'PARTIAL' },
+    { label: 'Full redemption', value: 'FULL_REDEMPTION' }
+  ];
+
+  paymentMethods: { label: string; value: PaymentMethod }[] = [
+    { label: 'Cash', value: 'CASH' },
+    { label: 'Card', value: 'CARD' },
+    { label: 'Online transfer', value: 'ONLINE_TRANSFER' },
+    { label: 'LankaQR', value: 'LANKAQR' }
+  ];
+
+  paymentForm: ReturnType<FormBuilder['group']>;
+
+  private ticketId!: number;
+
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private ticketService: TicketService,
+    private paymentService: PaymentService
+  ) {
+    this.paymentForm = this.fb.group({
+      amount: [null as number | null, [Validators.required, Validators.min(0.01)]],
+      paymentType: ['INTEREST' as PaymentType, Validators.required],
+      paymentMethod: ['CASH' as PaymentMethod, Validators.required],
+      referenceNumber: ['']
+    });
+  }
+
+  ngOnInit(): void {
+    this.ticketId = Number(this.route.snapshot.paramMap.get('id'));
+    if (!this.ticketId) {
+      this.errorMessage.set('Invalid ticket.');
+      this.loading.set(false);
+      return;
+    }
+    this.loadTicket();
+  }
+
+  private loadTicket(): void {
+    this.loading.set(true);
+    this.ticketService.getShopTicketById(this.ticketId).subscribe({
+      next: (ticket) => {
+        this.ticket.set(ticket);
+        this.loading.set(false);
+        this.loadPayments();
+        // Pre-fill the amount field with the outstanding balance for convenience
+        this.paymentForm.patchValue({ amount: ticket.outstandingBalance });
+      },
+      error: () => {
+        this.errorMessage.set('Could not load this ticket.');
+        this.loading.set(false);
+      }
+    });
+  }
+
+  private loadPayments(): void {
+    this.paymentService.getShopPaymentHistory(this.ticketId).subscribe({
+      next: (payments) => this.payments.set(payments),
+      error: () => this.payments.set([])
+    });
+  }
+
+  openPaymentDialog(): void {
+    this.paymentError.set(null);
+    this.paymentSuccess.set(null);
+    this.showPaymentDialog = true;
+  }
+
+  submitPayment(): void {
+    if (this.paymentForm.invalid) {
+      this.paymentForm.markAllAsTouched();
+      return;
+    }
+
+    this.paymentLoading.set(true);
+    this.paymentError.set(null);
+
+    const raw = this.paymentForm.getRawValue();
+
+    this.paymentService.recordPayment({
+      ticketId: this.ticketId,
+      amount: raw.amount!,
+      paymentType: raw.paymentType!,
+      paymentMethod: raw.paymentMethod!,
+      referenceNumber: raw.referenceNumber || undefined
+    }).subscribe({
+      next: (payment) => {
+        this.paymentLoading.set(false);
+        this.paymentSuccess.set(
+          payment.ticketRedeemed
+            ? 'Payment recorded — ticket fully redeemed!'
+            : 'Payment recorded successfully.'
+        );
+        this.loadTicket();
+        setTimeout(() => {
+          this.showPaymentDialog = false;
+          this.paymentSuccess.set(null);
+        }, 1500);
+      },
+      error: (err) => {
+        this.paymentLoading.set(false);
+        this.paymentError.set(err?.error?.message || 'Could not record payment.');
+      }
+    });
+  }
+
+  statusSeverity(status: string): 'success' | 'warn' | 'danger' | 'secondary' {
+    switch (status) {
+      case 'ACTIVE': return 'success';
+      case 'EXPIRED': return 'warn';
+      case 'AUCTIONED': return 'danger';
+      default: return 'secondary';
+    }
+  }
+
+  formatCurrency(amount: number): string {
+    return new Intl.NumberFormat('en-LK', { minimumFractionDigits: 2 }).format(amount);
+  }
+}
