@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { ApiResponse } from '../models/auth.model';
+import { ApiResponse, PagedResponse } from '../models/auth.model';
 import { CustomerRequest, CustomerResponse } from '../models/customer.model';
 
 @Injectable({ providedIn: 'root' })
@@ -40,6 +40,24 @@ export class CustomerService {
     return this.http
       .get<ApiResponse<CustomerResponse[]>>(`${this.apiUrl}/shop/customers/shop/${shopId}/search`, {
         params: { name }
+      })
+      .pipe(map((res) => res.data));
+  }
+
+  /** Paginated listing — page is 0-indexed, matching the backend. */
+  getByShopPaged(shopId: number, page: number, size: number): Observable<PagedResponse<CustomerResponse>> {
+    return this.http
+      .get<ApiResponse<PagedResponse<CustomerResponse>>>(`${this.apiUrl}/shop/customers/shop/${shopId}/paged`, {
+        params: { page, size }
+      })
+      .pipe(map((res) => res.data));
+  }
+
+  /** Paginated search by name or NIC — page is 0-indexed. */
+  searchPaged(shopId: number, term: string, page: number, size: number): Observable<PagedResponse<CustomerResponse>> {
+    return this.http
+      .get<ApiResponse<PagedResponse<CustomerResponse>>>(`${this.apiUrl}/shop/customers/shop/${shopId}/search/paged`, {
+        params: { term, page, size }
       })
       .pipe(map((res) => res.data));
   }

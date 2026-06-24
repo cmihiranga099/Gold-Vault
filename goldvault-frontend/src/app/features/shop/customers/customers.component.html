@@ -20,41 +20,55 @@
         [(ngModel)]="searchTerm"
         (ngModelChange)="searchTerm.set($event)"
         (keyup.enter)="onSearch()"
-        placeholder="Search by name..."
+        placeholder="Search by name or NIC..."
         class="w-full"
       />
     </span>
     <p-button label="Search" (onClick)="onSearch()" />
   </div>
 
-  @if (loading()) {
-    <div class="shop-loading">
-      <p-progressSpinner strokeWidth="3" />
-    </div>
-  } @else if (errorMessage()) {
+  @if (errorMessage()) {
     <div class="shop-empty gv-card">
       <p>{{ errorMessage() }}</p>
     </div>
-  } @else if (customers().length === 0) {
-    <div class="shop-empty gv-card">
-      <p>No customers found.</p>
-    </div>
   } @else {
-    <div class="customer-list">
-      @for (customer of customers(); track customer.id) {
-        <a [routerLink]="['/shop/customers', customer.id]" class="customer-row gv-card">
-          <div class="customer-main">
-            <span class="customer-name">{{ customer.fullName }}</span>
-            <span class="customer-nic gv-mono">{{ customer.nic }}</span>
-          </div>
-          <div class="customer-meta">
-            @if (customer.phone) {
-              <span class="customer-phone">{{ customer.phone }}</span>
-            }
-            <p-tag [value]="customer.kycStatus" [severity]="kycSeverity(customer.kycStatus)" />
-          </div>
-        </a>
-      }
+    <div class="table-card gv-card">
+      <p-table
+        [value]="customers()"
+        [lazy]="true"
+        (onLazyLoad)="onLazyLoad($event)"
+        [paginator]="true"
+        [rows]="rows"
+        [totalRecords]="totalRecords()"
+        [loading]="loading()"
+        [rowsPerPageOptions]="[10, 20, 50]"
+        styleClass="gv-table"
+        [rowHover]="true"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Name</th>
+            <th>NIC</th>
+            <th>Phone</th>
+            <th>KYC status</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-customer>
+          <tr [routerLink]="['/shop/customers', customer.id]" class="table-row-link">
+            <td>{{ customer.fullName }}</td>
+            <td class="gv-mono">{{ customer.nic }}</td>
+            <td>{{ customer.phone || '—' }}</td>
+            <td>
+              <p-tag [value]="customer.kycStatus" [severity]="kycSeverity(customer.kycStatus)" />
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="4" class="empty-cell">No customers found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
   }
 </div>

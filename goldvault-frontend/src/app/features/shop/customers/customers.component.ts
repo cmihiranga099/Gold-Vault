@@ -4,8 +4,8 @@ import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TagModule } from 'primeng/tag';
+import { TableModule, TableLazyLoadEvent } from 'primeng/table';
 import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { AuthService } from '../../../core/auth/auth.service';
 import { CustomerService } from '../../../core/services/customer.service';
@@ -16,7 +16,7 @@ import { CustomerResponse } from '../../../core/models/customer.model';
   standalone: true,
   imports: [
     CommonModule, RouterLink, FormsModule,
-    ButtonModule, InputTextModule, ProgressSpinnerModule, TagModule,
+    ButtonModule, InputTextModule, TagModule, TableModule,
     TopnavComponent
   ],
   templateUrl: './customers.component.html',
@@ -24,11 +24,14 @@ import { CustomerResponse } from '../../../core/models/customer.model';
 })
 export class CustomersComponent implements OnInit {
   customers = signal<CustomerResponse[]>([]);
+  totalRecords = signal(0);
   loading = signal(true);
   errorMessage = signal<string | null>(null);
   searchTerm = signal('');
 
+  rows = 10;
   private shopId: number | null = null;
+  private currentPage = 0;
 
   constructor(
     private authService: AuthService,
@@ -41,19 +44,28 @@ export class CustomersComponent implements OnInit {
     if (!this.shopId) {
       this.errorMessage.set('No shop linked to this account.');
       this.loading.set(false);
-      return;
     }
-
-    this.loadCustomers();
+    // Initial load is triggered by p-table's (onLazyLoad) on first render
   }
 
-  loadCustomers(): void {
+  /** Called by p-table whenever page, sort, or filter changes */
+  onLazyLoad(event: TableLazyLoadEvent): void {
     if (!this.shopId) return;
+
+    const page = Math.floor((event.first ?? 0) / (event.rows ?? this.rows));
+    const size = event.rows ?? this.rows;
+    this.currentPage = page;
     this.loading.set(true);
 
-    this.customerService.getByShop(this.shopId).subscribe({
-      next: (customers) => {
-        this.customers.set(customers);
+    const term = this.searchTerm().trim();
+    const request$ = term
+      ? this.customerService.searchPaged(this.shopId, term, page, size)
+      : this.customerService.getByShopPaged(this.shopId, page, size);
+
+    request$.subscribe({
+      next: (result) => {
+        this.customers.set(result.content);
+        this.totalRecords.set(result.totalElements);
         this.loading.set(false);
       },
       error: () => {
@@ -64,25 +76,8 @@ export class CustomersComponent implements OnInit {
   }
 
   onSearch(): void {
-    if (!this.shopId) return;
-    const term = this.searchTerm().trim();
-
-    if (!term) {
-      this.loadCustomers();
-      return;
-    }
-
-    this.loading.set(true);
-    this.customerService.search(this.shopId, term).subscribe({
-      next: (customers) => {
-        this.customers.set(customers);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.errorMessage.set('Search failed.');
-        this.loading.set(false);
-      }
-    });
+    // Reset to first page whenever the search term changes
+    this.onLazyLoad({ first: 0, rows: this.rows });
   }
 
   kycSeverity(status: string): 'success' | 'warn' | 'danger' {
