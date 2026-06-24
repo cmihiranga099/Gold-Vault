@@ -18,6 +18,10 @@ export const SHOP_ROUTES: Routes = [
     loadComponent: () => import('./customer-detail/customer-detail.component').then(m => m.CustomerDetailComponent)
   },
   {
+    path: 'tickets/new',
+    loadComponent: () => import('./grant-ticket/grant-ticket.component').then(m => m.GrantTicketComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'

@@ -1,0 +1,152 @@
+<app-topnav />
+
+<div class="form-page">
+  @if (!createdTicket()) {
+    <a routerLink="/shop/dashboard" class="back-link">
+      <i class="pi pi-arrow-left"></i> Back to dashboard
+    </a>
+
+    <div class="form-card gv-card">
+      <span class="gv-eyebrow">New pawn ticket</span>
+      <h1>Grant a pawn ticket</h1>
+      @if (customer()) {
+        <p class="form-sub">For <strong>{{ customer()!.fullName }}</strong> ({{ customer()!.nic }})</p>
+      } @else {
+        <p class="form-sub">Enter the customer id and loan details below.</p>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-body">
+        @if (!customer()) {
+          <div class="field">
+            <label for="customerId">Customer ID</label>
+            <input id="customerId" type="number" pInputText formControlName="customerId" class="w-full" />
+          </div>
+        }
+
+        <div class="field-row">
+          <div class="field">
+            <label for="loanAmount">Loan amount (LKR)</label>
+            <p-inputNumber
+              inputId="loanAmount"
+              formControlName="loanAmount"
+              mode="decimal"
+              [minFractionDigits]="2"
+              styleClass="w-full"
+            />
+          </div>
+          <div class="field">
+            <label for="interestRate">Interest rate (% monthly)</label>
+            <p-inputNumber
+              inputId="interestRate"
+              formControlName="interestRate"
+              mode="decimal"
+              [minFractionDigits]="2"
+              styleClass="w-full"
+            />
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="interestType">Interest type</label>
+            <p-select
+              inputId="interestType"
+              formControlName="interestType"
+              [options]="[{label: 'Flat', value: 'FLAT'}, {label: 'Reducing', value: 'REDUCING'}]"
+              optionLabel="label"
+              optionValue="value"
+              styleClass="w-full"
+            />
+          </div>
+          <div class="field">
+            <label for="periodMonths">Loan period (months)</label>
+            <p-inputNumber
+              inputId="periodMonths"
+              formControlName="periodMonths"
+              styleClass="w-full"
+            />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="notes">Notes (optional)</label>
+          <input id="notes" type="text" pInputText formControlName="notes" class="w-full" />
+        </div>
+
+        <div class="items-section">
+          <div class="items-header">
+            <h2>Pawned gold items</h2>
+            <p-button label="Add item" icon="pi pi-plus" [text]="true" (onClick)="addGoldItem()" />
+          </div>
+
+          @for (item of goldItemsArray.controls; track $index; let i = $index) {
+            <div class="item-group" [formGroup]="asFormGroup(item)">
+              <div class="item-group-header">
+                <span class="item-group-title">Item {{ i + 1 }}</span>
+                @if (goldItemsArray.length > 1) {
+                  <button type="button" class="remove-btn" (click)="removeGoldItem(i)">
+                    <i class="pi pi-trash"></i>
+                  </button>
+                }
+              </div>
+
+              <div class="field">
+                <label>Description</label>
+                <input type="text" pInputText formControlName="description" placeholder="e.g. Gold necklace with pendant" class="w-full" />
+              </div>
+
+              <div class="field-row-3">
+                <div class="field">
+                  <label>Type</label>
+                  <p-select
+                    formControlName="goldType"
+                    [options]="goldTypes"
+                    styleClass="w-full"
+                  />
+                </div>
+                <div class="field">
+                  <label>Purity</label>
+                  <p-select
+                    formControlName="purity"
+                    [options]="goldPurities"
+                    styleClass="w-full"
+                  />
+                </div>
+                <div class="field">
+                  <label>Weight (g)</label>
+                  <p-inputNumber formControlName="weightGrams" mode="decimal" [minFractionDigits]="2" styleClass="w-full" />
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Estimated value (LKR, optional)</label>
+                <p-inputNumber formControlName="estimatedValue" mode="decimal" [minFractionDigits]="2" styleClass="w-full" />
+              </div>
+            </div>
+          }
+        </div>
+
+        @if (errorMessage()) {
+          <p-message severity="error" [text]="errorMessage()!" styleClass="w-full" />
+        }
+
+        <p-button type="submit" label="Grant ticket" styleClass="gv-submit-btn" [loading]="loading()" />
+      </form>
+    </div>
+  } @else {
+    <!-- Success state -->
+    <div class="success-card gv-card gv-ticket-edge">
+      <i class="pi pi-check-circle success-icon"></i>
+      <span class="gv-eyebrow">Ticket created</span>
+      <h1 class="gv-mono">{{ createdTicket()!.ticketNumber }}</h1>
+      <p class="success-sub">Ticket granted to {{ createdTicket()!.customerName }}</p>
+
+      <img [src]="'data:image/png;base64,' + createdTicket()!.qrCode" alt="Ticket QR code" class="success-qr" />
+
+      <div class="success-actions">
+        <p-button label="View ticket" (onClick)="goToTicket()" />
+        <a routerLink="/shop/dashboard" class="text-link">Back to dashboard</a>
+      </div>
+    </div>
+  }
+</div>
