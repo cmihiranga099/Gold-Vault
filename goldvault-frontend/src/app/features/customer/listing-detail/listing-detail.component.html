@@ -1,0 +1,72 @@
+<app-topnav />
+
+<div class="detail-page">
+  <a routerLink="/customer/marketplace" class="back-link">
+    <i class="pi pi-arrow-left"></i> Back to marketplace
+  </a>
+
+  @if (loading()) {
+    <div class="detail-loading">
+      <p-progressSpinner strokeWidth="3" />
+    </div>
+  } @else if (errorMessage()) {
+    <div class="detail-empty gv-card">
+      <p>{{ errorMessage() }}</p>
+    </div>
+  } @else if (listing()) {
+    <div class="listing-card gv-card">
+      <div class="listing-header">
+        <div>
+          <span class="gv-eyebrow">Your listing</span>
+          <h1>{{ listing()!.description || (listing()!.purity + ' gold') }}</h1>
+          <span class="listing-meta">{{ listing()!.weightGrams }}g &middot; {{ listing()!.purity }}</span>
+        </div>
+        <p-tag [value]="listing()!.status" />
+      </div>
+      @if (listing()!.askingPrice) {
+        <p class="asking-price">Asking price: <span class="gv-mono">LKR {{ formatCurrency(listing()!.askingPrice!) }}</span></p>
+      }
+    </div>
+
+    <div class="offers-card gv-card">
+      <h2>Offers received</h2>
+      @if (listing()!.offers.length === 0) {
+        <p class="empty-text">No offers yet. Shops will see this listing on the marketplace.</p>
+      } @else {
+        <div class="offer-list">
+          @for (offer of listing()!.offers; track offer.id) {
+            <div class="offer-row">
+              <div class="offer-main">
+                <span class="offer-shop">{{ offer.shopName }}</span>
+                <span class="offer-price gv-mono">LKR {{ formatCurrency(offer.offerPrice) }}</span>
+                @if (offer.message) {
+                  <span class="offer-message">{{ offer.message }}</span>
+                }
+              </div>
+              <div class="offer-actions">
+                <p-tag [value]="offer.status" [severity]="offerSeverity(offer.status)" />
+                @if (offer.status === 'PENDING') {
+                  <p-button
+                    label="Accept"
+                    size="small"
+                    styleClass="gv-accept-btn"
+                    [loading]="actionLoading() === offer.id"
+                    (onClick)="acceptOffer(offer.id)"
+                  />
+                  <p-button
+                    label="Reject"
+                    size="small"
+                    severity="secondary"
+                    [outlined]="true"
+                    [loading]="actionLoading() === offer.id"
+                    (onClick)="rejectOffer(offer.id)"
+                  />
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

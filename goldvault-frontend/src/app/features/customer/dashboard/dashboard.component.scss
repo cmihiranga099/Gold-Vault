@@ -7,12 +7,33 @@
 }
 
 .dash-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
   margin-bottom: var(--gv-space-6);
+  flex-wrap: wrap;
+  gap: var(--gv-space-4);
 
   h1 {
     font-size: 1.75rem;
     margin-top: var(--gv-space-1);
   }
+}
+
+.market-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-2);
+  padding: var(--gv-space-2) var(--gv-space-4);
+  border-radius: var(--gv-radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: var(--gv-ink);
+  color: var(--gv-white);
+
+  &:hover { background: var(--gv-ink-soft); }
+  i { font-size: 0.8rem; }
 }
 
 .dash-loading {

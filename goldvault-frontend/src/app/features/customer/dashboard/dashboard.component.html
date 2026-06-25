@@ -2,10 +2,15 @@
 
 <div class="dash-page">
   <div class="dash-header">
-    <span class="gv-eyebrow">Customer portal</span>
-    <h1>Your pawn tickets</h1>
-  </div>
-
+    <div>
+      <span class="gv-eyebrow">Customer portal</span>
+      <h1>Your pawn tickets</h1>
+    </div>
+    <a routerLink="/customer/marketplace" class="market-link">
+      <i class="pi pi-shop"></i> Sell gold
+    </a>
+  </div> 
+  
   @if (loading()) {
     <div class="dash-loading">
       <p-progressSpinner styleClass="gv-spinner" strokeWidth="3" />

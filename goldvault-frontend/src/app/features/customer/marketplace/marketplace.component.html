@@ -35,7 +35,7 @@
     } @else {
       <div class="listing-list">
         @for (listing of listings(); track listing.id) {
-          <div class="listing-row">
+          <a [routerLink]="['/customer/listings', listing.id]" class="listing-row">
             <div class="listing-main">
               <span class="listing-desc">{{ listing.description || (listing.purity + ' gold') }}</span>
               <span class="listing-meta">{{ listing.weightGrams }}g &middot; {{ listing.purity }}</span>
@@ -46,7 +46,7 @@
               }
               <p-tag [value]="listing.status" [severity]="listingSeverity(listing.status)" />
             </div>
-          </div>
+          </a>
         }
       </div>
     }

@@ -1,0 +1,128 @@
+.detail-page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: var(--gv-space-6) var(--gv-space-4);
+  }
+  
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gv-space-2);
+    font-size: 0.875rem;
+    color: var(--gv-stone);
+    text-decoration: none;
+    margin-bottom: var(--gv-space-5);
+  
+    &:hover { color: var(--gv-ink); }
+    i { font-size: 0.75rem; }
+  }
+  
+  .detail-loading {
+    display: flex;
+    justify-content: center;
+    padding: var(--gv-space-10) 0;
+  }
+  
+  .detail-empty {
+    padding: var(--gv-space-8) var(--gv-space-5);
+    text-align: center;
+    color: var(--gv-stone);
+  }
+  
+  .listing-card {
+    padding: var(--gv-space-6);
+    margin-bottom: var(--gv-space-4);
+  }
+  
+  .listing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  
+    h1 {
+      font-size: 1.4rem;
+      margin: var(--gv-space-1) 0 0.2rem;
+    }
+  }
+  
+  .listing-meta {
+    font-size: 0.85rem;
+    color: var(--gv-stone);
+  }
+  
+  .asking-price {
+    margin: var(--gv-space-4) 0 0;
+    padding-top: var(--gv-space-4);
+    border-top: 1px solid var(--gv-line);
+    font-size: 0.9rem;
+    color: var(--gv-ink);
+  }
+  
+  .offers-card {
+    padding: var(--gv-space-5);
+  
+    h2 {
+      font-size: 1.1rem;
+      margin-bottom: var(--gv-space-4);
+    }
+  }
+  
+  .empty-text {
+    color: var(--gv-stone-light);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  
+  .offer-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gv-space-3);
+  }
+  
+  .offer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--gv-space-4);
+    background: var(--gv-paper-dim);
+    border-radius: var(--gv-radius-sm);
+    flex-wrap: wrap;
+    gap: var(--gv-space-3);
+  }
+  
+  .offer-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  
+  .offer-shop {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gv-ink);
+  }
+  
+  .offer-price {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gv-jade);
+  }
+  
+  .offer-message {
+    font-size: 0.8rem;
+    color: var(--gv-stone);
+    font-style: italic;
+  }
+  
+  .offer-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--gv-space-2);
+  }
+  
+  :host ::ng-deep .gv-accept-btn .p-button {
+    background: var(--gv-jade) !important;
+    border-color: var(--gv-jade) !important;
+  
+    &:hover { background: var(--gv-jade-soft) !important; }
+  }
