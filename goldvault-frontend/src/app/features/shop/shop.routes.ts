@@ -26,6 +26,10 @@ export const SHOP_ROUTES: Routes = [
     loadComponent: () => import('./ticket-detail/ticket-detail.component').then(m => m.ShopTicketDetailComponent)
   },
   {
+    path: 'gold-rates',
+    loadComponent: () => import('./gold-rates/gold-rates.component').then(m => m.GoldRatesComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'

@@ -10,6 +10,10 @@ export const CUSTOMER_ROUTES: Routes = [
     loadComponent: () => import('./ticket-detail/ticket-detail.component').then(m => m.TicketDetailComponent)
   },
   {
+    path: 'marketplace',
+    loadComponent: () => import('./marketplace/marketplace.component').then(m => m.CustomerMarketplaceComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
