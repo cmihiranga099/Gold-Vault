@@ -1,0 +1,102 @@
+.market-page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--gv-space-6) var(--gv-space-4);
+  }
+  
+  .page-header {
+    margin-bottom: var(--gv-space-5);
+  
+    h1 {
+      font-size: 1.75rem;
+      margin-top: var(--gv-space-1);
+    }
+  }
+  
+  .listings-card {
+    padding: var(--gv-space-5);
+  
+    h2 {
+      font-size: 1.1rem;
+      margin-bottom: var(--gv-space-4);
+    }
+  }
+  
+  .empty-text {
+    color: var(--gv-stone-light);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  
+  .listing-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gv-space-3);
+  }
+  
+  .listing-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--gv-space-4);
+    background: var(--gv-paper-dim);
+    border-radius: var(--gv-radius-sm);
+    flex-wrap: wrap;
+    gap: var(--gv-space-3);
+  }
+  
+  .listing-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  
+  .listing-desc {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gv-ink);
+  }
+  
+  .listing-meta {
+    font-size: 0.8rem;
+    color: var(--gv-stone);
+  }
+  
+  .listing-asking {
+    font-size: 0.8rem;
+    color: var(--gv-jade);
+    font-weight: 600;
+  }
+  
+  :host ::ng-deep .gv-submit-btn .p-button {
+    background: var(--gv-ink) !important;
+    border-color: var(--gv-ink) !important;
+  
+    &:hover { background: var(--gv-ink-soft) !important; }
+  }
+  
+  .dialog-context {
+    font-size: 0.875rem;
+    color: var(--gv-stone);
+    margin: 0 0 var(--gv-space-4);
+    padding-bottom: var(--gv-space-3);
+    border-bottom: 1px solid var(--gv-line);
+  }
+  
+  .offer-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gv-space-4);
+  }
+  
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gv-space-2);
+  
+    label {
+      font-size: 0.825rem;
+      font-weight: 600;
+      color: var(--gv-ink);
+    }
+  }
