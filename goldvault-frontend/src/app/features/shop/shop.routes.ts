@@ -30,6 +30,10 @@ export const SHOP_ROUTES: Routes = [
     loadComponent: () => import('./gold-rates/gold-rates.component').then(m => m.GoldRatesComponent)
   },
   {
+    path: 'marketplace',
+    loadComponent: () => import('./marketplace/marketplace.component').then(m => m.ShopMarketplaceComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'

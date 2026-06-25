@@ -14,6 +14,10 @@ export const CUSTOMER_ROUTES: Routes = [
     loadComponent: () => import('./marketplace/marketplace.component').then(m => m.CustomerMarketplaceComponent)
   },
   {
+    path: 'listings/:id',
+    loadComponent: () => import('./listing-detail/listing-detail.component').then(m => m.ListingDetailComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
