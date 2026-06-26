@@ -26,6 +26,7 @@ import { AuthService } from '../../../core/auth/auth.service';
 export class LoginComponent {
   loading = signal(false);
   errorMessage = signal<string | null>(null);
+
   form: FormGroup;
 
   constructor(
@@ -65,6 +66,8 @@ export class LoginComponent {
       this.router.navigate(['/customer/dashboard']);
     } else if (role === 'ROLE_SHOP_ADMIN' || role === 'ROLE_STAFF') {
       this.router.navigate(['/shop/dashboard']);
+    } else if (role === 'ROLE_ADMIN') {
+      this.router.navigate(['/admin/dashboard']);
     } else {
       this.router.navigate(['/auth/login']);
     }

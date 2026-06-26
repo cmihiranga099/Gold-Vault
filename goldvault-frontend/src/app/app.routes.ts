@@ -28,6 +28,12 @@ export const routes: Routes = [
     loadChildren: () => import('./features/shop/shop.routes').then(m => m.SHOP_ROUTES)
   },
   {
+    path: 'admin',
+    canActivate: [authGuard],
+    data: { roles: ['ROLE_ADMIN'] },
+    loadChildren: () => import('./features/admin/admin.routes').then(m => m.ADMIN_ROUTES)
+  },
+  {
     path: '',
     redirectTo: 'auth/login',
     pathMatch: 'full'
