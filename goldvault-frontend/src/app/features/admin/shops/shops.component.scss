@@ -1,0 +1,76 @@
+.shops-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--gv-space-6) var(--gv-space-4);
+  }
+  
+  .page-header {
+    margin-bottom: var(--gv-space-5);
+  
+    h1 {
+      font-size: 1.75rem;
+      margin-top: var(--gv-space-1);
+    }
+  }
+  
+  .page-loading {
+    display: flex;
+    justify-content: center;
+    padding: var(--gv-space-10) 0;
+  }
+  
+  .empty-card {
+    padding: var(--gv-space-8) var(--gv-space-5);
+    text-align: center;
+    color: var(--gv-stone);
+  }
+  
+  .shop-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gv-space-3);
+  }
+  
+  .shop-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--gv-space-4) var(--gv-space-5);
+    flex-wrap: wrap;
+    gap: var(--gv-space-3);
+  }
+  
+  .shop-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  
+  .shop-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--gv-ink);
+  }
+  
+  .shop-meta {
+    font-size: 0.8rem;
+    color: var(--gv-stone);
+  }
+  
+  .shop-contact {
+    font-size: 0.75rem;
+    color: var(--gv-stone-light);
+  }
+  
+  .shop-side {
+    display: flex;
+    align-items: center;
+    gap: var(--gv-space-3);
+  }
+  
+  :host ::ng-deep .gv-approve-btn .p-button {
+    background: var(--gv-jade) !important;
+    border-color: var(--gv-jade) !important;
+  
+    &:hover { background: var(--gv-jade-soft) !important; }
+  }

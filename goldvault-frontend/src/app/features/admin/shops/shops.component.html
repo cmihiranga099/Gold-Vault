@@ -1,0 +1,46 @@
+<app-topnav />
+
+<div class="shops-page">
+  <div class="page-header">
+    <span class="gv-eyebrow">Admin panel</span>
+    <h1>Shops</h1>
+  </div>
+
+  @if (loading()) {
+    <div class="page-loading">
+      <p-progressSpinner strokeWidth="3" />
+    </div>
+  } @else if (errorMessage()) {
+    <div class="empty-card gv-card">
+      <p>{{ errorMessage() }}</p>
+    </div>
+  } @else if (shops().length === 0) {
+    <div class="empty-card gv-card">
+      <p>No shops registered yet.</p>
+    </div>
+  } @else {
+    <div class="shop-list">
+      @for (shop of shops(); track shop.id) {
+        <div class="shop-row gv-card">
+          <div class="shop-main">
+            <span class="shop-name">{{ shop.name }}</span>
+            <span class="shop-meta">{{ shop.regNumber }} &middot; {{ shop.ownerName }}</span>
+            @if (shop.phone || shop.email) {
+              <span class="shop-contact">{{ shop.phone }} {{ shop.phone && shop.email ? '&middot;' : '' }} {{ shop.email }}</span>
+            }
+          </div>
+          <div class="shop-side">
+            <p-tag [value]="shop.status" [severity]="statusSeverity(shop.status)" />
+            @if (shop.status === 'PENDING') {
+              <p-button label="Approve" size="small" styleClass="gv-approve-btn" [loading]="actionLoading() === shop.id" (onClick)="approve(shop.id)" />
+            } @else if (shop.status === 'ACTIVE') {
+              <p-button label="Suspend" size="small" severity="danger" [outlined]="true" [loading]="actionLoading() === shop.id" (onClick)="suspend(shop.id)" />
+            } @else if (shop.status === 'SUSPENDED') {
+              <p-button label="Reactivate" size="small" [loading]="actionLoading() === shop.id" (onClick)="reactivate(shop.id)" />
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

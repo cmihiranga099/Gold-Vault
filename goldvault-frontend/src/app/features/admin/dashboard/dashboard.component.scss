@@ -1,0 +1,108 @@
+.admin-page {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: var(--gv-space-6) var(--gv-space-4);
+  }
+  
+  .admin-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: var(--gv-space-6);
+    flex-wrap: wrap;
+    gap: var(--gv-space-4);
+  
+    h1 {
+      font-size: 1.75rem;
+      margin-top: var(--gv-space-1);
+    }
+  }
+  
+  .admin-actions {
+    display: flex;
+    gap: var(--gv-space-3);
+  }
+  
+  .action-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gv-space-2);
+    padding: var(--gv-space-2) var(--gv-space-4);
+    border-radius: var(--gv-radius-sm);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--gv-ink);
+    background: var(--gv-white);
+    border: 1px solid var(--gv-line);
+    transition: background 0.15s ease;
+  
+    &:hover { background: var(--gv-paper-dim); }
+    i { font-size: 0.8rem; }
+  }
+  
+  .action-link-primary {
+    background: var(--gv-ink);
+    color: var(--gv-white);
+    border-color: var(--gv-ink);
+  
+    &:hover { background: var(--gv-ink-soft); }
+  }
+  
+  .admin-loading {
+    display: flex;
+    justify-content: center;
+    padding: var(--gv-space-10) 0;
+  }
+  
+  .admin-empty {
+    padding: var(--gv-space-8) var(--gv-space-5);
+    text-align: center;
+    color: var(--gv-stone);
+  }
+  
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--gv-space-4);
+  
+    @media (max-width: 800px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+    @media (max-width: 520px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .stat-card {
+    padding: var(--gv-space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gv-space-2);
+  }
+  
+  .stat-card-highlight {
+    background: var(--gv-ink);
+    border-color: var(--gv-ink);
+  
+    .stat-label { color: var(--gv-gold-soft); }
+    .stat-value { color: var(--gv-white); }
+  }
+  
+  .stat-card-warning {
+    border-color: var(--gv-warning);
+    background: rgba(184, 134, 47, 0.06);
+  }
+  
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--gv-stone);
+    font-weight: 500;
+  }
+  
+  .stat-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--gv-ink);
+  }
