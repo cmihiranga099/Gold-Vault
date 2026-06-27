@@ -3,15 +3,15 @@
 <div class="admin-page">
   <div class="admin-header">
     <div>
-      <span class="gv-eyebrow">Admin panel</span>
-      <h1>Platform overview</h1>
+      <span class="gv-eyebrow">{{ 'admin.eyebrow' | translate }}</span>
+      <h1>{{ 'admin.dashTitle' | translate }}</h1>
     </div>
     <div class="admin-actions">
       <a routerLink="/admin/shops" class="action-link">
-        <i class="pi pi-building"></i> Shops
+        <i class="pi pi-building"></i> {{ 'admin.shopsLink' | translate }}
       </a>
       <a routerLink="/admin/reports" class="action-link action-link-primary">
-        <i class="pi pi-chart-bar"></i> Revenue report
+        <i class="pi pi-chart-bar"></i> {{ 'admin.revenueReportLink' | translate }}
       </a>
     </div>
   </div>
@@ -27,32 +27,32 @@
   } @else if (summary()) {
     <div class="stat-grid">
       <div class="stat-card gv-card stat-card-highlight">
-        <span class="stat-label">Today's collection (all shops)</span>
+        <span class="stat-label">{{ 'admin.todayCollectionAllShops' | translate }}</span>
         <span class="stat-value gv-mono">LKR {{ formatCurrency(summary()!.todayCollection) }}</span>
       </div>
 
       <div class="stat-card gv-card" [class.stat-card-warning]="summary()!.pendingShopApprovals > 0">
-        <span class="stat-label">Pending shop approvals</span>
+        <span class="stat-label">{{ 'admin.pendingApprovals' | translate }}</span>
         <span class="stat-value">{{ summary()!.pendingShopApprovals }}</span>
       </div>
 
       <div class="stat-card gv-card">
-        <span class="stat-label">Active shops</span>
+        <span class="stat-label">{{ 'admin.activeShops' | translate }}</span>
         <span class="stat-value">{{ summary()!.activeShops }} / {{ summary()!.totalShops }}</span>
       </div>
 
       <div class="stat-card gv-card">
-        <span class="stat-label">Total customers</span>
+        <span class="stat-label">{{ 'admin.totalCustomers' | translate }}</span>
         <span class="stat-value">{{ summary()!.totalCustomers }}</span>
       </div>
 
       <div class="stat-card gv-card">
-        <span class="stat-label">Active tickets</span>
+        <span class="stat-label">{{ 'admin.activeTickets' | translate }}</span>
         <span class="stat-value">{{ summary()!.activeTickets }}</span>
       </div>
 
       <div class="stat-card gv-card">
-        <span class="stat-label">Total outstanding loans</span>
+        <span class="stat-label">{{ 'admin.totalOutstanding' | translate }}</span>
         <span class="stat-value gv-mono">LKR {{ formatCurrency(summary()!.totalOutstandingLoans) }}</span>
       </div>
     </div>

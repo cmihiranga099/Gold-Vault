@@ -2,8 +2,8 @@
 
 <div class="shops-page">
   <div class="page-header">
-    <span class="gv-eyebrow">Admin panel</span>
-    <h1>Shops</h1>
+    <span class="gv-eyebrow">{{ 'admin.eyebrow' | translate }}</span>
+    <h1>{{ 'admin.shopsTitle' | translate }}</h1>
   </div>
 
   @if (loading()) {
@@ -13,11 +13,11 @@
   } @else if (errorMessage()) {
     <div class="empty-card gv-card">
       <p>{{ errorMessage() }}</p>
-      <p-button label="Try again" size="small" [text]="true" (onClick)="loadShops()" />
+      <p-button [label]="'common.tryAgain' | translate" size="small" [text]="true" (onClick)="loadShops()" />
     </div>
   } @else if (shops().length === 0) {
     <div class="empty-card gv-card">
-      <p>No shops registered yet.</p>
+      <p>{{ 'admin.noShops' | translate }}</p>
     </div>
   } @else {
     <div class="shop-list">
@@ -33,11 +33,11 @@
           <div class="shop-side">
             <p-tag [value]="shop.status" [severity]="statusSeverity(shop.status)" />
             @if (shop.status === 'PENDING') {
-              <p-button label="Approve" size="small" styleClass="gv-approve-btn" [loading]="actionLoading() === shop.id" (onClick)="approve(shop.id)" />
+              <p-button [label]="'admin.approve' | translate" size="small" styleClass="gv-approve-btn" [loading]="actionLoading() === shop.id" (onClick)="approve(shop.id)" />
             } @else if (shop.status === 'ACTIVE') {
-              <p-button label="Suspend" size="small" severity="danger" [outlined]="true" [loading]="actionLoading() === shop.id" (onClick)="suspend(shop.id)" />
+              <p-button [label]="'admin.suspend' | translate" size="small" severity="danger" [outlined]="true" [loading]="actionLoading() === shop.id" (onClick)="suspend(shop.id)" />
             } @else if (shop.status === 'SUSPENDED') {
-              <p-button label="Reactivate" size="small" [loading]="actionLoading() === shop.id" (onClick)="reactivate(shop.id)" />
+              <p-button [label]="'admin.reactivate' | translate" size="small" [loading]="actionLoading() === shop.id" (onClick)="reactivate(shop.id)" />
             }
           </div>
         </div>

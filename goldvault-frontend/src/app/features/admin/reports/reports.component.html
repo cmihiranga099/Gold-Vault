@@ -2,21 +2,21 @@
 
 <div class="reports-page">
   <div class="page-header">
-    <span class="gv-eyebrow">Admin panel</span>
-    <h1>Revenue &amp; commission report</h1>
+    <span class="gv-eyebrow">{{ 'admin.eyebrow' | translate }}</span>
+    <h1>{{ 'admin.reportsTitle' | translate }}</h1>
   </div>
 
   <div class="filter-card gv-card">
     <form [formGroup]="form" (ngSubmit)="runReport()" class="filter-form">
       <div class="field">
-        <label for="startDate">Start date</label>
+        <label for="startDate">{{ 'admin.startDate' | translate }}</label>
         <p-datepicker inputId="startDate" formControlName="startDate" dateFormat="yy-mm-dd" styleClass="w-full" />
       </div>
       <div class="field">
-        <label for="endDate">End date</label>
+        <label for="endDate">{{ 'admin.endDate' | translate }}</label>
         <p-datepicker inputId="endDate" formControlName="endDate" dateFormat="yy-mm-dd" styleClass="w-full" />
       </div>
-      <p-button type="submit" label="Run report" styleClass="gv-submit-btn" [loading]="loading()" />
+      <p-button type="submit" [label]="'admin.runReport' | translate" styleClass="gv-submit-btn" [loading]="loading()" />
     </form>
   </div>
 
@@ -31,31 +31,31 @@
   } @else if (report()) {
     <div class="summary-grid">
       <div class="summary-card gv-card stat-card-highlight">
-        <span class="summary-label">Total payment volume</span>
+        <span class="summary-label">{{ 'admin.totalPaymentVolume' | translate }}</span>
         <span class="summary-value gv-mono">LKR {{ formatCurrency(report()!.totalPaymentVolume) }}</span>
       </div>
       <div class="summary-card gv-card">
-        <span class="summary-label">Platform commission</span>
+        <span class="summary-label">{{ 'admin.platformCommission' | translate }}</span>
         <span class="summary-value gv-mono">LKR {{ formatCurrency(report()!.totalCommission) }}</span>
       </div>
       <div class="summary-card gv-card">
-        <span class="summary-label">Total payments</span>
+        <span class="summary-label">{{ 'admin.totalPayments' | translate }}</span>
         <span class="summary-value">{{ report()!.totalPaymentCount }}</span>
       </div>
     </div>
 
     <div class="breakdown-card gv-card">
-      <h2>Breakdown by shop</h2>
+      <h2>{{ 'admin.breakdownByShop' | translate }}</h2>
       @if (report()!.byShop.length === 0) {
-        <p class="empty-text">No payment activity in this period.</p>
+        <p class="empty-text">{{ 'admin.noActivity' | translate }}</p>
       } @else {
         <div class="breakdown-list">
           @for (shop of report()!.byShop; track shop.shopId) {
             <div class="breakdown-row">
               <span class="shop-name">{{ shop.shopName }}</span>
               <span class="shop-volume gv-mono">LKR {{ formatCurrency(shop.paymentVolume) }}</span>
-              <span class="shop-commission gv-mono">Commission: LKR {{ formatCurrency(shop.commissionOwed) }}</span>
-              <span class="shop-count">{{ shop.paymentCount }} payment(s)</span>
+              <span class="shop-commission gv-mono">{{ 'admin.commission' | translate }}: LKR {{ formatCurrency(shop.commissionOwed) }}</span>
+              <span class="shop-count">{{ shop.paymentCount }} {{ 'admin.paymentsSuffix' | translate }}</span>
             </div>
           }
         </div>

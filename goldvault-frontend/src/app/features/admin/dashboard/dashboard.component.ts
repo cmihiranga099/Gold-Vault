@@ -2,6 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TranslatePipe } from '@ngx-translate/core';
 import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { AdminService } from '../../../core/services/admin.service';
 import { DashboardSummaryResponse } from '../../../core/models/admin.model';
@@ -9,7 +10,7 @@ import { DashboardSummaryResponse } from '../../../core/models/admin.model';
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, ProgressSpinnerModule, TopnavComponent],
+  imports: [CommonModule, RouterLink, ProgressSpinnerModule, TranslatePipe, TopnavComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })

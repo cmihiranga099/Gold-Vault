@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TranslatePipe } from '@ngx-translate/core';
 import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { AdminService } from '../../../core/services/admin.service';
 import { ShopResponse, ShopStatus } from '../../../core/models/admin.model';
@@ -10,7 +11,7 @@ import { ShopResponse, ShopStatus } from '../../../core/models/admin.model';
 @Component({
   selector: 'app-admin-shops',
   standalone: true,
-  imports: [CommonModule, TagModule, ButtonModule, ProgressSpinnerModule, TopnavComponent],
+  imports: [CommonModule, TagModule, ButtonModule, ProgressSpinnerModule, TranslatePipe, TopnavComponent],
   templateUrl: './shops.component.html',
   styleUrl: './shops.component.scss'
 })
