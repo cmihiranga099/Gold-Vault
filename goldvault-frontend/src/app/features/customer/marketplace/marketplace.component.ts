@@ -9,6 +9,7 @@ import { SelectModule } from 'primeng/select';
 import { MessageModule } from 'primeng/message';
 import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
 import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MarketplaceService } from '../../../core/services/marketplace.service';
@@ -22,6 +23,7 @@ const PURITIES: GoldPurity[] = ['K24', 'K22', 'K21', 'K18', 'P916', 'P750', 'OTH
   imports: [
     CommonModule, ReactiveFormsModule, RouterLink,
     ButtonModule, InputTextModule, InputNumberModule, SelectModule, MessageModule, TagModule, DialogModule,
+    TranslatePipe,
     TopnavComponent
   ],
   templateUrl: './marketplace.component.html',

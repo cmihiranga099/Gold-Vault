@@ -2,15 +2,15 @@
 
 <div class="rates-page">
   <div class="page-header">
-    <span class="gv-eyebrow">Shop portal</span>
-    <h1>Gold buying rates</h1>
+    <span class="gv-eyebrow">{{ 'goldRates.eyebrow' | translate }}</span>
+    <h1>{{ 'goldRates.title' | translate }}</h1>
   </div>
 
   <div class="publish-card gv-card">
-    <h2>Publish today's rate</h2>
+    <h2>{{ 'goldRates.publishTitle' | translate }}</h2>
     <form [formGroup]="form" (ngSubmit)="onPublish()" class="publish-form">
       <div class="field">
-        <label for="purity">Purity</label>
+        <label for="purity">{{ 'goldRates.purity' | translate }}</label>
         <p-select
           inputId="purity"
           formControlName="purity"
@@ -19,7 +19,7 @@
         />
       </div>
       <div class="field">
-        <label for="ratePerGram">Rate per gram (LKR)</label>
+        <label for="ratePerGram">{{ 'goldRates.ratePerGram' | translate }}</label>
         <p-inputNumber
           inputId="ratePerGram"
           formControlName="ratePerGram"
@@ -28,30 +28,30 @@
           styleClass="w-full"
         />
       </div>
-      <p-button type="submit" label="Publish rate" styleClass="gv-submit-btn" [loading]="publishing()" />
+      <p-button type="submit" [label]="'goldRates.publishBtn' | translate" styleClass="gv-submit-btn" [loading]="publishing()" />
     </form>
     @if (publishError()) {
       <p-message severity="error" [text]="publishError()!" styleClass="w-full" />
     }
-    <p class="publish-hint">Publishing a new rate for a purity automatically replaces the previous active rate for it.</p>
+    <p class="publish-hint">{{ 'goldRates.publishHint' | translate }}</p>
   </div>
 
   <div class="rates-card gv-card">
-    <h2>Your active rates</h2>
+    <h2>{{ 'goldRates.activeRatesTitle' | translate }}</h2>
     @if (loading()) {
-      <p class="empty-text">Loading...</p>
+      <p class="empty-text">{{ 'common.loading' | translate }}</p>
     } @else if (errorMessage()) {
       <p class="empty-text">{{ errorMessage() }}</p>
-      <p-button label="Try again" size="small" [text]="true" (onClick)="loadRates()" />
+      <p-button [label]="'common.tryAgain' | translate" size="small" [text]="true" (onClick)="loadRates()" />
     } @else if (rates().length === 0) {
-      <p class="empty-text">No rates published yet.</p>
+      <p class="empty-text">{{ 'goldRates.noRates' | translate }}</p>
     } @else {
       <div class="rate-list">
         @for (rate of rates(); track rate.id) {
           <div class="rate-row">
             <span class="rate-purity">{{ rate.purity }}</span>
-            <span class="rate-value gv-mono">LKR {{ formatCurrency(rate.ratePerGram) }} / g</span>
-            <p-tag value="Active" severity="success" />
+            <span class="rate-value gv-mono">LKR {{ formatCurrency(rate.ratePerGram) }} {{ 'goldRates.perGram' | translate }}</span>
+            <p-tag [value]="'goldRates.active' | translate" severity="success" />
           </div>
         }
       </div>

@@ -2,7 +2,7 @@
 
 <div class="detail-page">
   <a routerLink="/shop/dashboard" class="back-link">
-    <i class="pi pi-arrow-left"></i> Back to dashboard
+    <i class="pi pi-arrow-left"></i> {{ 'ticketDetail.backBtn' | translate }}
   </a>
 
   @if (loading()) {
@@ -19,7 +19,7 @@
         <div class="detail-card gv-card gv-ticket-edge">
           <div class="detail-card-header">
             <div>
-              <span class="gv-eyebrow">Pawn ticket</span>
+              <span class="gv-eyebrow">{{ 'ticketDetail.eyebrow' | translate }}</span>
               <h1 class="gv-mono">{{ ticket()!.ticketNumber }}</h1>
               <a [routerLink]="['/shop/customers', ticket()!.customerId]" class="customer-link">
                 {{ ticket()!.customerName }} &middot; {{ ticket()!.customerNic }}
@@ -30,32 +30,32 @@
 
           <div class="detail-stats">
             <div class="stat">
-              <span class="stat-label">Loan amount</span>
+              <span class="stat-label">{{ 'ticketDetail.loanAmount' | translate }}</span>
               <span class="stat-value gv-mono">LKR {{ formatCurrency(ticket()!.loanAmount) }}</span>
             </div>
             <div class="stat">
-              <span class="stat-label">Outstanding balance</span>
+              <span class="stat-label">{{ 'ticketDetail.outstandingBalance' | translate }}</span>
               <span class="stat-value gv-mono" [class.overdue]="ticket()!.overdue">
                 LKR {{ formatCurrency(ticket()!.outstandingBalance) }}
               </span>
             </div>
             <div class="stat">
-              <span class="stat-label">Interest rate</span>
+              <span class="stat-label">{{ 'ticketDetail.interestRate' | translate }}</span>
               <span class="stat-value">{{ ticket()!.interestRate }}% ({{ ticket()!.interestType }})</span>
             </div>
             <div class="stat">
-              <span class="stat-label">Pawned on</span>
+              <span class="stat-label">{{ 'ticketDetail.pawnedOn' | translate }}</span>
               <span class="stat-value">{{ ticket()!.pawnDate | date:'MMM d, y' }}</span>
             </div>
             <div class="stat">
-              <span class="stat-label">Due date</span>
+              <span class="stat-label">{{ 'ticketDetail.dueDate' | translate }}</span>
               <span class="stat-value" [class.overdue]="ticket()!.overdue">
                 {{ ticket()!.expiryDate | date:'MMM d, y' }}
               </span>
             </div>
             <div class="stat">
-              <span class="stat-label">Days elapsed</span>
-              <span class="stat-value">{{ ticket()!.daysElapsed }} days</span>
+              <span class="stat-label">{{ 'ticketDetail.daysElapsed' | translate }}</span>
+              <span class="stat-value">{{ ticket()!.daysElapsed }} {{ 'ticketDetail.days' | translate }}</span>
             </div>
           </div>
 
@@ -67,7 +67,7 @@
           <div class="action-row">
             @if (ticket()!.status === 'ACTIVE' || ticket()!.status === 'EXPIRED') {
               <p-button
-                label="Collect payment"
+                [label]="'ticketDetail.collectPayment' | translate"
                 icon="pi pi-money-bill"
                 styleClass="gv-submit-btn"
                 (onClick)="openPaymentDialog()"
@@ -76,7 +76,7 @@
 
             <!-- PDF Download button — always visible -->
             <p-button
-              label="Download receipt"
+              [label]="'ticketDetail.downloadReceipt' | translate"
               icon="pi pi-file-pdf"
               severity="secondary"
               [loading]="pdfLoading()"
@@ -90,7 +90,7 @@
         </div>
 
         <div class="detail-card gv-card">
-          <h2>Pawned items</h2>
+          <h2>{{ 'ticketDetail.pawnedItems' | translate }}</h2>
           <div class="items-list">
             @for (item of ticket()!.goldItems; track item.id) {
               <div class="item-row">
@@ -107,9 +107,9 @@
         </div>
 
         <div class="detail-card gv-card">
-          <h2>Payment history</h2>
+          <h2>{{ 'ticketDetail.paymentHistory' | translate }}</h2>
           @if (payments().length === 0) {
-            <p class="detail-empty-text">No payments recorded yet.</p>
+            <p class="detail-empty-text">{{ 'ticketDetail.noPayments' | translate }}</p>
           } @else {
             <div class="payment-list">
               @for (payment of payments(); track payment.id) {
@@ -128,7 +128,7 @@
 
       <div class="detail-side">
         <div class="qr-card gv-card">
-          <span class="gv-eyebrow">Ticket QR</span>
+          <span class="gv-eyebrow">{{ 'ticketDetail.scanQr' | translate }}</span>
           <img [src]="'data:image/png;base64,' + ticket()!.qrCode" alt="Ticket QR code" class="qr-image" />
         </div>
       </div>
@@ -137,18 +137,18 @@
 </div>
 
 <p-dialog
-  header="Collect payment"
+  [header]="'ticketDetail.collectPaymentDialog' | translate"
   [(visible)]="showPaymentDialog"
   [modal]="true"
   [style]="{ width: '420px' }"
 >
   <form [formGroup]="paymentForm" (ngSubmit)="submitPayment()" class="payment-form">
     <div class="field">
-      <label for="paymentType">Payment type</label>
+      <label for="paymentType">{{ 'ticketDetail.paymentType' | translate }}</label>
       <p-select
         inputId="paymentType"
         formControlName="paymentType"
-        [options]="paymentTypes"
+        [options]="paymentTypes()"
         optionLabel="label"
         optionValue="value"
         styleClass="w-full"
@@ -156,7 +156,7 @@
     </div>
 
     <div class="field">
-      <label for="amount">Amount (LKR)</label>
+      <label for="amount">{{ 'ticketDetail.amount' | translate }}</label>
       <p-inputNumber
         inputId="amount"
         formControlName="amount"
@@ -167,11 +167,11 @@
     </div>
 
     <div class="field">
-      <label for="paymentMethod">Payment method</label>
+      <label for="paymentMethod">{{ 'ticketDetail.paymentMethod' | translate }}</label>
       <p-select
         inputId="paymentMethod"
         formControlName="paymentMethod"
-        [options]="paymentMethods"
+        [options]="paymentMethods()"
         optionLabel="label"
         optionValue="value"
         styleClass="w-full"
@@ -179,7 +179,7 @@
     </div>
 
     <div class="field">
-      <label for="referenceNumber">Reference number (optional)</label>
+      <label for="referenceNumber">{{ 'ticketDetail.referenceNo' | translate }}</label>
       <input id="referenceNumber" type="text" pInputText formControlName="referenceNumber" class="w-full" />
     </div>
 
@@ -190,6 +190,6 @@
       <p-message severity="success" [text]="paymentSuccess()!" styleClass="w-full" />
     }
 
-    <p-button type="submit" label="Record payment" styleClass="gv-submit-btn w-full" [loading]="paymentLoading()" />
+    <p-button type="submit" [label]="'ticketDetail.recordPayment' | translate" styleClass="gv-submit-btn w-full" [loading]="paymentLoading()" />
   </form>
 </p-dialog>

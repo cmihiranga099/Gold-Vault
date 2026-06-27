@@ -5,6 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
+import { TranslatePipe } from '@ngx-translate/core';
 import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { AuthService } from '../../../core/auth/auth.service';
 import { CustomerService } from '../../../core/services/customer.service';
@@ -15,6 +16,7 @@ import { CustomerService } from '../../../core/services/customer.service';
   imports: [
     CommonModule, ReactiveFormsModule, RouterLink,
     InputTextModule, ButtonModule, MessageModule,
+    TranslatePipe,
     TopnavComponent
   ],
   templateUrl: './customer-form.component.html',

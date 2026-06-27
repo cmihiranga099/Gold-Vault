@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TagModule } from 'primeng/tag';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ButtonModule } from 'primeng/button';
+import { TranslatePipe } from '@ngx-translate/core';
 import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { TicketService } from '../../../core/services/ticket.service';
 import { PaymentService } from '../../../core/services/payment.service';
@@ -13,7 +14,7 @@ import { PaymentResponse } from '../../../core/models/payment.model';
 @Component({
   selector: 'app-ticket-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, TagModule, ProgressSpinnerModule, ButtonModule, TopnavComponent],
+  imports: [CommonModule, RouterLink, TagModule, ProgressSpinnerModule, ButtonModule, TranslatePipe, TopnavComponent],
   templateUrl: './ticket-detail.component.html',
   styleUrl: './ticket-detail.component.scss'
 })

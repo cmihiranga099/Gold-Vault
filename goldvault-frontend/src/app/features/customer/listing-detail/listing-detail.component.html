@@ -2,7 +2,7 @@
 
 <div class="detail-page">
   <a routerLink="/customer/marketplace" class="back-link">
-    <i class="pi pi-arrow-left"></i> Back to marketplace
+    <i class="pi pi-arrow-left"></i> {{ 'listingDetail.backBtn' | translate }}
   </a>
 
   @if (loading()) {
@@ -17,21 +17,21 @@
     <div class="listing-card gv-card">
       <div class="listing-header">
         <div>
-          <span class="gv-eyebrow">Your listing</span>
-          <h1>{{ listing()!.description || (listing()!.purity + ' gold') }}</h1>
+          <span class="gv-eyebrow">{{ 'listingDetail.eyebrow' | translate }}</span>
+          <h1>{{ listing()!.description || (listing()!.purity + ' ' + ('customerMarketplace.goldSuffix' | translate)) }}</h1>
           <span class="listing-meta">{{ listing()!.weightGrams }}g &middot; {{ listing()!.purity }}</span>
         </div>
         <p-tag [value]="listing()!.status" />
       </div>
       @if (listing()!.askingPrice) {
-        <p class="asking-price">Asking price: <span class="gv-mono">LKR {{ formatCurrency(listing()!.askingPrice!) }}</span></p>
+        <p class="asking-price">{{ 'listingDetail.askingPrice' | translate }}: <span class="gv-mono">LKR {{ formatCurrency(listing()!.askingPrice!) }}</span></p>
       }
     </div>
 
     <div class="offers-card gv-card">
-      <h2>Offers received</h2>
+      <h2>{{ 'listingDetail.offersReceived' | translate }}</h2>
       @if (listing()!.offers.length === 0) {
-        <p class="empty-text">No offers yet. Shops will see this listing on the marketplace.</p>
+        <p class="empty-text">{{ 'listingDetail.noOffers' | translate }}</p>
       } @else {
         <div class="offer-list">
           @for (offer of listing()!.offers; track offer.id) {
@@ -47,14 +47,14 @@
                 <p-tag [value]="offer.status" [severity]="offerSeverity(offer.status)" />
                 @if (offer.status === 'PENDING') {
                   <p-button
-                    label="Accept"
+                    [label]="'listingDetail.accept' | translate"
                     size="small"
                     styleClass="gv-accept-btn"
                     [loading]="actionLoading() === offer.id"
                     (onClick)="acceptOffer(offer.id)"
                   />
                   <p-button
-                    label="Reject"
+                    [label]="'listingDetail.reject' | translate"
                     size="small"
                     severity="secondary"
                     [outlined]="true"

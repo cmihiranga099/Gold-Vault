@@ -2,38 +2,38 @@
 
 <div class="form-page">
   <a routerLink="/shop/customers" class="back-link">
-    <i class="pi pi-arrow-left"></i> Back to customers
+    <i class="pi pi-arrow-left"></i> {{ 'customerForm.backBtn' | translate }}
   </a>
 
   <div class="form-card gv-card gv-ticket-edge">
-    <span class="gv-eyebrow">New customer</span>
-    <h1>Register a customer</h1>
-    <p class="form-sub">Add a new customer profile under your shop.</p>
+    <span class="gv-eyebrow">{{ 'customerForm.eyebrow' | translate }}</span>
+    <h1>{{ 'customerForm.title' | translate }}</h1>
+    <p class="form-sub">{{ 'customerForm.subtitle' | translate }}</p>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-body">
       <div class="field">
-        <label for="fullName">Full name</label>
+        <label for="fullName">{{ 'customerForm.fullName' | translate }}</label>
         <input id="fullName" type="text" pInputText formControlName="fullName" class="w-full" />
       </div>
 
       <div class="field">
-        <label for="nic">NIC number</label>
-        <input id="nic" type="text" pInputText formControlName="nic" placeholder="e.g. 200012345678 or 991234567V" class="w-full" />
+        <label for="nic">{{ 'customerForm.nic' | translate }}</label>
+        <input id="nic" type="text" pInputText formControlName="nic" [placeholder]="'customerForm.nicPlaceholder' | translate" class="w-full" />
       </div>
 
       <div class="field-row">
         <div class="field">
-          <label for="phone">Phone</label>
+          <label for="phone">{{ 'customerForm.phone' | translate }}</label>
           <input id="phone" type="text" pInputText formControlName="phone" class="w-full" />
         </div>
         <div class="field">
-          <label for="email">Email</label>
+          <label for="email">{{ 'customerForm.email' | translate }}</label>
           <input id="email" type="email" pInputText formControlName="email" class="w-full" />
         </div>
       </div>
 
       <div class="field">
-        <label for="address">Address</label>
+        <label for="address">{{ 'customerForm.address' | translate }}</label>
         <input id="address" type="text" pInputText formControlName="address" class="w-full" />
       </div>
 
@@ -41,7 +41,7 @@
         <p-message severity="error" [text]="errorMessage()!" styleClass="w-full" />
       }
 
-      <p-button type="submit" label="Register customer" styleClass="gv-submit-btn" [loading]="loading()" />
+      <p-button type="submit" [label]="'customerForm.submitBtn' | translate" styleClass="gv-submit-btn" [loading]="loading()" />
     </form>
   </div>
 </div>

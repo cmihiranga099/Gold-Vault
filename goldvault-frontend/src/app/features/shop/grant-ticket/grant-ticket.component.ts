@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -7,6 +7,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { AuthService } from '../../../core/auth/auth.service';
 import { CustomerService } from '../../../core/services/customer.service';
@@ -23,6 +24,7 @@ const GOLD_PURITIES = ['K24', 'K22', 'K21', 'K18', 'P916', 'P750', 'OTHER'];
   imports: [
     CommonModule, ReactiveFormsModule, RouterLink,
     InputTextModule, InputNumberModule, SelectModule, ButtonModule, MessageModule,
+    TranslatePipe,
     TopnavComponent
   ],
   templateUrl: './grant-ticket.component.html',
@@ -37,6 +39,11 @@ export class GrantTicketComponent implements OnInit {
   goldTypes = GOLD_TYPES;
   goldPurities = GOLD_PURITIES;
 
+  interestTypeOptions = computed(() => [
+    { label: this.translate.instant('grantTicket.interestTypeFlat'), value: 'FLAT' },
+    { label: this.translate.instant('grantTicket.interestTypeReducing'), value: 'REDUCING' }
+  ]);
+
   form: FormGroup;
 
   constructor(
@@ -45,7 +52,8 @@ export class GrantTicketComponent implements OnInit {
     private authService: AuthService,
     private customerService: CustomerService,
     private ticketService: TicketService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {
     this.form = this.fb.group({
       customerId: [null as number | null, Validators.required],

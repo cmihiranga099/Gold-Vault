@@ -2,7 +2,7 @@
 
 <div class="detail-page">
   <a routerLink="/shop/customers" class="back-link">
-    <i class="pi pi-arrow-left"></i> Back to customers
+    <i class="pi pi-arrow-left"></i> {{ 'customerDetail.backBtn' | translate }}
   </a>
 
   @if (loading()) {
@@ -17,7 +17,7 @@
     <div class="profile-card gv-card">
       <div class="profile-header">
         <div>
-          <span class="gv-eyebrow">Customer profile</span>
+          <span class="gv-eyebrow">{{ 'customerDetail.eyebrow' | translate }}</span>
           <h1>{{ customer()!.fullName }}</h1>
         </div>
         <p-tag [value]="customer()!.kycStatus" />
@@ -25,32 +25,32 @@
 
       <div class="profile-grid">
         <div class="profile-field">
-          <span class="field-label">NIC</span>
+          <span class="field-label">{{ 'customerDetail.nic' | translate }}</span>
           <span class="field-value gv-mono">{{ customer()!.nic }}</span>
         </div>
         <div class="profile-field">
-          <span class="field-label">Phone</span>
+          <span class="field-label">{{ 'customerDetail.phone' | translate }}</span>
           <span class="field-value">{{ customer()!.phone || '—' }}</span>
         </div>
         <div class="profile-field">
-          <span class="field-label">Email</span>
+          <span class="field-label">{{ 'customerDetail.email' | translate }}</span>
           <span class="field-value">{{ customer()!.email || '—' }}</span>
         </div>
         <div class="profile-field">
-          <span class="field-label">Address</span>
+          <span class="field-label">{{ 'customerDetail.address' | translate }}</span>
           <span class="field-value">{{ customer()!.address || '—' }}</span>
         </div>
       </div>
 
       <a [routerLink]="['/shop/tickets/new']" [queryParams]="{ customerId: customer()!.id }" class="grant-link">
-        <i class="pi pi-plus"></i> Grant a new ticket to this customer
+        <i class="pi pi-plus"></i> {{ 'customerDetail.grantNewTicket' | translate }}
       </a>
     </div>
 
     <div class="tickets-card gv-card">
-      <h2>Pawn tickets</h2>
+      <h2>{{ 'customerDetail.pawnTickets' | translate }}</h2>
       @if (tickets().length === 0) {
-        <p class="empty-text">No tickets yet for this customer.</p>
+        <p class="empty-text">{{ 'customerDetail.noTickets' | translate }}</p>
       } @else {
         <div class="ticket-list">
           @for (ticket of tickets(); track ticket.id) {

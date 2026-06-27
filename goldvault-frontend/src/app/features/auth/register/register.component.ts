@@ -7,6 +7,7 @@ import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
+import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../core/auth/auth.service';
 import { ShopOption, ShopService } from '../../../core/services/shop.service';
 
@@ -21,7 +22,8 @@ import { ShopOption, ShopService } from '../../../core/services/shop.service';
     PasswordModule,
     ButtonModule,
     MessageModule,
-    SelectModule
+    SelectModule,
+    TranslatePipe
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'

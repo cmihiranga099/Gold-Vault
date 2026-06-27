@@ -2,36 +2,36 @@
 
 <div class="market-page">
   <div class="page-header">
-    <span class="gv-eyebrow">Shop portal</span>
-    <h1>Gold marketplace</h1>
+    <span class="gv-eyebrow">{{ 'shopMarketplace.eyebrow' | translate }}</span>
+    <h1>{{ 'shopMarketplace.title' | translate }}</h1>
   </div>
 
   <div class="listings-card gv-card">
-    <h2>Open listings</h2>
+    <h2>{{ 'shopMarketplace.openListings' | translate }}</h2>
     @if (loading()) {
-      <p class="empty-text">Loading...</p>
+      <p class="empty-text">{{ 'common.loading' | translate }}</p>
     } @else if (errorMessage()) {
       <div class="error-state">
         <p class="error-text">{{ errorMessage() }}</p>
-        <p-button label="Try again" size="small" [text]="true" (onClick)="loadAll()" />
+        <p-button [label]="'common.tryAgain' | translate" size="small" [text]="true" (onClick)="loadAll()" />
       </div>
     } @else if (listings().length === 0) {
-      <p class="empty-text">No open listings right now.</p>
+      <p class="empty-text">{{ 'shopMarketplace.noListings' | translate }}</p>
     } @else {
       <div class="listing-list">
         @for (listing of listings(); track listing.id) {
           <div class="listing-row">
             <div class="listing-main">
-              <span class="listing-desc">{{ listing.description || (listing.purity + ' gold') }}</span>
+              <span class="listing-desc">{{ listing.description || (listing.purity + ' ' + ('customerMarketplace.goldSuffix' | translate)) }}</span>
               <span class="listing-meta">{{ listing.customerName }} &middot; {{ listing.weightGrams }}g &middot; {{ listing.purity }}</span>
               @if (listing.askingPrice) {
-                <span class="listing-asking">Asking: LKR {{ formatCurrency(listing.askingPrice) }}</span>
+                <span class="listing-asking">{{ 'shopMarketplace.asking' | translate }}: LKR {{ formatCurrency(listing.askingPrice) }}</span>
               }
             </div>
             @if (myOfferStatus(listing.id)) {
-              <p-tag [value]="'Offer ' + myOfferStatus(listing.id)" severity="info" />
+              <p-tag [value]="(('shopMarketplace.offerStatus' | translate) + ' ' + myOfferStatus(listing.id))" severity="info" />
             } @else {
-              <p-button label="Make offer" size="small" styleClass="gv-submit-btn" (onClick)="openOfferDialog(listing)" />
+              <p-button [label]="'shopMarketplace.makeOffer' | translate" size="small" styleClass="gv-submit-btn" (onClick)="openOfferDialog(listing)" />
             }
           </div>
         }
@@ -40,26 +40,26 @@
   </div>
 </div>
 
-<p-dialog header="Submit an offer" [(visible)]="showOfferDialog" [modal]="true" [style]="{ width: '420px' }">
+<p-dialog [header]="'shopMarketplace.submitOfferTitle' | translate" [(visible)]="showOfferDialog" [modal]="true" [style]="{ width: '420px' }">
   @if (selectedListing()) {
     <p class="dialog-context">
-      {{ selectedListing()!.weightGrams }}g of {{ selectedListing()!.purity }} gold from {{ selectedListing()!.customerName }}
+      {{ selectedListing()!.weightGrams }}g {{ ('shopMarketplace.dialogContext' | translate).replace('{{purity}}', selectedListing()!.purity).replace('{{customer}}', selectedListing()!.customerName) }}
     </p>
   }
   <form [formGroup]="form" (ngSubmit)="onSubmitOffer()" class="offer-form">
     <div class="field">
-      <label for="offerPrice">Your offer (LKR)</label>
+      <label for="offerPrice">{{ 'shopMarketplace.yourOffer' | translate }}</label>
       <p-inputNumber inputId="offerPrice" formControlName="offerPrice" mode="decimal" [minFractionDigits]="2" styleClass="w-full" />
     </div>
     <div class="field">
-      <label for="message">Message (optional)</label>
-      <input id="message" type="text" pInputText formControlName="message" placeholder="e.g. Best rate, visit our branch today" class="w-full" />
+      <label for="message">{{ 'shopMarketplace.message' | translate }}</label>
+      <input id="message" type="text" pInputText formControlName="message" [placeholder]="'shopMarketplace.messagePlaceholder' | translate" class="w-full" />
     </div>
 
     @if (offerError()) {
       <p-message severity="error" [text]="offerError()!" styleClass="w-full" />
     }
 
-    <p-button type="submit" label="Submit offer" styleClass="gv-submit-btn w-full" [loading]="offerLoading()" />
+    <p-button type="submit" [label]="'shopMarketplace.submitOfferBtn' | translate" styleClass="gv-submit-btn w-full" [loading]="offerLoading()" />
   </form>
 </p-dialog>

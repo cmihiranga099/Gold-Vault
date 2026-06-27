@@ -3,16 +3,16 @@
 <div class="market-page">
   <div class="page-header">
     <div>
-      <span class="gv-eyebrow">Gold marketplace</span>
-      <h1>Sell your gold</h1>
+      <span class="gv-eyebrow">{{ 'customerMarketplace.eyebrow' | translate }}</span>
+      <h1>{{ 'customerMarketplace.title' | translate }}</h1>
     </div>
-    <p-button label="List gold for sale" icon="pi pi-plus" styleClass="gv-submit-btn" (onClick)="openCreateDialog()" />
+    <p-button [label]="'customerMarketplace.listGoldBtn' | translate" icon="pi pi-plus" styleClass="gv-submit-btn" (onClick)="openCreateDialog()" />
   </div>
 
   <div class="rates-card gv-card">
-    <h2>Today's buying rates</h2>
+    <h2>{{ 'customerMarketplace.todayRates' | translate }}</h2>
     @if (rates().length === 0) {
-      <p class="empty-text">No rates published yet. Check back soon.</p>
+      <p class="empty-text">{{ 'customerMarketplace.noRates' | translate }}</p>
     } @else {
       <div class="rate-grid">
         @for (rate of rates(); track rate.id) {
@@ -27,27 +27,27 @@
   </div>
 
   <div class="listings-card gv-card">
-    <h2>Your listings</h2>
+    <h2>{{ 'customerMarketplace.yourListings' | translate }}</h2>
     @if (loading()) {
-      <p class="empty-text">Loading...</p>
+      <p class="empty-text">{{ 'common.loading' | translate }}</p>
     } @else if (errorMessage()) {
       <div class="error-state">
         <p class="error-text">{{ errorMessage() }}</p>
-        <p-button label="Try again" size="small" [text]="true" (onClick)="loadAll()" />
+        <p-button [label]="'common.tryAgain' | translate" size="small" [text]="true" (onClick)="loadAll()" />
       </div>
     } @else if (listings().length === 0) {
-      <p class="empty-text">You haven't listed any gold for sale yet.</p>
+      <p class="empty-text">{{ 'customerMarketplace.noListingsYet' | translate }}</p>
     } @else {
       <div class="listing-list">
         @for (listing of listings(); track listing.id) {
           <a [routerLink]="['/customer/listings', listing.id]" class="listing-row">
             <div class="listing-main">
-              <span class="listing-desc">{{ listing.description || (listing.purity + ' gold') }}</span>
+              <span class="listing-desc">{{ listing.description || (listing.purity + ' ' + ('customerMarketplace.goldSuffix' | translate)) }}</span>
               <span class="listing-meta">{{ listing.weightGrams }}g &middot; {{ listing.purity }}</span>
             </div>
             <div class="listing-side">
               @if (listing.bestOfferPrice) {
-                <span class="listing-offer gv-mono">Best offer: LKR {{ formatCurrency(listing.bestOfferPrice) }}</span>
+                <span class="listing-offer gv-mono">{{ 'customerMarketplace.bestOffer' | translate }}: LKR {{ formatCurrency(listing.bestOfferPrice) }}</span>
               }
               <p-tag [value]="listing.status" [severity]="listingSeverity(listing.status)" />
             </div>
@@ -58,26 +58,26 @@
   </div>
 </div>
 
-<p-dialog header="List gold for sale" [(visible)]="showCreateDialog" [modal]="true" [style]="{ width: '420px' }">
+<p-dialog [header]="'customerMarketplace.createListingTitle' | translate" [(visible)]="showCreateDialog" [modal]="true" [style]="{ width: '420px' }">
   <form [formGroup]="form" (ngSubmit)="onCreateListing()" class="create-form">
     <div class="field">
-      <label for="description">Description (optional)</label>
-      <input id="description" type="text" pInputText formControlName="description" placeholder="e.g. Old gold chain" class="w-full" />
+      <label for="description">{{ 'customerMarketplace.description' | translate }}</label>
+      <input id="description" type="text" pInputText formControlName="description" [placeholder]="'customerMarketplace.descriptionPlaceholder' | translate" class="w-full" />
     </div>
 
     <div class="field-row">
       <div class="field">
-        <label for="weightGrams">Weight (g)</label>
+        <label for="weightGrams">{{ 'customerMarketplace.weight' | translate }}</label>
         <p-inputNumber inputId="weightGrams" formControlName="weightGrams" mode="decimal" [minFractionDigits]="2" styleClass="w-full" />
       </div>
       <div class="field">
-        <label for="purity">Purity</label>
+        <label for="purity">{{ 'customerMarketplace.purity' | translate }}</label>
         <p-select inputId="purity" formControlName="purity" [options]="purities" styleClass="w-full" />
       </div>
     </div>
 
     <div class="field">
-      <label for="askingPrice">Asking price (LKR, optional)</label>
+      <label for="askingPrice">{{ 'customerMarketplace.askingPrice' | translate }}</label>
       <p-inputNumber inputId="askingPrice" formControlName="askingPrice" mode="decimal" [minFractionDigits]="2" styleClass="w-full" />
     </div>
 
@@ -85,6 +85,6 @@
       <p-message severity="error" [text]="createError()!" styleClass="w-full" />
     }
 
-    <p-button type="submit" label="Create listing" styleClass="gv-submit-btn w-full" [loading]="createLoading()" />
+    <p-button type="submit" [label]="'customerMarketplace.createBtn' | translate" styleClass="gv-submit-btn w-full" [loading]="createLoading()" />
   </form>
 </p-dialog>

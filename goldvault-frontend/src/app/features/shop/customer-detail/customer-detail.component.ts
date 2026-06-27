@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TranslatePipe } from '@ngx-translate/core';
 import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { CustomerService } from '../../../core/services/customer.service';
 import { TicketService } from '../../../core/services/ticket.service';
@@ -13,7 +14,7 @@ import { PawnTicketResponse } from '../../../core/models/ticket.model';
 @Component({
   selector: 'app-customer-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, TagModule, ButtonModule, ProgressSpinnerModule, TopnavComponent],
+  imports: [CommonModule, RouterLink, TagModule, ButtonModule, ProgressSpinnerModule, TranslatePipe, TopnavComponent],
   templateUrl: './customer-detail.component.html',
   styleUrl: './customer-detail.component.scss'
 })

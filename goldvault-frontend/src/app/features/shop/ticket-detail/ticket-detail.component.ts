@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -10,6 +10,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { MessageModule } from 'primeng/message';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { TicketService } from '../../../core/services/ticket.service';
 import { PaymentService } from '../../../core/services/payment.service';
@@ -23,6 +24,7 @@ import { PaymentResponse, PaymentType, PaymentMethod } from '../../../core/model
     CommonModule, ReactiveFormsModule, RouterLink,
     TagModule, ButtonModule, ProgressSpinnerModule, DialogModule,
     InputNumberModule, InputTextModule, SelectModule, MessageModule,
+    TranslatePipe,
     TopnavComponent
   ],
   templateUrl: './ticket-detail.component.html',
@@ -43,18 +45,18 @@ export class ShopTicketDetailComponent implements OnInit {
   pdfLoading = signal(false);
   pdfError = signal<string | null>(null);
 
-  paymentTypes: { label: string; value: PaymentType }[] = [
-    { label: 'Interest only', value: 'INTEREST' },
-    { label: 'Partial payment', value: 'PARTIAL' },
-    { label: 'Full redemption', value: 'FULL_REDEMPTION' }
-  ];
+  paymentTypes = computed<{ label: string; value: PaymentType }[]>(() => [
+    { label: this.translate.instant('ticketDetail.paymentTypes.INTEREST'), value: 'INTEREST' },
+    { label: this.translate.instant('ticketDetail.paymentTypes.PARTIAL'), value: 'PARTIAL' },
+    { label: this.translate.instant('ticketDetail.paymentTypes.FULL_REDEMPTION'), value: 'FULL_REDEMPTION' }
+  ]);
 
-  paymentMethods: { label: string; value: PaymentMethod }[] = [
-    { label: 'Cash', value: 'CASH' },
-    { label: 'Card', value: 'CARD' },
-    { label: 'Online transfer', value: 'ONLINE_TRANSFER' },
-    { label: 'LankaQR', value: 'LANKAQR' }
-  ];
+  paymentMethods = computed<{ label: string; value: PaymentMethod }[]>(() => [
+    { label: this.translate.instant('ticketDetail.paymentMethods.CASH'), value: 'CASH' },
+    { label: this.translate.instant('ticketDetail.paymentMethods.CARD'), value: 'CARD' },
+    { label: this.translate.instant('ticketDetail.paymentMethods.ONLINE_TRANSFER'), value: 'ONLINE_TRANSFER' },
+    { label: this.translate.instant('ticketDetail.paymentMethods.LANKAQR'), value: 'LANKAQR' }
+  ]);
 
   paymentForm: ReturnType<FormBuilder['group']>;
 
@@ -64,7 +66,8 @@ export class ShopTicketDetailComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private ticketService: TicketService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private translate: TranslateService
   ) {
     this.paymentForm = this.fb.group({
       amount: [null as number | null, [Validators.required, Validators.min(0.01)]],
@@ -135,8 +138,8 @@ export class ShopTicketDetailComponent implements OnInit {
         this.paymentLoading.set(false);
         this.paymentSuccess.set(
           payment.ticketRedeemed
-            ? 'Payment recorded — ticket fully redeemed!'
-            : 'Payment recorded successfully.'
+            ? this.translate.instant('ticketDetail.paymentSuccessRedeemed')
+            : this.translate.instant('ticketDetail.paymentSuccess')
         );
         this.loadTicket();
         setTimeout(() => {

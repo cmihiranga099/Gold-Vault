@@ -7,6 +7,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { MessageModule } from 'primeng/message';
 import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
 import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MarketplaceService } from '../../../core/services/marketplace.service';
@@ -18,6 +19,7 @@ import { GoldListingResponse, GoldOfferResponse, ListingStatus, OfferStatus } fr
   imports: [
     CommonModule, ReactiveFormsModule,
     ButtonModule, InputTextModule, InputNumberModule, MessageModule, TagModule, DialogModule,
+    TranslatePipe,
     TopnavComponent
   ],
   templateUrl: './marketplace.component.html',

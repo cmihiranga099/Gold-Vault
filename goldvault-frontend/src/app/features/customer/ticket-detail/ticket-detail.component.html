@@ -2,7 +2,7 @@
 
 <div class="detail-page">
   <a routerLink="/customer/dashboard" class="back-link">
-    <i class="pi pi-arrow-left"></i> Back to your tickets
+    <i class="pi pi-arrow-left"></i> {{ 'ticketDetail.backToTickets' | translate }}
   </a>
 
   @if (loading()) {
@@ -20,7 +20,7 @@
         <div class="detail-card gv-card gv-ticket-edge">
           <div class="detail-card-header">
             <div>
-              <span class="gv-eyebrow">Pawn ticket</span>
+              <span class="gv-eyebrow">{{ 'ticketDetail.eyebrow' | translate }}</span>
               <h1 class="gv-mono">{{ ticket()!.ticketNumber }}</h1>
             </div>
             <p-tag [value]="ticket()!.status" [severity]="statusSeverity(ticket()!.status)" />
@@ -28,32 +28,32 @@
 
           <div class="detail-stats">
             <div class="stat">
-              <span class="stat-label">Loan amount</span>
+              <span class="stat-label">{{ 'ticketDetail.loanAmount' | translate }}</span>
               <span class="stat-value gv-mono">LKR {{ formatCurrency(ticket()!.loanAmount) }}</span>
             </div>
             <div class="stat">
-              <span class="stat-label">Outstanding balance</span>
+              <span class="stat-label">{{ 'ticketDetail.outstandingBalance' | translate }}</span>
               <span class="stat-value gv-mono" [class.overdue]="ticket()!.overdue">
                 LKR {{ formatCurrency(ticket()!.outstandingBalance) }}
               </span>
             </div>
             <div class="stat">
-              <span class="stat-label">Interest rate</span>
+              <span class="stat-label">{{ 'ticketDetail.interestRate' | translate }}</span>
               <span class="stat-value">{{ ticket()!.interestRate }}% ({{ ticket()!.interestType }})</span>
             </div>
             <div class="stat">
-              <span class="stat-label">Pawned on</span>
+              <span class="stat-label">{{ 'ticketDetail.pawnedOn' | translate }}</span>
               <span class="stat-value">{{ ticket()!.pawnDate | date:'MMM d, y' }}</span>
             </div>
             <div class="stat">
-              <span class="stat-label">Due date</span>
+              <span class="stat-label">{{ 'ticketDetail.dueDate' | translate }}</span>
               <span class="stat-value" [class.overdue]="ticket()!.overdue">
                 {{ ticket()!.expiryDate | date:'MMM d, y' }}
               </span>
             </div>
             <div class="stat">
-              <span class="stat-label">Days elapsed</span>
-              <span class="stat-value">{{ ticket()!.daysElapsed }} days</span>
+              <span class="stat-label">{{ 'ticketDetail.daysElapsed' | translate }}</span>
+              <span class="stat-value">{{ ticket()!.daysElapsed }} {{ 'ticketDetail.days' | translate }}</span>
             </div>
           </div>
 
@@ -63,7 +63,7 @@
         </div>
 
         <div class="detail-card gv-card">
-          <h2>Pawned items</h2>
+          <h2>{{ 'ticketDetail.pawnedItems' | translate }}</h2>
           <div class="items-list">
             @for (item of ticket()!.goldItems; track item.id) {
               <div class="item-row">
@@ -80,9 +80,9 @@
         </div>
 
         <div class="detail-card gv-card">
-          <h2>Payment history</h2>
+          <h2>{{ 'ticketDetail.paymentHistory' | translate }}</h2>
           @if (payments().length === 0) {
-            <p class="detail-empty-text">No payments recorded yet.</p>
+            <p class="detail-empty-text">{{ 'ticketDetail.noPayments' | translate }}</p>
           } @else {
             <div class="payment-list">
               @for (payment of payments(); track payment.id) {
@@ -102,9 +102,9 @@
       <!-- Right column: QR code -->
       <div class="detail-side">
         <div class="qr-card gv-card">
-          <span class="gv-eyebrow">Show at shop</span>
+          <span class="gv-eyebrow">{{ 'ticketDetail.showAtShop' | translate }}</span>
           <img [src]="'data:image/png;base64,' + ticket()!.qrCode" alt="Ticket QR code" class="qr-image" />
-          <p class="qr-hint">Present this code at the shop to redeem or make a payment.</p>
+          <p class="qr-hint">{{ 'ticketDetail.qrHint' | translate }}</p>
         </div>
       </div>
     </div>
