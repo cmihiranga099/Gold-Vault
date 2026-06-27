@@ -1,23 +1,25 @@
 <header class="gv-topnav">
-    <div class="gv-topnav-brand">
-      <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
-        <circle cx="20" cy="20" r="18" stroke="#C9A14A" stroke-width="2"/>
-        <path d="M12 20 L20 12 L28 20 L20 28 Z" stroke="#C9A14A" stroke-width="1.5" fill="none"/>
-        <circle cx="20" cy="20" r="3" fill="#C9A14A"/>
-      </svg>
-      <span>GoldVault</span>
-    </div>
-  
-    <div class="gv-topnav-user">
-      @if (authService.currentUser()) {
-        <span class="gv-topnav-name">{{ authService.currentUser()!.fullName }}</span>
-        <p-button
-          icon="pi pi-sign-out"
-          [text]="true"
-          severity="secondary"
-          (onClick)="logout()"
-          pTooltip="Log out"
-        />
-      }
-    </div>
-  </header>
+  <div class="gv-topnav-brand">
+    <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="20" r="18" stroke="#C9A14A" stroke-width="2"/>
+      <path d="M12 20 L20 12 L28 20 L20 28 Z" stroke="#C9A14A" stroke-width="1.5" fill="none"/>
+      <circle cx="20" cy="20" r="3" fill="#C9A14A"/>
+    </svg>
+    <span>{{ 'brand.name' | translate }}</span>
+  </div>
+
+  <div class="gv-topnav-user">
+    <app-lang-selector />
+
+    @if (authService.currentUser()) {
+      <span class="gv-topnav-name">{{ authService.currentUser()!.fullName }}</span>
+      <p-button
+        icon="pi pi-sign-out"
+        [text]="true"
+        severity="secondary"
+        (onClick)="logout()"
+        [pTooltip]="'nav.logout' | translate"
+      />
+    }
+  </div>
+</header>

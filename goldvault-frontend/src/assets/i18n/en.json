@@ -1,0 +1,132 @@
+{
+    "brand": {
+      "name": "GoldVault",
+      "tagline": "Digital pawn tickets, kept honestly."
+    },
+    "nav": {
+      "logout": "Log out",
+      "customers": "Customers",
+      "grantTicket": "Grant ticket",
+      "sellGold": "Sell gold"
+    },
+    "login": {
+      "eyebrow": "Sign in",
+      "title": "Welcome back",
+      "subtitle": "Enter your details to access your account.",
+      "username": "Username",
+      "usernamePlaceholder": "e.g. shopadmin",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "submit": "Log in",
+      "newCustomer": "New customer?",
+      "createAccount": "Create an account"
+    },
+    "register": {
+      "eyebrow": "New account",
+      "title": "Create your account",
+      "subtitle": "Track your pawn tickets and gold sales in one place.",
+      "fullName": "Full name",
+      "fullNamePlaceholder": "As it appears on your NIC",
+      "nic": "NIC number",
+      "nicPlaceholder": "e.g. 200012345678 or 991234567V",
+      "shop": "Register with shop",
+      "shopPlaceholder": "Select a pawn shop",
+      "phone": "Phone (optional)",
+      "phonePlaceholder": "07X XXX XXXX",
+      "username": "Username",
+      "usernamePlaceholder": "Choose a username",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "At least 8 characters",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "loginLink": "Log in"
+    },
+    "shopDash": {
+      "eyebrow": "Shop portal",
+      "title": "Dashboard",
+      "todayCollection": "Today's collection",
+      "todayPayments": "payment(s) today",
+      "activeTickets": "Active tickets",
+      "expiringSoon": "Expiring within 7 days",
+      "expiredTickets": "Expired tickets",
+      "totalCustomers": "Total customers",
+      "totalOutstanding": "Total outstanding loans",
+      "recentTickets": "Recent tickets",
+      "noTickets": "No tickets yet.",
+      "viewAll": "View all"
+    },
+    "customers": {
+      "eyebrow": "Shop portal",
+      "title": "Customers",
+      "registerBtn": "Register customer",
+      "searchPlaceholder": "Search by name or NIC...",
+      "searchBtn": "Search",
+      "colName": "Name",
+      "colNic": "NIC",
+      "colPhone": "Phone",
+      "colKyc": "KYC status",
+      "noCustomers": "No customers found.",
+      "tryAgain": "Try again"
+    },
+    "customerDash": {
+      "eyebrow": "Customer portal",
+      "title": "Your pawn tickets",
+      "activeTickets": "Active tickets",
+      "totalOutstanding": "Total outstanding",
+      "nextDue": "Next due date",
+      "noActiveTickets": "No active tickets",
+      "noTicketsYet": "You don't have any pawn tickets yet.",
+      "noTicketsSub": "Visit your registered pawn shop to pledge gold and get a ticket.",
+      "loanAmount": "Loan amount",
+      "outstanding": "Outstanding",
+      "dueDate": "Due date",
+      "overdue": "Overdue"
+    },
+    "ticketDetail": {
+      "eyebrow": "Pawn ticket",
+      "backBtn": "Back to dashboard",
+      "loanAmount": "Loan amount",
+      "outstandingBalance": "Outstanding balance",
+      "interestRate": "Interest rate",
+      "pawnedOn": "Pawned on",
+      "dueDate": "Due date",
+      "daysElapsed": "Days elapsed",
+      "days": "days",
+      "pawnedItems": "Pawned items",
+      "paymentHistory": "Payment history",
+      "noPayments": "No payments recorded yet.",
+      "collectPayment": "Collect payment",
+      "downloadReceipt": "Download receipt",
+      "scanQr": "Ticket QR",
+      "paymentType": "Payment type",
+      "amount": "Amount (LKR)",
+      "paymentMethod": "Payment method",
+      "referenceNo": "Reference number (optional)",
+      "recordPayment": "Record payment",
+      "paymentTypes": {
+        "INTEREST": "Interest only",
+        "PARTIAL": "Partial payment",
+        "FULL_REDEMPTION": "Full redemption"
+      },
+      "paymentMethods": {
+        "CASH": "Cash",
+        "CARD": "Card",
+        "ONLINE_TRANSFER": "Online transfer",
+        "LANKAQR": "LankaQR"
+      }
+    },
+    "common": {
+      "loading": "Loading...",
+      "error": "Something went wrong.",
+      "tryAgain": "Try again",
+      "back": "Back"
+    },
+    "lang": {
+      "select": "Language",
+      "en": "English",
+      "si": "සිංහල",
+      "ta": "தமிழ்"
+    }
+  }

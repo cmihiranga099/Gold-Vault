@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TagModule } from 'primeng/tag';
 import { TableModule, TableLazyLoadEvent } from 'primeng/table';
+import { TranslatePipe } from '@ngx-translate/core';
 import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { AuthService } from '../../../core/auth/auth.service';
 import { CustomerService } from '../../../core/services/customer.service';
@@ -17,6 +18,7 @@ import { CustomerResponse } from '../../../core/models/customer.model';
   imports: [
     CommonModule, RouterLink, FormsModule,
     ButtonModule, InputTextModule, TagModule, TableModule,
+    TranslatePipe,
     TopnavComponent
   ],
   templateUrl: './customers.component.html',

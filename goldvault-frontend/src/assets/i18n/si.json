@@ -1,0 +1,132 @@
+{
+    "brand": {
+      "name": "GoldVault",
+      "tagline": "ඩිජිටල් උකස් ලදුපත්, අවංකව."
+    },
+    "nav": {
+      "logout": "වරන්නේ",
+      "customers": "ගනුදෙනුකරුවන්",
+      "grantTicket": "ලදුපත ලබාදෙන්න",
+      "sellGold": "රන් විකිණෙන්න"
+    },
+    "login": {
+      "eyebrow": "පිවිසෙන්න",
+      "title": "නැවත සාදරයෙන් පිළිගනිමු",
+      "subtitle": "ඔබේ ගිණුමට ප්‍රවේශ වීමට විස්තර ඇතුළත් කරන්න.",
+      "username": "පරිශීලක නාමය",
+      "usernamePlaceholder": "උදා: shopadmin",
+      "password": "මුරපදය",
+      "passwordPlaceholder": "ඔබේ මුරපදය ඇතුළත් කරන්න",
+      "submit": "පිවිසෙන්න",
+      "newCustomer": "නව ගනුදෙනුකරුවෙක්ද?",
+      "createAccount": "ගිණුමක් සාදන්න"
+    },
+    "register": {
+      "eyebrow": "නව ගිණුම",
+      "title": "ඔබේ ගිණුම සාදන්න",
+      "subtitle": "ඔබේ උකස් ලදුපත් සහ රන් විකිණුම් එකම තැනකින් නිරීක්ෂණය කරන්න.",
+      "fullName": "සම්පූර්ණ නම",
+      "fullNamePlaceholder": "ජාතික හැඳුනුම්පතෙහි ඇති ලෙස",
+      "nic": "ජාතික හැඳුනුම්පත් අංකය",
+      "nicPlaceholder": "උදා: 200012345678 හෝ 991234567V",
+      "shop": "සාප්පුවේ ලියාපදිංචිය",
+      "shopPlaceholder": "උකස් සාප්පුවක් තෝරන්න",
+      "phone": "දුරකථනය (අත්‍යවශ්‍ය නොවේ)",
+      "phonePlaceholder": "07X XXX XXXX",
+      "username": "පරිශීලක නාමය",
+      "usernamePlaceholder": "පරිශීලක නාමයක් තෝරන්න",
+      "email": "විද්‍යුත් තැපෑල",
+      "emailPlaceholder": "you@example.com",
+      "password": "මුරපදය",
+      "passwordPlaceholder": "අවම වශයෙන් අකුරු 8ක්",
+      "submit": "ගිණුම සාදන්න",
+      "haveAccount": "දැනටමත් ගිණුමක් තිබේද?",
+      "loginLink": "පිවිසෙන්න"
+    },
+    "shopDash": {
+      "eyebrow": "සාප්පු ද්වාරය",
+      "title": "උපකරණ පුවරුව",
+      "todayCollection": "අදගේ එකතුව",
+      "todayPayments": "ගෙවීම(ය) අද",
+      "activeTickets": "සක්‍රිය ලදුපත්",
+      "expiringSoon": "දින 7 ක් ඇතුළත කල් ඉකුත්වන",
+      "expiredTickets": "කල් ඉකුත්වූ ලදුපත්",
+      "totalCustomers": "මුළු ගනුදෙනුකරුවන්",
+      "totalOutstanding": "මුළු ශේෂ ණය",
+      "recentTickets": "මෑත ලදුපත්",
+      "noTickets": "තවම ලදුපත් නොමැත.",
+      "viewAll": "සියල්ල බලන්න"
+    },
+    "customers": {
+      "eyebrow": "සාප්පු ද්වාරය",
+      "title": "ගනුදෙනුකරුවන්",
+      "registerBtn": "ගනුදෙනුකරුවෙකු ලියාපදිංචි කරන්න",
+      "searchPlaceholder": "නමෙන් හෝ හැඳුනුම්පතෙන් සොයන්න...",
+      "searchBtn": "සොයන්න",
+      "colName": "නම",
+      "colNic": "හැඳුනුම්පත",
+      "colPhone": "දුරකථනය",
+      "colKyc": "KYC තත්ත්වය",
+      "noCustomers": "ගනුදෙනුකරුවන් හමු නොවිණි.",
+      "tryAgain": "නැවත උත්සාහ කරන්න"
+    },
+    "customerDash": {
+      "eyebrow": "ගනුදෙනුකරු ද්වාරය",
+      "title": "ඔබේ උකස් ලදුපත්",
+      "activeTickets": "සක්‍රිය ලදුපත්",
+      "totalOutstanding": "මුළු ශේෂය",
+      "nextDue": "ඊළඟ නිමාව",
+      "noActiveTickets": "සක්‍රිය ලදුපත් නොමැත",
+      "noTicketsYet": "ඔබට තවම උකස් ලදුපත් නොමැත.",
+      "noTicketsSub": "රන් ඇපයට තබා ලදුපතක් ලබාගැනීමට ලියාපදිංචි සාප්පුවට යන්න.",
+      "loanAmount": "ණය මුදල",
+      "outstanding": "ශේෂය",
+      "dueDate": "නිමා දිනය",
+      "overdue": "කල් ඉකුත්වූ"
+    },
+    "ticketDetail": {
+      "eyebrow": "උකස් ලදුපත",
+      "backBtn": "උපකරණ පුවරුවට ආපසු",
+      "loanAmount": "ණය මුදල",
+      "outstandingBalance": "ශේෂ මුදල",
+      "interestRate": "පොලී අනුපාතය",
+      "pawnedOn": "උකස් කළ දිනය",
+      "dueDate": "නිමා දිනය",
+      "daysElapsed": "ගතවූ දින",
+      "days": "දින",
+      "pawnedItems": "උකස් භාණ්ඩ",
+      "paymentHistory": "ගෙවීම් ඉතිහාසය",
+      "noPayments": "තවම ගෙවීම් සටහන් කර නොමැත.",
+      "collectPayment": "ගෙවීම් එකතු කරන්න",
+      "downloadReceipt": "ලදුපත බාගන්න",
+      "scanQr": "ලදුපත QR",
+      "paymentType": "ගෙවීම් වර්ගය",
+      "amount": "මුදල (LKR)",
+      "paymentMethod": "ගෙවීම් ක්‍රමය",
+      "referenceNo": "යොමු අංකය (අත්‍යවශ්‍ය නොවේ)",
+      "recordPayment": "ගෙවීම සටහන් කරන්න",
+      "paymentTypes": {
+        "INTEREST": "පොලිය පමණක්",
+        "PARTIAL": "අර්ධ ගෙවීමක්",
+        "FULL_REDEMPTION": "සම්පූර්ණ මුදා ගැනීම"
+      },
+      "paymentMethods": {
+        "CASH": "මුදල්",
+        "CARD": "කාඩ්",
+        "ONLINE_TRANSFER": "මාර්ගගත මුදල් හුවමාරුව",
+        "LANKAQR": "LankaQR"
+      }
+    },
+    "common": {
+      "loading": "පූරණය වෙමින්...",
+      "error": "දෝෂයක් ඇති විය.",
+      "tryAgain": "නැවත උත්සාහ කරන්න",
+      "back": "ආපසු"
+    },
+    "lang": {
+      "select": "භාෂාව",
+      "en": "English",
+      "si": "සිංහල",
+      "ta": "தமிழ்"
+    }
+  }

@@ -6,11 +6,12 @@ import { TopnavComponent } from '../../../shared/components/topnav/topnav.compon
 import { AuthService } from '../../../core/auth/auth.service';
 import { ShopDashboardService } from '../../../core/services/shop-dashboard.service';
 import { ShopDashboardResponse } from '../../../core/models/dashboard.model';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-shop-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, ProgressSpinnerModule, TopnavComponent],
+  imports: [CommonModule, RouterLink, ProgressSpinnerModule, TranslatePipe, TopnavComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })

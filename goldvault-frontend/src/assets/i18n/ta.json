@@ -1,0 +1,132 @@
+{
+    "brand": {
+      "name": "GoldVault",
+      "tagline": "டிஜிட்டல் அடகு சீட்டுகள், நேர்மையாக."
+    },
+    "nav": {
+      "logout": "வெளியேறு",
+      "customers": "வாடிக்கையாளர்கள்",
+      "grantTicket": "சீட்டு வழங்கு",
+      "sellGold": "தங்கம் விற்க"
+    },
+    "login": {
+      "eyebrow": "உள்நுழைக",
+      "title": "மீண்டும் வரவேற்கிறோம்",
+      "subtitle": "உங்கள் கணக்கை அணுக விவரங்களை உள்ளிடுக.",
+      "username": "பயனர் பெயர்",
+      "usernamePlaceholder": "எ.கா: shopadmin",
+      "password": "கடவுச்சொல்",
+      "passwordPlaceholder": "கடவுச்சொல்லை உள்ளிடுக",
+      "submit": "உள்நுழைக",
+      "newCustomer": "புதிய வாடிக்கையாளரா?",
+      "createAccount": "கணக்கு உருவாக்கு"
+    },
+    "register": {
+      "eyebrow": "புதிய கணக்கு",
+      "title": "உங்கள் கணக்கை உருவாக்கு",
+      "subtitle": "உங்கள் அடகு சீட்டுகள் மற்றும் தங்க விற்பனையை ஒரே இடத்தில் கண்காணிக்கவும்.",
+      "fullName": "முழு பெயர்",
+      "fullNamePlaceholder": "NIC-ல் உள்ளபடி",
+      "nic": "NIC எண்",
+      "nicPlaceholder": "எ.கா: 200012345678 அல்லது 991234567V",
+      "shop": "கடையில் பதிவு செய்க",
+      "shopPlaceholder": "அடகு கடையை தேர்வு செய்க",
+      "phone": "தொலைபேசி (விரும்பினால்)",
+      "phonePlaceholder": "07X XXX XXXX",
+      "username": "பயனர் பெயர்",
+      "usernamePlaceholder": "பயனர் பெயரை தேர்வு செய்க",
+      "email": "மின்னஞ்சல்",
+      "emailPlaceholder": "you@example.com",
+      "password": "கடவுச்சொல்",
+      "passwordPlaceholder": "குறைந்தது 8 எழுத்துக்கள்",
+      "submit": "கணக்கு உருவாக்கு",
+      "haveAccount": "ஏற்கனவே கணக்கு உள்ளதா?",
+      "loginLink": "உள்நுழைக"
+    },
+    "shopDash": {
+      "eyebrow": "கடை போர்டல்",
+      "title": "டாஷ்போர்டு",
+      "todayCollection": "இன்றைய வசூல்",
+      "todayPayments": "கட்டணம்(கள்) இன்று",
+      "activeTickets": "செயலில் உள்ள சீட்டுகள்",
+      "expiringSoon": "7 நாட்களில் காலாவதியாகும்",
+      "expiredTickets": "காலாவதியான சீட்டுகள்",
+      "totalCustomers": "மொத்த வாடிக்கையாளர்கள்",
+      "totalOutstanding": "மொத்த நிலுவை கடன்",
+      "recentTickets": "சமீபத்திய சீட்டுகள்",
+      "noTickets": "இன்னும் சீட்டுகள் இல்லை.",
+      "viewAll": "அனைத்தும் பார்க்க"
+    },
+    "customers": {
+      "eyebrow": "கடை போர்டல்",
+      "title": "வாடிக்கையாளர்கள்",
+      "registerBtn": "வாடிக்கையாளரை பதிவு செய்க",
+      "searchPlaceholder": "பெயர் அல்லது NIC மூலம் தேடுக...",
+      "searchBtn": "தேடுக",
+      "colName": "பெயர்",
+      "colNic": "NIC",
+      "colPhone": "தொலைபேசி",
+      "colKyc": "KYC நிலை",
+      "noCustomers": "வாடிக்கையாளர்கள் கிடைக்கவில்லை.",
+      "tryAgain": "மீண்டும் முயற்சி செய்க"
+    },
+    "customerDash": {
+      "eyebrow": "வாடிக்கையாளர் போர்டல்",
+      "title": "உங்கள் அடகு சீட்டுகள்",
+      "activeTickets": "செயலில் உள்ள சீட்டுகள்",
+      "totalOutstanding": "மொத்த நிலுவை",
+      "nextDue": "அடுத்த தேதி",
+      "noActiveTickets": "செயலில் சீட்டுகள் இல்லை",
+      "noTicketsYet": "உங்களிடம் இன்னும் அடகு சீட்டுகள் இல்லை.",
+      "noTicketsSub": "தங்கம் அடகு வைத்து சீட்டு பெற பதிவு செய்த கடைக்கு செல்லுங்கள்.",
+      "loanAmount": "கடன் தொகை",
+      "outstanding": "நிலுவை",
+      "dueDate": "தேதி",
+      "overdue": "தாமதம்"
+    },
+    "ticketDetail": {
+      "eyebrow": "அடகு சீட்டு",
+      "backBtn": "டாஷ்போர்டுக்கு திரும்பு",
+      "loanAmount": "கடன் தொகை",
+      "outstandingBalance": "நிலுவை இருப்பு",
+      "interestRate": "வட்டி விகிதம்",
+      "pawnedOn": "அடகு வைத்த தேதி",
+      "dueDate": "காலக்கெடு",
+      "daysElapsed": "கடந்த நாட்கள்",
+      "days": "நாட்கள்",
+      "pawnedItems": "அடகு பொருட்கள்",
+      "paymentHistory": "கட்டண வரலாறு",
+      "noPayments": "இன்னும் கட்டணங்கள் பதிவு செய்யப்படவில்லை.",
+      "collectPayment": "கட்டணம் பெறுக",
+      "downloadReceipt": "ரசீது பதிவிறக்கு",
+      "scanQr": "சீட்டு QR",
+      "paymentType": "கட்டண வகை",
+      "amount": "தொகை (LKR)",
+      "paymentMethod": "கட்டண முறை",
+      "referenceNo": "குறிப்பு எண் (விரும்பினால்)",
+      "recordPayment": "கட்டணம் பதிவு செய்க",
+      "paymentTypes": {
+        "INTEREST": "வட்டி மட்டும்",
+        "PARTIAL": "பகுதி கட்டணம்",
+        "FULL_REDEMPTION": "முழு மீட்பு"
+      },
+      "paymentMethods": {
+        "CASH": "பணம்",
+        "CARD": "அட்டை",
+        "ONLINE_TRANSFER": "ஆன்லைன் பரிமாற்றம்",
+        "LANKAQR": "LankaQR"
+      }
+    },
+    "common": {
+      "loading": "ஏற்றுகிறது...",
+      "error": "பிழை ஏற்பட்டது.",
+      "tryAgain": "மீண்டும் முயற்சி செய்க",
+      "back": "திரும்பு"
+    },
+    "lang": {
+      "select": "மொழி",
+      "en": "English",
+      "si": "සිංහල",
+      "ta": "தமிழ்"
+    }
+  }

@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
+import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../core/auth/auth.service';
+import { LangSelectorComponent } from '../lang-selector/lang-selector.component';
 
 @Component({
   selector: 'app-topnav',
   standalone: true,
-  imports: [CommonModule, ButtonModule, TooltipModule],
+  imports: [CommonModule, ButtonModule, TooltipModule, TranslatePipe, LangSelectorComponent],
   templateUrl: './topnav.component.html',
   styleUrl: './topnav.component.scss'
 })
