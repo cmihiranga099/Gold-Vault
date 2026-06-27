@@ -63,8 +63,29 @@
             <p class="detail-notes">{{ ticket()!.notes }}</p>
           }
 
-          @if (ticket()!.status === 'ACTIVE' || ticket()!.status === 'EXPIRED') {
-            <p-button label="Collect payment" icon="pi pi-money-bill" styleClass="gv-submit-btn" (onClick)="openPaymentDialog()" />
+          <!-- Action buttons row -->
+          <div class="action-row">
+            @if (ticket()!.status === 'ACTIVE' || ticket()!.status === 'EXPIRED') {
+              <p-button
+                label="Collect payment"
+                icon="pi pi-money-bill"
+                styleClass="gv-submit-btn"
+                (onClick)="openPaymentDialog()"
+              />
+            }
+
+            <!-- PDF Download button — always visible -->
+            <p-button
+              label="Download receipt"
+              icon="pi pi-file-pdf"
+              severity="secondary"
+              [loading]="pdfLoading()"
+              (onClick)="downloadReceipt()"
+            />
+          </div>
+
+          @if (pdfError()) {
+            <p class="pdf-error">{{ pdfError() }}</p>
           }
         </div>
 

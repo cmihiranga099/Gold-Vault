@@ -39,6 +39,10 @@ export class ShopTicketDetailComponent implements OnInit {
   paymentError = signal<string | null>(null);
   paymentSuccess = signal<string | null>(null);
 
+  // PDF download state
+  pdfLoading = signal(false);
+  pdfError = signal<string | null>(null);
+
   paymentTypes: { label: string; value: PaymentType }[] = [
     { label: 'Interest only', value: 'INTEREST' },
     { label: 'Partial payment', value: 'PARTIAL' },
@@ -87,7 +91,6 @@ export class ShopTicketDetailComponent implements OnInit {
         this.ticket.set(ticket);
         this.loading.set(false);
         this.loadPayments();
-        // Pre-fill the amount field with the outstanding balance for convenience
         this.paymentForm.patchValue({ amount: ticket.outstandingBalance });
       },
       error: () => {
@@ -148,12 +151,38 @@ export class ShopTicketDetailComponent implements OnInit {
     });
   }
 
+  // ── PDF Download ─────────────────────────────────────────────────────────────
+
+  downloadReceipt(): void {
+    this.pdfLoading.set(true);
+    this.pdfError.set(null);
+
+    this.ticketService.downloadReceipt(this.ticketId).subscribe({
+      next: (response) => {
+        this.pdfLoading.set(false);
+        const blob = response.body!;
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `pawn-receipt-${this.ticket()?.ticketNumber ?? this.ticketId}.pdf`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: () => {
+        this.pdfLoading.set(false);
+        this.pdfError.set('Could not generate receipt. Please try again.');
+      }
+    });
+  }
+
+  // ── Helpers ──────────────────────────────────────────────────────────────────
+
   statusSeverity(status: string): 'success' | 'warn' | 'danger' | 'secondary' {
     switch (status) {
-      case 'ACTIVE': return 'success';
-      case 'EXPIRED': return 'warn';
+      case 'ACTIVE':    return 'success';
+      case 'EXPIRED':   return 'warn';
       case 'AUCTIONED': return 'danger';
-      default: return 'secondary';
+      default:          return 'secondary';
     }
   }
 

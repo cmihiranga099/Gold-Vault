@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
@@ -47,5 +47,12 @@ export class TicketService {
     return this.http
       .put<ApiResponse<PawnTicketResponse>>(`${this.apiUrl}/shop/tickets/${ticketId}/redeem`, {})
       .pipe(map((res) => res.data));
+  }
+
+  downloadReceipt(ticketId: number): Observable<HttpResponse<Blob>> {
+    return this.http.get(
+      `${this.apiUrl}/shop/tickets/${ticketId}/receipt/pdf`,
+      { observe: 'response', responseType: 'blob' }
+    );
   }
 }

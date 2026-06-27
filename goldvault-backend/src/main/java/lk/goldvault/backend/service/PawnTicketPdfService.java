@@ -2,6 +2,7 @@ package lk.goldvault.backend.service;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import com.itextpdf.text.pdf.draw.LineSeparator;
 import lk.goldvault.backend.entity.GoldItem;
 import lk.goldvault.backend.entity.PawnTicket;
 import lk.goldvault.backend.repository.PawnTicketRepository;
@@ -71,7 +72,6 @@ public class PawnTicketPdfService {
     // ── Header ──────────────────────────────────────────────────────────────────
 
     private void addHeader(Document doc, PawnTicket ticket) throws DocumentException {
-        // Shop name banner
         PdfPTable banner = new PdfPTable(1);
         banner.setWidthPercentage(100);
 
@@ -82,7 +82,6 @@ public class PawnTicketPdfService {
 
         Paragraph shopName = new Paragraph(ticket.getShop().getName().toUpperCase(), FONT_TITLE);
         shopName.setAlignment(Element.ALIGN_CENTER);
-        shopName.setSpacingBefore(0);
 
         Font goldFont = new Font(Font.FontFamily.HELVETICA, 9, Font.NORMAL, COLOR_GOLD);
         Paragraph subLine = new Paragraph("PAWN TICKET RECEIPT  •  GoldVault Platform", goldFont);
@@ -95,7 +94,6 @@ public class PawnTicketPdfService {
 
         doc.add(Chunk.NEWLINE);
 
-        // Shop contact info line
         String contactLine = buildContactLine(ticket);
         if (!contactLine.isEmpty()) {
             Paragraph contact = new Paragraph(contactLine, FONT_SMALL);
@@ -130,14 +128,14 @@ public class PawnTicketPdfService {
         info.setSpacingBefore(6);
         info.setSpacingAfter(6);
 
-        addInfoRow(info, "Ticket number",  ticket.getTicketNumber());
-        addInfoRow(info, "Status",         ticket.getStatus().name());
-        addInfoRow(info, "Customer name",  ticket.getCustomer().getFullName());
-        addInfoRow(info, "NIC",            ticket.getCustomer().getNic());
-        addInfoRow(info, "Phone",          ticket.getCustomer().getPhone() != null ? ticket.getCustomer().getPhone() : "—");
-        addInfoRow(info, "Address",        ticket.getCustomer().getAddress() != null ? ticket.getCustomer().getAddress() : "—");
-        addInfoRow(info, "Pawn date",      ticket.getPawnDate().format(DATE_FMT));
-        addInfoRow(info, "Due date",       ticket.getExpiryDate().format(DATE_FMT));
+        addInfoRow(info, "Ticket number", ticket.getTicketNumber());
+        addInfoRow(info, "Status",        ticket.getStatus().name());
+        addInfoRow(info, "Customer name", ticket.getCustomer().getFullName());
+        addInfoRow(info, "NIC",           ticket.getCustomer().getNic());
+        addInfoRow(info, "Phone",         ticket.getCustomer().getPhone() != null ? ticket.getCustomer().getPhone() : "—");
+        addInfoRow(info, "Address",       ticket.getCustomer().getAddress() != null ? ticket.getCustomer().getAddress() : "—");
+        addInfoRow(info, "Pawn date",     ticket.getPawnDate().format(DATE_FMT));
+        addInfoRow(info, "Due date",      ticket.getExpiryDate().format(DATE_FMT));
 
         if (ticket.getBranch() != null) {
             addInfoRow(info, "Branch", ticket.getBranch().getName());
@@ -171,7 +169,6 @@ public class PawnTicketPdfService {
         table.setSpacingBefore(6);
         table.setSpacingAfter(6);
 
-        // Header row
         String[] headers = {"Description", "Type", "Purity", "Weight (g)", "Est. Value (LKR)"};
         for (String h : headers) {
             PdfPCell cell = new PdfPCell(new Phrase(h, FONT_LABEL));
@@ -185,13 +182,13 @@ public class PawnTicketPdfService {
         boolean alt = false;
         for (GoldItem item : items) {
             BaseColor rowBg = alt ? COLOR_ROW_ALT : BaseColor.WHITE;
-            addItemCell(table, item.getDescription(),                    rowBg, Element.ALIGN_LEFT);
-            addItemCell(table, item.getGoldType().name(),                rowBg, Element.ALIGN_CENTER);
-            addItemCell(table, item.getPurity().name(),                  rowBg, Element.ALIGN_CENTER);
-            addItemCell(table, item.getWeightGrams().toPlainString(),    rowBg, Element.ALIGN_CENTER);
+            addItemCell(table, item.getDescription(),                 rowBg, Element.ALIGN_LEFT);
+            addItemCell(table, item.getGoldType().name(),             rowBg, Element.ALIGN_CENTER);
+            addItemCell(table, item.getPurity().name(),               rowBg, Element.ALIGN_CENTER);
+            addItemCell(table, item.getWeightGrams().toPlainString(), rowBg, Element.ALIGN_CENTER);
             addItemCell(table, item.getEstimatedValue() != null
                     ? "LKR " + formatAmount(item.getEstimatedValue())
-                    : "—",                                               rowBg, Element.ALIGN_RIGHT);
+                    : "—",                                            rowBg, Element.ALIGN_RIGHT);
             alt = !alt;
         }
 
@@ -213,7 +210,7 @@ public class PawnTicketPdfService {
     private void addFinancialSummary(Document doc, PawnTicket ticket) throws DocumentException {
         doc.add(sectionHeading("FINANCIAL SUMMARY"));
 
-        var today = java.time.LocalDate.now();
+        java.time.LocalDate today = java.time.LocalDate.now();
         BigDecimal outstanding = interestCalculatorService.calculateOutstandingBalance(ticket, today);
         BigDecimal totalPaid   = interestCalculatorService.totalPaid(ticket);
 
@@ -223,10 +220,10 @@ public class PawnTicketPdfService {
         table.setSpacingBefore(6);
         table.setSpacingAfter(8);
 
-        addSummaryRow(table, "Loan amount",         "LKR " + formatAmount(ticket.getLoanAmount()),  false);
+        addSummaryRow(table, "Loan amount",         "LKR " + formatAmount(ticket.getLoanAmount()), false);
         addSummaryRow(table, "Interest rate",       ticket.getInterestRate() + "% (" + ticket.getInterestType() + ")", false);
-        addSummaryRow(table, "Total paid to date",  "LKR " + formatAmount(totalPaid),               false);
-        addSummaryRow(table, "Outstanding balance", "LKR " + formatAmount(outstanding),             true);
+        addSummaryRow(table, "Total paid to date",  "LKR " + formatAmount(totalPaid),              false);
+        addSummaryRow(table, "Outstanding balance", "LKR " + formatAmount(outstanding),            true);
 
         doc.add(table);
     }
