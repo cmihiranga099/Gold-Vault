@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import lk.goldvault.backend.service.PawnTicketPdfService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-
+import lk.goldvault.backend.dto.request.RenewalRequest;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -84,6 +85,18 @@ public class PawnTicketController {
                 "pawn-receipt-" + id + ".pdf");
         headers.setContentLength(pdf.length);
         return ResponseEntity.ok().headers(headers).body(pdf);
+    }
+    @PutMapping("/{id}/renew")
+    @Operation(
+        summary = "Renew / extend a pawn ticket",
+        description = "Extends the expiry date by N months. Customer must pay accrued interest upfront."
+    )
+    public ResponseEntity<ApiResponse<PawnTicketResponse>> renewTicket(
+            @PathVariable Long id,
+            @Valid @RequestBody RenewalRequest request) {
+        PawnTicketResponse response = pawnTicketService.renewTicket(id, request);
+        return ResponseEntity.ok(ApiResponse.success(
+                "Ticket extended successfully. New expiry: " + response.getExpiryDate(), response));
     }
     
 }

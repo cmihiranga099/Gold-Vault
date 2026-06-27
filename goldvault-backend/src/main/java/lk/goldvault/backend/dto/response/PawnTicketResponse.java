@@ -31,9 +31,13 @@ public class PawnTicketResponse {
     private String notes;
     private List<GoldItemResponse> goldItems;
 
-    /** Calculated fields — not stored, computed at response time */
+    /** Calculated fields */
     private BigDecimal totalPaid;
     private BigDecimal outstandingBalance;
     private long daysElapsed;
     private boolean overdue;
+
+    /** Renewal info */
+    private int renewalCount;
+    private BigDecimal accruedInterestToday;   // interest due right now — prefilled in renewal dialog
 }
