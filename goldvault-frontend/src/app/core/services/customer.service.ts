@@ -44,7 +44,6 @@ export class CustomerService {
       .pipe(map((res) => res.data));
   }
 
-  /** Paginated listing — page is 0-indexed, matching the backend. */
   getByShopPaged(shopId: number, page: number, size: number): Observable<PagedResponse<CustomerResponse>> {
     return this.http
       .get<ApiResponse<PagedResponse<CustomerResponse>>>(`${this.apiUrl}/shop/customers/shop/${shopId}/paged`, {
@@ -53,7 +52,6 @@ export class CustomerService {
       .pipe(map((res) => res.data));
   }
 
-  /** Paginated search by name or NIC — page is 0-indexed. */
   searchPaged(shopId: number, term: string, page: number, size: number): Observable<PagedResponse<CustomerResponse>> {
     return this.http
       .get<ApiResponse<PagedResponse<CustomerResponse>>>(`${this.apiUrl}/shop/customers/shop/${shopId}/search/paged`, {
@@ -65,6 +63,24 @@ export class CustomerService {
   update(id: number, request: CustomerRequest): Observable<CustomerResponse> {
     return this.http
       .put<ApiResponse<CustomerResponse>>(`${this.apiUrl}/shop/customers/${id}`, request)
+      .pipe(map((res) => res.data));
+  }
+
+  // ── File uploads ─────────────────────────────────────────────────────────────
+
+  uploadNicPhoto(file: File): Observable<{ url: string }> {
+    const form = new FormData();
+    form.append('file', file);
+    return this.http
+      .post<ApiResponse<{ url: string }>>(`${this.apiUrl}/shop/upload/nic-photo`, form)
+      .pipe(map((res) => res.data));
+  }
+
+  uploadGoldPhoto(file: File): Observable<{ url: string }> {
+    const form = new FormData();
+    form.append('file', file);
+    return this.http
+      .post<ApiResponse<{ url: string }>>(`${this.apiUrl}/shop/upload/gold-photo`, form)
       .pipe(map((res) => res.data));
   }
 }

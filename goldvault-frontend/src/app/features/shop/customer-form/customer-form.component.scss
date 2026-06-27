@@ -66,3 +66,104 @@
   
     &:hover { background: var(--gv-ink-soft) !important; }
   }
+  // ── NIC validation styles ─────────────────────────────────────────────────────
+.nic-valid  { border-color: #22c55e !important; }
+.nic-invalid { border-color: #ef4444 !important; }
+
+.nic-hint {
+  display: block;
+  font-size: 12px;
+  margin-top: 4px;
+}
+.nic-hint-ok  { color: #16a34a; }
+.nic-hint-err { color: #dc2626; }
+
+.optional-tag {
+  font-size: 11px;
+  color: #999;
+  font-weight: 400;
+  margin-left: 6px;
+}
+
+// ── Photo upload ──────────────────────────────────────────────────────────────
+.photo-upload-area {
+  margin-top: 4px;
+}
+
+.photo-drop-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1.5px dashed #d4b066;
+  border-radius: 10px;
+  padding: 28px 16px;
+  cursor: pointer;
+  color: #888;
+  font-size: 13px;
+  transition: border-color 0.15s, background 0.15s;
+
+  i { font-size: 22px; color: #C9A14A; }
+
+  &:hover {
+    border-color: #C9A14A;
+    background: rgba(201, 161, 74, 0.04);
+  }
+}
+
+.photo-hint {
+  font-size: 11px;
+  color: #aaa;
+}
+
+.photo-preview-wrap {
+  position: relative;
+  display: inline-block;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1.5px solid #d4b066;
+}
+
+.photo-preview {
+  display: block;
+  max-width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+}
+
+.photo-preview-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+}
+
+.photo-uploading, .photo-done {
+  font-size: 12px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.photo-done { color: #86efac; }
+
+.photo-remove-btn {
+  background: rgba(239,68,68,0.8);
+  border: none;
+  color: #fff;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  &:hover { background: #dc2626; }
+}

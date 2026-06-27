@@ -26,45 +26,22 @@
         <div class="field-row">
           <div class="field">
             <label for="loanAmount">{{ 'grantTicket.loanAmount' | translate }}</label>
-            <p-inputNumber
-              inputId="loanAmount"
-              formControlName="loanAmount"
-              mode="decimal"
-              [minFractionDigits]="2"
-              styleClass="w-full"
-            />
+            <p-inputNumber inputId="loanAmount" formControlName="loanAmount" mode="decimal" [minFractionDigits]="2" styleClass="w-full" />
           </div>
           <div class="field">
             <label for="interestRate">{{ 'grantTicket.interestRate' | translate }}</label>
-            <p-inputNumber
-              inputId="interestRate"
-              formControlName="interestRate"
-              mode="decimal"
-              [minFractionDigits]="2"
-              styleClass="w-full"
-            />
+            <p-inputNumber inputId="interestRate" formControlName="interestRate" mode="decimal" [minFractionDigits]="2" styleClass="w-full" />
           </div>
         </div>
 
         <div class="field-row">
           <div class="field">
             <label for="interestType">{{ 'grantTicket.interestType' | translate }}</label>
-            <p-select
-              inputId="interestType"
-              formControlName="interestType"
-              [options]="interestTypeOptions()"
-              optionLabel="label"
-              optionValue="value"
-              styleClass="w-full"
-            />
+            <p-select inputId="interestType" formControlName="interestType" [options]="interestTypeOptions()" optionLabel="label" optionValue="value" styleClass="w-full" />
           </div>
           <div class="field">
             <label for="periodMonths">{{ 'grantTicket.periodMonths' | translate }}</label>
-            <p-inputNumber
-              inputId="periodMonths"
-              formControlName="periodMonths"
-              styleClass="w-full"
-            />
+            <p-inputNumber inputId="periodMonths" formControlName="periodMonths" styleClass="w-full" />
           </div>
         </div>
 
@@ -73,6 +50,7 @@
           <input id="notes" type="text" pInputText formControlName="notes" class="w-full" />
         </div>
 
+        <!-- Gold Items -->
         <div class="items-section">
           <div class="items-header">
             <h2>{{ 'grantTicket.pawnedGoldItems' | translate }}</h2>
@@ -98,19 +76,11 @@
               <div class="field-row-3">
                 <div class="field">
                   <label>{{ 'grantTicket.type' | translate }}</label>
-                  <p-select
-                    formControlName="goldType"
-                    [options]="goldTypes"
-                    styleClass="w-full"
-                  />
+                  <p-select formControlName="goldType" [options]="goldTypes" styleClass="w-full" />
                 </div>
                 <div class="field">
                   <label>{{ 'grantTicket.purity' | translate }}</label>
-                  <p-select
-                    formControlName="purity"
-                    [options]="goldPurities"
-                    styleClass="w-full"
-                  />
+                  <p-select formControlName="purity" [options]="goldPurities" styleClass="w-full" />
                 </div>
                 <div class="field">
                   <label>{{ 'grantTicket.weight' | translate }}</label>
@@ -122,6 +92,45 @@
                 <label>{{ 'grantTicket.estimatedValue' | translate }}</label>
                 <p-inputNumber formControlName="estimatedValue" mode="decimal" [minFractionDigits]="2" styleClass="w-full" />
               </div>
+
+              <!-- Gold Item Photo Upload -->
+              <div class="field">
+                <label>Item Photo <span class="optional-tag">optional</span></label>
+                <div class="photo-upload-area">
+                  @if (itemPhotos[i].preview) {
+                    <div class="photo-preview-wrap">
+                      <img [src]="itemPhotos[i].preview!" alt="Gold item photo" class="photo-preview" />
+                      <div class="photo-preview-overlay">
+                        @if (itemPhotos[i].uploading) {
+                          <span class="photo-uploading"><i class="pi pi-spin pi-spinner"></i> Uploading…</span>
+                        } @else if (itemPhotos[i].url) {
+                          <span class="photo-done"><i class="pi pi-check"></i> Uploaded</span>
+                        }
+                        <button type="button" class="photo-remove-btn" (click)="removeGoldPhoto(i)">
+                          <i class="pi pi-times"></i>
+                        </button>
+                      </div>
+                    </div>
+                  } @else {
+                    <label [for]="'goldPhoto_' + i" class="photo-drop-zone">
+                      <i class="pi pi-image"></i>
+                      <span>Click to upload item photo</span>
+                      <span class="photo-hint">JPEG, PNG or WEBP · max 5 MB</span>
+                      <input
+                        [id]="'goldPhoto_' + i"
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        (change)="onGoldPhotoSelected($event, i)"
+                        style="display:none"
+                      />
+                    </label>
+                  }
+                </div>
+                @if (itemPhotos[i].error) {
+                  <span class="photo-error">{{ itemPhotos[i].error }}</span>
+                }
+              </div>
+
             </div>
           }
         </div>
@@ -130,19 +139,23 @@
           <p-message severity="error" [text]="errorMessage()!" styleClass="w-full" />
         }
 
-        <p-button type="submit" [label]="'grantTicket.submitBtn' | translate" styleClass="gv-submit-btn" [loading]="loading()" />
+        <p-button
+          type="submit"
+          [label]="'grantTicket.submitBtn' | translate"
+          styleClass="gv-submit-btn"
+          [loading]="loading()"
+          [disabled]="anyPhotoUploading"
+        />
       </form>
     </div>
+
   } @else {
-    <!-- Success state -->
     <div class="success-card gv-card gv-ticket-edge">
       <i class="pi pi-check-circle success-icon"></i>
       <span class="gv-eyebrow">{{ 'grantTicket.ticketCreated' | translate }}</span>
       <h1 class="gv-mono">{{ createdTicket()!.ticketNumber }}</h1>
       <p class="success-sub">{{ 'grantTicket.grantedTo' | translate }} {{ createdTicket()!.customerName }}</p>
-
       <img [src]="'data:image/png;base64,' + createdTicket()!.qrCode" alt="Ticket QR code" class="success-qr" />
-
       <div class="success-actions">
         <p-button [label]="'grantTicket.viewTicket' | translate" (onClick)="goToTicket()" />
         <a routerLink="/shop/dashboard" class="text-link">{{ 'grantTicket.backBtn' | translate }}</a>

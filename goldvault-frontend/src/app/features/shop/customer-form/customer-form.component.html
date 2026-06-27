@@ -11,16 +11,73 @@
     <p class="form-sub">{{ 'customerForm.subtitle' | translate }}</p>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-body">
+
+      <!-- Full Name -->
       <div class="field">
         <label for="fullName">{{ 'customerForm.fullName' | translate }}</label>
         <input id="fullName" type="text" pInputText formControlName="fullName" class="w-full" />
       </div>
 
+      <!-- NIC with live validation -->
       <div class="field">
         <label for="nic">{{ 'customerForm.nic' | translate }}</label>
-        <input id="nic" type="text" pInputText formControlName="nic" [placeholder]="'customerForm.nicPlaceholder' | translate" class="w-full" />
+        <input
+          id="nic"
+          type="text"
+          pInputText
+          formControlName="nic"
+          [placeholder]="'customerForm.nicPlaceholder' | translate"
+          class="w-full"
+          [class.nic-valid]="nicControl.valid && nicControl.touched"
+          [class.nic-invalid]="nicControl.invalid && nicControl.touched"
+        />
+        @if (nicFormatHint && nicControl.valid) {
+          <span class="nic-hint nic-hint-ok">{{ nicFormatHint }}</span>
+        }
+        @if (nicError) {
+          <span class="nic-hint nic-hint-err">{{ nicError }}</span>
+        }
       </div>
 
+      <!-- NIC Photo Upload -->
+      <div class="field">
+        <label>NIC Photo <span class="optional-tag">optional</span></label>
+        <div class="photo-upload-area">
+          @if (nicPhotoPreview()) {
+            <div class="photo-preview-wrap">
+              <img [src]="nicPhotoPreview()!" alt="NIC photo preview" class="photo-preview" />
+              <div class="photo-preview-overlay">
+                @if (nicPhotoUploading()) {
+                  <span class="photo-uploading"><i class="pi pi-spin pi-spinner"></i> Uploading…</span>
+                } @else if (nicPhotoUrl()) {
+                  <span class="photo-done"><i class="pi pi-check"></i> Uploaded</span>
+                }
+                <button type="button" class="photo-remove-btn" (click)="removeNicPhoto()">
+                  <i class="pi pi-times"></i>
+                </button>
+              </div>
+            </div>
+          } @else {
+            <label for="nicPhoto" class="photo-drop-zone">
+              <i class="pi pi-camera"></i>
+              <span>Click to upload NIC photo</span>
+              <span class="photo-hint">JPEG, PNG or WEBP · max 5 MB</span>
+              <input
+                id="nicPhoto"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                (change)="onNicPhotoSelected($event)"
+                style="display:none"
+              />
+            </label>
+          }
+        </div>
+        @if (nicPhotoError()) {
+          <span class="nic-hint nic-hint-err">{{ nicPhotoError() }}</span>
+        }
+      </div>
+
+      <!-- Phone & Email -->
       <div class="field-row">
         <div class="field">
           <label for="phone">{{ 'customerForm.phone' | translate }}</label>
@@ -32,6 +89,7 @@
         </div>
       </div>
 
+      <!-- Address -->
       <div class="field">
         <label for="address">{{ 'customerForm.address' | translate }}</label>
         <input id="address" type="text" pInputText formControlName="address" class="w-full" />
@@ -41,7 +99,13 @@
         <p-message severity="error" [text]="errorMessage()!" styleClass="w-full" />
       }
 
-      <p-button type="submit" [label]="'customerForm.submitBtn' | translate" styleClass="gv-submit-btn" [loading]="loading()" />
+      <p-button
+        type="submit"
+        [label]="'customerForm.submitBtn' | translate"
+        styleClass="gv-submit-btn"
+        [loading]="loading()"
+        [disabled]="nicPhotoUploading()"
+      />
     </form>
   </div>
 </div>
