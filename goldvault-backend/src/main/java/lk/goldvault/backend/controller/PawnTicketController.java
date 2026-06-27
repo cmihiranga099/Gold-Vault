@@ -11,6 +11,9 @@ import lk.goldvault.backend.service.PawnTicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import lk.goldvault.backend.service.PawnTicketPdfService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 
@@ -21,6 +24,7 @@ import java.util.List;
 public class PawnTicketController {
 
     private final PawnTicketService pawnTicketService;
+    private final PawnTicketPdfService pawnTicketPdfService;
 
     @PostMapping("/{shopId}")
     @Operation(summary = "Grant a new pawn ticket", description = "Creates a ticket with one or more gold items and generates a QR code")
@@ -70,4 +74,16 @@ public class PawnTicketController {
     public ResponseEntity<ApiResponse<PawnTicketResponse>> redeem(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.success("Ticket redeemed", pawnTicketService.redeem(id)));
     }
+    @GetMapping("/{id}/receipt/pdf")
+    @Operation(summary = "Download pawn ticket receipt as PDF")
+    public ResponseEntity<byte[]> downloadReceiptPdf(@PathVariable Long id) {
+        byte[] pdf = pawnTicketPdfService.generateReceiptPdf(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment",
+                "pawn-receipt-" + id + ".pdf");
+        headers.setContentLength(pdf.length);
+        return ResponseEntity.ok().headers(headers).body(pdf);
+    }
+    
 }
