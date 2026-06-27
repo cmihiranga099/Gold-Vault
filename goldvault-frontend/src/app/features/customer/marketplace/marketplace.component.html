@@ -30,6 +30,11 @@
     <h2>Your listings</h2>
     @if (loading()) {
       <p class="empty-text">Loading...</p>
+    } @else if (errorMessage()) {
+      <div class="error-state">
+        <p class="error-text">{{ errorMessage() }}</p>
+        <p-button label="Try again" size="small" [text]="true" (onClick)="loadAll()" />
+      </div>
     } @else if (listings().length === 0) {
       <p class="empty-text">You haven't listed any gold for sale yet.</p>
     } @else {

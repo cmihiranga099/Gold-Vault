@@ -42,6 +42,7 @@
       <p class="empty-text">Loading...</p>
     } @else if (errorMessage()) {
       <p class="empty-text">{{ errorMessage() }}</p>
+      <p-button label="Try again" size="small" [text]="true" (onClick)="loadRates()" />
     } @else if (rates().length === 0) {
       <p class="empty-text">No rates published yet.</p>
     } @else {

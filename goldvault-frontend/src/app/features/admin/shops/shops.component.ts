@@ -26,7 +26,7 @@ export class AdminShopsComponent implements OnInit {
     this.loadShops();
   }
 
-  private loadShops(): void {
+   loadShops(): void {
     this.loading.set(true);
     this.adminService.getAllShops().subscribe({
       next: (shops) => {

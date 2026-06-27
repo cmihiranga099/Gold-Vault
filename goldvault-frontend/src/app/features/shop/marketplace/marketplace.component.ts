@@ -27,6 +27,7 @@ export class ShopMarketplaceComponent implements OnInit {
   listings = signal<GoldListingResponse[]>([]);
   myOffers = signal<GoldOfferResponse[]>([]);
   loading = signal(true);
+errorMessage = signal<string | null>(null);
 
   selectedListing = signal<GoldListingResponse | null>(null);
   showOfferDialog = false;
@@ -53,17 +54,21 @@ export class ShopMarketplaceComponent implements OnInit {
     this.loadAll();
   }
 
-  private loadAll(): void {
+  loadAll(): void {
     this.loading.set(true);
-
+    this.errorMessage.set(null);
+  
     this.marketplaceService.openListings().subscribe({
       next: (listings) => {
         this.listings.set(listings);
         this.loading.set(false);
       },
-      error: () => this.loading.set(false)
+      error: () => {
+        this.errorMessage.set('Could not load open listings. Please try again.');
+        this.loading.set(false);
+      }
     });
-
+  
     if (this.shopId) {
       this.marketplaceService.getShopOffers(this.shopId).subscribe({
         next: (offers) => this.myOffers.set(offers),

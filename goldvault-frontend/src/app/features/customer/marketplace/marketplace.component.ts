@@ -31,6 +31,7 @@ export class CustomerMarketplaceComponent implements OnInit {
   rates = signal<GoldRateResponse[]>([]);
   listings = signal<GoldListingResponse[]>([]);
   loading = signal(true);
+errorMessage = signal<string | null>(null);
 
   showCreateDialog = false;
   createLoading = signal(false);
@@ -59,21 +60,25 @@ export class CustomerMarketplaceComponent implements OnInit {
     this.loadAll();
   }
 
-  private loadAll(): void {
+  loadAll(): void {
     this.loading.set(true);
-
+    this.errorMessage.set(null);
+  
     this.marketplaceService.compareRates().subscribe({
       next: (rates) => this.rates.set(rates),
       error: () => this.rates.set([])
     });
-
+  
     if (this.customerId) {
       this.marketplaceService.getMyListings(this.customerId).subscribe({
         next: (listings) => {
           this.listings.set(listings);
           this.loading.set(false);
         },
-        error: () => this.loading.set(false)
+        error: () => {
+          this.errorMessage.set('Could not load your listings. Please try again.');
+          this.loading.set(false);
+        }
       });
     } else {
       this.loading.set(false);

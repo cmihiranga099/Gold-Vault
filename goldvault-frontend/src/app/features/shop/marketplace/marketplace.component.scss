@@ -100,3 +100,25 @@
       color: var(--gv-ink);
     }
   }
+  .error-state {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gv-space-3);
+    flex-wrap: wrap;
+  }
+  
+  .error-text {
+    color: var(--gv-brick);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  
+  .listing-row {
+    @media (max-width: 480px) {
+      flex-direction: column;
+      align-items: stretch;
+  
+      .p-button { width: 100%; }
+    }
+  }

@@ -30,6 +30,7 @@
   @if (errorMessage()) {
     <div class="shop-empty gv-card">
       <p>{{ errorMessage() }}</p>
+      <p-button label="Try again" size="small" [text]="true" (onClick)="onSearch()" />
     </div>
   } @else {
     <div class="table-card gv-card">

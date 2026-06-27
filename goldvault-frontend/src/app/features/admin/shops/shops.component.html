@@ -13,6 +13,7 @@
   } @else if (errorMessage()) {
     <div class="empty-card gv-card">
       <p>{{ errorMessage() }}</p>
+      <p-button label="Try again" size="small" [text]="true" (onClick)="loadShops()" />
     </div>
   } @else if (shops().length === 0) {
     <div class="empty-card gv-card">

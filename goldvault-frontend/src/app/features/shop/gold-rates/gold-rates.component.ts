@@ -59,7 +59,7 @@ export class GoldRatesComponent implements OnInit {
     this.loadRates();
   }
 
-  private loadRates(): void {
+   loadRates(): void {
     if (!this.shopId) return;
     this.loading.set(true);
     this.marketplaceService.getShopRates(this.shopId).subscribe({
