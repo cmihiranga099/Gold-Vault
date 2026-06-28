@@ -1,0 +1,163 @@
+<app-topnav />
+
+<div class="analytics-page">
+  <div class="analytics-header">
+    <div>
+      <span class="gv-eyebrow">Shop portal</span>
+      <h1>Analytics <span class="pro-badge">PRO</span></h1>
+      <p class="analytics-sub">Real-time performance metrics for your pawn shop.</p>
+    </div>
+    <a routerLink="/shop/dashboard" class="back-link">
+      <i class="pi pi-arrow-left"></i> Dashboard
+    </a>
+  </div>
+
+  @if (loading()) {
+    <div class="analytics-loading"><p-progressSpinner strokeWidth="3" /></div>
+  } @else if (error()) {
+    <div class="analytics-error gv-card"><p>{{ error() }}</p></div>
+  } @else if (data()) {
+
+    <!-- ── KPI row ──────────────────────────────────────────────────────────── -->
+    <div class="kpi-grid">
+
+      <div class="kpi-card gv-card kpi-gold">
+        <span class="kpi-label">Active loan portfolio</span>
+        <span class="kpi-value gv-mono">LKR {{ lkr(data()!.totalActiveLoanAmount) }}</span>
+        <span class="kpi-sub">{{ data()!.activeTickets }} active tickets</span>
+      </div>
+
+      <div class="kpi-card gv-card">
+        <span class="kpi-label">This month collection</span>
+        <span class="kpi-value gv-mono">LKR {{ lkr(data()!.thisMonthCollection) }}</span>
+        <span class="kpi-sub" [style.color]="momColor(data()!.thisMonthVsLastMonthPct)">
+          {{ momArrow(data()!.thisMonthVsLastMonthPct) }}
+          {{ pct(data()!.thisMonthVsLastMonthPct) }} vs last month
+        </span>
+      </div>
+
+      <div class="kpi-card gv-card">
+        <span class="kpi-label">Redemption rate</span>
+        <span class="kpi-value">{{ pct(data()!.redemptionRatePct) }}</span>
+        <span class="kpi-sub">{{ data()!.redeemedTickets }} tickets redeemed</span>
+      </div>
+
+      <div class="kpi-card gv-card" [class.kpi-danger]="data()!.npaRatePct > 10">
+        <span class="kpi-label">NPA rate</span>
+        <span class="kpi-value">{{ pct(data()!.npaRatePct) }}</span>
+        <span class="kpi-sub">{{ data()!.expiredTickets }} expired tickets</span>
+      </div>
+
+      <div class="kpi-card gv-card" [class.kpi-warn]="data()!.expiringSoon7Days > 0">
+        <span class="kpi-label">Expiring in 7 days</span>
+        <span class="kpi-value">{{ data()!.expiringSoon7Days }}</span>
+        <span class="kpi-sub">{{ data()!.expiringSoon30Days }} in 30 days</span>
+      </div>
+
+      <div class="kpi-card gv-card">
+        <span class="kpi-label">Total customers</span>
+        <span class="kpi-value">{{ data()!.totalCustomers }}</span>
+        <span class="kpi-sub">{{ data()!.totalTicketsEver }} tickets all time</span>
+      </div>
+
+    </div>
+
+    <!-- ── Charts row ──────────────────────────────────────────────────────── -->
+    <div class="charts-row">
+
+      <!-- Tickets granted chart -->
+      <div class="chart-card gv-card">
+        <h2 class="chart-title">Tickets granted <span class="chart-period">last 6 months</span></h2>
+        <div class="bar-chart">
+          @for (month of months(data()!.ticketsGrantedPerMonth); track month) {
+            <div class="bar-col">
+              <span class="bar-val">{{ data()!.ticketsGrantedPerMonth[month] }}</span>
+              <div class="bar-wrap">
+                <div
+                  class="bar bar-blue"
+                  [style.height]="barHeight(data()!.ticketsGrantedPerMonth[month], maxVal(data()!.ticketsGrantedPerMonth))"
+                ></div>
+              </div>
+              <span class="bar-label">{{ shortMonth(month) }}</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Monthly collection chart -->
+      <div class="chart-card gv-card">
+        <h2 class="chart-title">Monthly collection <span class="chart-period">last 6 months</span></h2>
+        <div class="bar-chart">
+          @for (month of months(data()!.collectionPerMonth); track month) {
+            <div class="bar-col">
+              <span class="bar-val bar-val-sm">{{ lkr(data()!.collectionPerMonth[month]) }}</span>
+              <div class="bar-wrap">
+                <div
+                  class="bar bar-gold"
+                  [style.height]="barHeight(data()!.collectionPerMonth[month], maxVal(data()!.collectionPerMonth))"
+                ></div>
+              </div>
+              <span class="bar-label">{{ shortMonth(month) }}</span>
+            </div>
+          }
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Bottom row ──────────────────────────────────────────────────────── -->
+    <div class="bottom-row">
+
+      <!-- Payment breakdown -->
+      <div class="chart-card gv-card">
+        <h2 class="chart-title">This month breakdown</h2>
+        <div class="breakdown-list">
+          @for (item of collectionBreakdownItems(data()!); track item.label) {
+            <div class="breakdown-item">
+              <div class="breakdown-meta">
+                <span class="breakdown-dot" [style.background]="item.color"></span>
+                <span class="breakdown-label">{{ item.label }}</span>
+                <span class="breakdown-amount gv-mono">LKR {{ lkr(item.amount) }}</span>
+              </div>
+              <div class="breakdown-track">
+                <div
+                  class="breakdown-fill"
+                  [style.width]="breakdownBarWidth(item.amount, data()!)"
+                  [style.background]="item.color"
+                ></div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="breakdown-total">
+          <span>Total collected this month</span>
+          <strong class="gv-mono">LKR {{ lkr(data()!.thisMonthCollection) }}</strong>
+        </div>
+      </div>
+
+      <!-- Top customers -->
+      <div class="chart-card gv-card">
+        <h2 class="chart-title">Top customers <span class="chart-period">by loan volume</span></h2>
+        @if (data()!.topCustomers.length === 0) {
+          <p class="no-data">No customer data yet.</p>
+        } @else {
+          <div class="top-customers">
+            @for (c of data()!.topCustomers; track c.name; let i = $index) {
+              <div class="customer-row">
+                <span class="customer-rank">{{ i + 1 }}</span>
+                <div class="customer-info">
+                  <span class="customer-name">{{ c.name }}</span>
+                  <span class="customer-meta">{{ c.ticketCount }} ticket{{ c.ticketCount !== 1 ? 's' : '' }}</span>
+                </div>
+                <span class="customer-amount gv-mono">LKR {{ lkr(c.totalLoanAmount) }}</span>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+    </div>
+
+  }
+</div>

@@ -6,6 +6,10 @@ export const SHOP_ROUTES: Routes = [
     loadComponent: () => import('./dashboard/dashboard.component').then(m => m.ShopDashboardComponent)
   },
   {
+    path: 'analytics',
+    loadComponent: () => import('./analytics/analytics.component').then(m => m.ShopAnalyticsComponent)
+  },
+  {
     path: 'customers',
     loadComponent: () => import('./customers/customers.component').then(m => m.CustomersComponent)
   },

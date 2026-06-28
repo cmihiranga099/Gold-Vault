@@ -1,35 +1,35 @@
-export type PaymentType = 'INTEREST' | 'PARTIAL' | 'FULL_REDEMPTION';
+export type PaymentType   = 'INTEREST' | 'PARTIAL' | 'FULL_REDEMPTION' | 'RENEWAL';
 export type PaymentMethod = 'CASH' | 'CARD' | 'ONLINE_TRANSFER' | 'LANKAQR';
 
 export interface PaymentRequest {
-  ticketId: number;
-  amount: number;
-  paymentType: PaymentType;
-  paymentMethod?: PaymentMethod;
+  ticketId:        number;
+  amount:          number;
+  paymentType:     PaymentType;
+  paymentMethod?:  PaymentMethod;
   referenceNumber?: string;
-  receivedBy?: number;
+  receivedBy?:     number;
 }
 
 export interface PaymentResponse {
-  id: number;
-  ticketId: number;
-  ticketNumber: string;
-  amount: number;
-  paymentType: PaymentType;
-  paymentMethod: PaymentMethod;
-  referenceNumber: string | null;
-  paymentDate: string;
-  receivedBy: number | null;
+  id:               number;
+  ticketId:         number;
+  ticketNumber:     string;
+  amount:           number;
+  paymentType:      PaymentType;
+  paymentMethod:    PaymentMethod;
+  referenceNumber:  string | null;
+  paymentDate:      string;
+  receivedBy:       number | null;
   remainingBalance: number;
-  ticketRedeemed: boolean;
+  ticketRedeemed:   boolean;
 }
 
 export interface DailyCollectionResponse {
-  date: string;
-  totalCollected: number;
-  paymentCount: number;
-  totalInterest: number;
-  totalPartial: number;
+  date:                string;
+  totalCollected:      number;
+  paymentCount:        number;
+  totalInterest:       number;
+  totalPartial:        number;
   totalFullRedemption: number;
-  payments: PaymentResponse[];
+  payments:            PaymentResponse[];
 }

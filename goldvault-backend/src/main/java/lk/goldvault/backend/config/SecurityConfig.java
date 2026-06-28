@@ -50,7 +50,8 @@ public class SecurityConfig {
         "/swagger-ui/**",
         "/swagger-ui.html",
         "/actuator/health",
-        "/uploads/**"
+        "/uploads/**",
+"/api/public/**"
 ).permitAll()
                         // Admin only
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")

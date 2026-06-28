@@ -171,3 +171,21 @@
     color: var(--gv-stone);
     margin-top: 0.15rem;
   }
+  .quick-link-analytics {
+    border-color: #C9A14A;
+    background: linear-gradient(135deg, rgba(201,161,74,0.06) 0%, rgba(201,161,74,0.02) 100%);
+    position: relative;
+  }
+  
+  .analytics-badge {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    background: #C9A14A;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
