@@ -6,6 +6,13 @@ import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../models/auth.model';
 import { PawnTicketRequest, PawnTicketResponse } from '../models/ticket.model';
 
+export interface RenewalRequest {
+  extensionMonths: number;
+  interestPaid: number;
+  paymentMethod: 'CASH' | 'CARD' | 'ONLINE_TRANSFER' | 'LANKAQR';
+  referenceNumber?: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class TicketService {
   private apiUrl = environment.apiUrl;
@@ -24,7 +31,6 @@ export class TicketService {
       .pipe(map((res) => res.data));
   }
 
-  // Shop-side
   getShopTickets(shopId: number): Observable<PawnTicketResponse[]> {
     return this.http
       .get<ApiResponse<PawnTicketResponse[]>>(`${this.apiUrl}/shop/tickets/shop/${shopId}`)
@@ -46,6 +52,12 @@ export class TicketService {
   redeemTicket(ticketId: number): Observable<PawnTicketResponse> {
     return this.http
       .put<ApiResponse<PawnTicketResponse>>(`${this.apiUrl}/shop/tickets/${ticketId}/redeem`, {})
+      .pipe(map((res) => res.data));
+  }
+
+  renewTicket(ticketId: number, request: RenewalRequest): Observable<PawnTicketResponse> {
+    return this.http
+      .put<ApiResponse<PawnTicketResponse>>(`${this.apiUrl}/shop/tickets/${ticketId}/renew`, request)
       .pipe(map((res) => res.data));
   }
 

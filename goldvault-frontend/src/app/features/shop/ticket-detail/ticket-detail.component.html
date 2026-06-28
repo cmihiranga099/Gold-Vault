@@ -6,13 +6,9 @@
   </a>
 
   @if (loading()) {
-    <div class="detail-loading">
-      <p-progressSpinner strokeWidth="3" />
-    </div>
+    <div class="detail-loading"><p-progressSpinner strokeWidth="3" /></div>
   } @else if (errorMessage()) {
-    <div class="detail-empty gv-card">
-      <p>{{ errorMessage() }}</p>
-    </div>
+    <div class="detail-empty gv-card"><p>{{ errorMessage() }}</p></div>
   } @else if (ticket()) {
     <div class="detail-grid">
       <div class="detail-main">
@@ -25,7 +21,14 @@
                 {{ ticket()!.customerName }} &middot; {{ ticket()!.customerNic }}
               </a>
             </div>
-            <p-tag [value]="ticket()!.status" [severity]="statusSeverity(ticket()!.status)" />
+            <div class="header-right">
+              <p-tag [value]="ticket()!.status" [severity]="statusSeverity(ticket()!.status)" />
+              @if (ticket()!.renewalCount > 0) {
+                <span class="renewal-badge">
+                  <i class="pi pi-refresh"></i> {{ ticket()!.renewalCount }}x renewed
+                </span>
+              }
+            </div>
           </div>
 
           <div class="detail-stats">
@@ -38,6 +41,10 @@
               <span class="stat-value gv-mono" [class.overdue]="ticket()!.overdue">
                 LKR {{ formatCurrency(ticket()!.outstandingBalance) }}
               </span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Accrued interest today</span>
+              <span class="stat-value gv-mono">LKR {{ formatCurrency(ticket()!.accruedInterestToday) }}</span>
             </div>
             <div class="stat">
               <span class="stat-label">{{ 'ticketDetail.interestRate' | translate }}</span>
@@ -63,7 +70,7 @@
             <p class="detail-notes">{{ ticket()!.notes }}</p>
           }
 
-          <!-- Action buttons row -->
+          <!-- Action buttons -->
           <div class="action-row">
             @if (ticket()!.status === 'ACTIVE' || ticket()!.status === 'EXPIRED') {
               <p-button
@@ -72,9 +79,13 @@
                 styleClass="gv-submit-btn"
                 (onClick)="openPaymentDialog()"
               />
+              <p-button
+                label="Extend ticket"
+                icon="pi pi-refresh"
+                severity="warn"
+                (onClick)="openRenewalDialog()"
+              />
             }
-
-            <!-- PDF Download button — always visible -->
             <p-button
               [label]="'ticketDetail.downloadReceipt' | translate"
               icon="pi pi-file-pdf"
@@ -89,6 +100,7 @@
           }
         </div>
 
+        <!-- Gold items -->
         <div class="detail-card gv-card">
           <h2>{{ 'ticketDetail.pawnedItems' | translate }}</h2>
           <div class="items-list">
@@ -106,6 +118,7 @@
           </div>
         </div>
 
+        <!-- Payment history -->
         <div class="detail-card gv-card">
           <h2>{{ 'ticketDetail.paymentHistory' | translate }}</h2>
           @if (payments().length === 0) {
@@ -113,10 +126,17 @@
           } @else {
             <div class="payment-list">
               @for (payment of payments(); track payment.id) {
-                <div class="payment-row">
+                <div class="payment-row" [class.renewal-row]="payment.paymentType === 'RENEWAL'">
                   <div>
-                    <span class="payment-type">{{ payment.paymentType }}</span>
-                    <span class="payment-date">{{ payment.paymentDate | date:'MMM d, y, h:mm a' }} &middot; {{ payment.paymentMethod }}</span>
+                    <span class="payment-type">
+                      @if (payment.paymentType === 'RENEWAL') {
+                        <i class="pi pi-refresh"></i>
+                      }
+                      {{ payment.paymentType }}
+                    </span>
+                    <span class="payment-date">
+                      {{ payment.paymentDate | date:'MMM d, y, h:mm a' }} &middot; {{ payment.paymentMethod }}
+                    </span>
                   </div>
                   <span class="payment-amount gv-mono">LKR {{ formatCurrency(payment.amount) }}</span>
                 </div>
@@ -136,6 +156,7 @@
   }
 </div>
 
+<!-- ── Payment dialog ──────────────────────────────────────────────────────── -->
 <p-dialog
   [header]="'ticketDetail.collectPaymentDialog' | translate"
   [(visible)]="showPaymentDialog"
@@ -145,31 +166,92 @@
   <form [formGroup]="paymentForm" (ngSubmit)="submitPayment()" class="payment-form">
     <div class="field">
       <label for="paymentType">{{ 'ticketDetail.paymentType' | translate }}</label>
-      <p-select
-        inputId="paymentType"
-        formControlName="paymentType"
-        [options]="paymentTypes()"
-        optionLabel="label"
-        optionValue="value"
+      <p-select inputId="paymentType" formControlName="paymentType"
+        [options]="paymentTypes()" optionLabel="label" optionValue="value" styleClass="w-full" />
+    </div>
+    <div class="field">
+      <label for="amount">{{ 'ticketDetail.amount' | translate }}</label>
+      <p-inputNumber inputId="amount" formControlName="amount"
+        mode="decimal" [minFractionDigits]="2" styleClass="w-full" />
+    </div>
+    <div class="field">
+      <label for="paymentMethod">{{ 'ticketDetail.paymentMethod' | translate }}</label>
+      <p-select inputId="paymentMethod" formControlName="paymentMethod"
+        [options]="paymentMethods()" optionLabel="label" optionValue="value" styleClass="w-full" />
+    </div>
+    <div class="field">
+      <label for="referenceNumber">{{ 'ticketDetail.referenceNo' | translate }}</label>
+      <input id="referenceNumber" type="text" pInputText formControlName="referenceNumber" class="w-full" />
+    </div>
+    @if (paymentError())   { <p-message severity="error"   [text]="paymentError()!"   styleClass="w-full" /> }
+    @if (paymentSuccess()) { <p-message severity="success" [text]="paymentSuccess()!" styleClass="w-full" /> }
+    <p-button type="submit" [label]="'ticketDetail.recordPayment' | translate"
+      styleClass="gv-submit-btn w-full" [loading]="paymentLoading()" />
+  </form>
+</p-dialog>
+
+<!-- ── Renewal dialog ──────────────────────────────────────────────────────── -->
+<p-dialog
+  header="Extend Pawn Ticket"
+  [(visible)]="showRenewalDialog"
+  [modal]="true"
+  [style]="{ width: '440px' }"
+>
+  @if (ticket()) {
+    <div class="renewal-info-box">
+      <div class="renewal-info-row">
+        <span>Current expiry</span>
+        <strong>{{ ticket()!.expiryDate | date:'MMM d, y' }}</strong>
+      </div>
+      <div class="renewal-info-row">
+        <span>Accrued interest due</span>
+        <strong class="gv-mono">LKR {{ formatCurrency(ticket()!.accruedInterestToday) }}</strong>
+      </div>
+      <div class="renewal-info-row">
+        <span>Times renewed</span>
+        <strong>{{ ticket()!.renewalCount }}</strong>
+      </div>
+    </div>
+  }
+
+  <form [formGroup]="renewalForm" (ngSubmit)="submitRenewal()" class="payment-form">
+    <div class="field">
+      <label for="extensionMonths">Extend by (months)</label>
+      <p-inputNumber
+        inputId="extensionMonths"
+        formControlName="extensionMonths"
+        [min]="1" [max]="24"
         styleClass="w-full"
       />
+      <span class="field-hint">
+        @if (ticket() && renewalForm.get('extensionMonths')?.value) {
+          New expiry will be:
+          <strong>
+            {{ ticket()!.expiryDate | date:'MMM d, y' }}
+            + {{ renewalForm.get('extensionMonths')?.value }} month(s)
+          </strong>
+        }
+      </span>
     </div>
 
     <div class="field">
-      <label for="amount">{{ 'ticketDetail.amount' | translate }}</label>
+      <label for="interestPaid">Interest payment (LKR)</label>
       <p-inputNumber
-        inputId="amount"
-        formControlName="amount"
+        inputId="interestPaid"
+        formControlName="interestPaid"
         mode="decimal"
         [minFractionDigits]="2"
         styleClass="w-full"
       />
+      <span class="field-hint">
+        Minimum: LKR {{ ticket() ? formatCurrency(ticket()!.accruedInterestToday) : '0.00' }}
+      </span>
     </div>
 
     <div class="field">
-      <label for="paymentMethod">{{ 'ticketDetail.paymentMethod' | translate }}</label>
+      <label for="renewalPaymentMethod">Payment method</label>
       <p-select
-        inputId="paymentMethod"
+        inputId="renewalPaymentMethod"
         formControlName="paymentMethod"
         [options]="paymentMethods()"
         optionLabel="label"
@@ -179,17 +261,19 @@
     </div>
 
     <div class="field">
-      <label for="referenceNumber">{{ 'ticketDetail.referenceNo' | translate }}</label>
-      <input id="referenceNumber" type="text" pInputText formControlName="referenceNumber" class="w-full" />
+      <label for="renewalRef">Reference number (optional)</label>
+      <input id="renewalRef" type="text" pInputText formControlName="referenceNumber" class="w-full" />
     </div>
 
-    @if (paymentError()) {
-      <p-message severity="error" [text]="paymentError()!" styleClass="w-full" />
-    }
-    @if (paymentSuccess()) {
-      <p-message severity="success" [text]="paymentSuccess()!" styleClass="w-full" />
-    }
+    @if (renewalError())   { <p-message severity="error"   [text]="renewalError()!"   styleClass="w-full" /> }
+    @if (renewalSuccess()) { <p-message severity="success" [text]="renewalSuccess()!" styleClass="w-full" /> }
 
-    <p-button type="submit" [label]="'ticketDetail.recordPayment' | translate" styleClass="gv-submit-btn w-full" [loading]="paymentLoading()" />
+    <p-button
+      type="submit"
+      label="Confirm extension"
+      icon="pi pi-refresh"
+      styleClass="gv-submit-btn w-full"
+      [loading]="renewalLoading()"
+    />
   </form>
 </p-dialog>

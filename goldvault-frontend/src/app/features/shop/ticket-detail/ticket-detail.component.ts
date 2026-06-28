@@ -24,41 +24,48 @@ import { PaymentResponse, PaymentType, PaymentMethod } from '../../../core/model
     CommonModule, ReactiveFormsModule, RouterLink,
     TagModule, ButtonModule, ProgressSpinnerModule, DialogModule,
     InputNumberModule, InputTextModule, SelectModule, MessageModule,
-    TranslatePipe,
-    TopnavComponent
+    TranslatePipe, TopnavComponent
   ],
   templateUrl: './ticket-detail.component.html',
   styleUrl: './ticket-detail.component.scss'
 })
 export class ShopTicketDetailComponent implements OnInit {
-  ticket = signal<PawnTicketResponse | null>(null);
+  ticket   = signal<PawnTicketResponse | null>(null);
   payments = signal<PaymentResponse[]>([]);
-  loading = signal(true);
+  loading  = signal(true);
   errorMessage = signal<string | null>(null);
 
+  // ── Payment dialog ────────────────────────────────────────────────────────────
   showPaymentDialog = false;
-  paymentLoading = signal(false);
-  paymentError = signal<string | null>(null);
-  paymentSuccess = signal<string | null>(null);
+  paymentLoading    = signal(false);
+  paymentError      = signal<string | null>(null);
+  paymentSuccess    = signal<string | null>(null);
 
-  // PDF download state
+  // ── Renewal dialog ────────────────────────────────────────────────────────────
+  showRenewalDialog  = false;
+  renewalLoading     = signal(false);
+  renewalError       = signal<string | null>(null);
+  renewalSuccess     = signal<string | null>(null);
+
+  // ── PDF ───────────────────────────────────────────────────────────────────────
   pdfLoading = signal(false);
-  pdfError = signal<string | null>(null);
+  pdfError   = signal<string | null>(null);
 
   paymentTypes = computed<{ label: string; value: PaymentType }[]>(() => [
-    { label: this.translate.instant('ticketDetail.paymentTypes.INTEREST'), value: 'INTEREST' },
-    { label: this.translate.instant('ticketDetail.paymentTypes.PARTIAL'), value: 'PARTIAL' },
+    { label: this.translate.instant('ticketDetail.paymentTypes.INTEREST'),       value: 'INTEREST' },
+    { label: this.translate.instant('ticketDetail.paymentTypes.PARTIAL'),        value: 'PARTIAL' },
     { label: this.translate.instant('ticketDetail.paymentTypes.FULL_REDEMPTION'), value: 'FULL_REDEMPTION' }
   ]);
 
   paymentMethods = computed<{ label: string; value: PaymentMethod }[]>(() => [
-    { label: this.translate.instant('ticketDetail.paymentMethods.CASH'), value: 'CASH' },
-    { label: this.translate.instant('ticketDetail.paymentMethods.CARD'), value: 'CARD' },
+    { label: this.translate.instant('ticketDetail.paymentMethods.CASH'),            value: 'CASH' },
+    { label: this.translate.instant('ticketDetail.paymentMethods.CARD'),            value: 'CARD' },
     { label: this.translate.instant('ticketDetail.paymentMethods.ONLINE_TRANSFER'), value: 'ONLINE_TRANSFER' },
-    { label: this.translate.instant('ticketDetail.paymentMethods.LANKAQR'), value: 'LANKAQR' }
+    { label: this.translate.instant('ticketDetail.paymentMethods.LANKAQR'),         value: 'LANKAQR' }
   ]);
 
   paymentForm: ReturnType<FormBuilder['group']>;
+  renewalForm: ReturnType<FormBuilder['group']>;
 
   private ticketId!: number;
 
@@ -70,9 +77,16 @@ export class ShopTicketDetailComponent implements OnInit {
     private translate: TranslateService
   ) {
     this.paymentForm = this.fb.group({
-      amount: [null as number | null, [Validators.required, Validators.min(0.01)]],
-      paymentType: ['INTEREST' as PaymentType, Validators.required],
-      paymentMethod: ['CASH' as PaymentMethod, Validators.required],
+      amount:          [null as number | null, [Validators.required, Validators.min(0.01)]],
+      paymentType:     ['INTEREST' as PaymentType, Validators.required],
+      paymentMethod:   ['CASH' as PaymentMethod,   Validators.required],
+      referenceNumber: ['']
+    });
+
+    this.renewalForm = this.fb.group({
+      extensionMonths: [3,    [Validators.required, Validators.min(1), Validators.max(24)]],
+      interestPaid:    [null as number | null, [Validators.required, Validators.min(0.01)]],
+      paymentMethod:   ['CASH' as PaymentMethod, Validators.required],
       referenceNumber: ['']
     });
   }
@@ -95,6 +109,8 @@ export class ShopTicketDetailComponent implements OnInit {
         this.loading.set(false);
         this.loadPayments();
         this.paymentForm.patchValue({ amount: ticket.outstandingBalance });
+        // Pre-fill renewal interest field with today's accrued interest
+        this.renewalForm.patchValue({ interestPaid: ticket.accruedInterestToday });
       },
       error: () => {
         this.errorMessage.set('Could not load this ticket.');
@@ -110,6 +126,8 @@ export class ShopTicketDetailComponent implements OnInit {
     });
   }
 
+  // ── Payment ───────────────────────────────────────────────────────────────────
+
   openPaymentDialog(): void {
     this.paymentError.set(null);
     this.paymentSuccess.set(null);
@@ -117,21 +135,16 @@ export class ShopTicketDetailComponent implements OnInit {
   }
 
   submitPayment(): void {
-    if (this.paymentForm.invalid) {
-      this.paymentForm.markAllAsTouched();
-      return;
-    }
-
+    if (this.paymentForm.invalid) { this.paymentForm.markAllAsTouched(); return; }
     this.paymentLoading.set(true);
     this.paymentError.set(null);
-
     const raw = this.paymentForm.getRawValue();
 
     this.paymentService.recordPayment({
-      ticketId: this.ticketId,
-      amount: raw.amount!,
-      paymentType: raw.paymentType!,
-      paymentMethod: raw.paymentMethod!,
+      ticketId:        this.ticketId,
+      amount:          raw.amount!,
+      paymentType:     raw.paymentType!,
+      paymentMethod:   raw.paymentMethod!,
       referenceNumber: raw.referenceNumber || undefined
     }).subscribe({
       next: (payment) => {
@@ -142,10 +155,7 @@ export class ShopTicketDetailComponent implements OnInit {
             : this.translate.instant('ticketDetail.paymentSuccess')
         );
         this.loadTicket();
-        setTimeout(() => {
-          this.showPaymentDialog = false;
-          this.paymentSuccess.set(null);
-        }, 1500);
+        setTimeout(() => { this.showPaymentDialog = false; this.paymentSuccess.set(null); }, 1500);
       },
       error: (err) => {
         this.paymentLoading.set(false);
@@ -154,19 +164,57 @@ export class ShopTicketDetailComponent implements OnInit {
     });
   }
 
-  // ── PDF Download ─────────────────────────────────────────────────────────────
+  // ── Renewal ───────────────────────────────────────────────────────────────────
+
+  openRenewalDialog(): void {
+    this.renewalError.set(null);
+    this.renewalSuccess.set(null);
+    // Always refresh the interest amount when opening
+    const t = this.ticket();
+    if (t) this.renewalForm.patchValue({ interestPaid: t.accruedInterestToday });
+    this.showRenewalDialog = true;
+  }
+
+  submitRenewal(): void {
+    if (this.renewalForm.invalid) { this.renewalForm.markAllAsTouched(); return; }
+    this.renewalLoading.set(true);
+    this.renewalError.set(null);
+    const raw = this.renewalForm.getRawValue();
+
+    this.ticketService.renewTicket(this.ticketId, {
+      extensionMonths: raw.extensionMonths!,
+      interestPaid:    raw.interestPaid!,
+      paymentMethod:   raw.paymentMethod!,
+      referenceNumber: raw.referenceNumber || undefined
+    }).subscribe({
+      next: (ticket) => {
+        this.renewalLoading.set(false);
+        this.renewalSuccess.set(
+          `Ticket extended to ${new Date(ticket.expiryDate).toLocaleDateString('en-LK', { day:'numeric', month:'short', year:'numeric' })}`
+        );
+        this.ticket.set(ticket);
+        this.loadPayments();
+        setTimeout(() => { this.showRenewalDialog = false; this.renewalSuccess.set(null); }, 2000);
+      },
+      error: (err) => {
+        this.renewalLoading.set(false);
+        this.renewalError.set(err?.error?.message || 'Could not extend ticket.');
+      }
+    });
+  }
+
+  // ── PDF ───────────────────────────────────────────────────────────────────────
 
   downloadReceipt(): void {
     this.pdfLoading.set(true);
     this.pdfError.set(null);
-
     this.ticketService.downloadReceipt(this.ticketId).subscribe({
       next: (response) => {
         this.pdfLoading.set(false);
         const blob = response.body!;
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
+        const url  = window.URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
         a.download = `pawn-receipt-${this.ticket()?.ticketNumber ?? this.ticketId}.pdf`;
         a.click();
         window.URL.revokeObjectURL(url);
@@ -178,7 +226,7 @@ export class ShopTicketDetailComponent implements OnInit {
     });
   }
 
-  // ── Helpers ──────────────────────────────────────────────────────────────────
+  // ── Helpers ───────────────────────────────────────────────────────────────────
 
   statusSeverity(status: string): 'success' | 'warn' | 'danger' | 'secondary' {
     switch (status) {
