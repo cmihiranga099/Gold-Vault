@@ -135,6 +135,12 @@
         </dependency>
 
     </dependencies>
+    <!-- CSV parsing for bulk ticket import -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.11.0</version>
+        </dependency>
 
     <build>
         <plugins>
