@@ -23,16 +23,42 @@ export interface AdminUserResponse {
   createdAt: string;
 }
 
+export interface ShopLeaderboardEntry {
+  shopId:      number;
+  shopName:    string;
+  volume:      number;
+  ticketCount: number;
+}
+
 export interface DashboardSummaryResponse {
-  totalShops: number;
-  pendingShopApprovals: number;
-  activeShops: number;
-  totalCustomers: number;
-  activeTickets: number;
-  expiredTickets: number;
-  redeemedTickets: number;
-  totalOutstandingLoans: number;
-  todayCollection: number;
+  totalShops:              number;
+  pendingShopApprovals:    number;
+  activeShops:             number;
+  totalCustomers:          number;
+  activeTickets:           number;
+  expiredTickets:          number;
+  redeemedTickets:         number;
+  totalOutstandingLoans:   number;
+  todayCollection:         number;
+
+  auctionedTickets:        number;
+  npaRatePercent:          number;
+  redemptionRatePercent:   number;
+
+  openAuctions:            number;
+  totalAuctionBidVolume:   number;
+
+  totalReviews:            number;
+  platformAverageRating:   number;
+
+  suspendedShops:          number;
+  shopsAddedThisMonth:     number;
+
+  collectionTrendLast6Months: Record<string, number>;
+  newTicketsTrendLast6Months: Record<string, number>;
+
+  topShopsByVolume:          ShopLeaderboardEntry[];
+  inactiveShopsLast30Days:   ShopLeaderboardEntry[];
 }
 
 export interface ShopRevenueBreakdown {

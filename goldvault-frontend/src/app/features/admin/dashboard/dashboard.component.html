@@ -4,7 +4,7 @@
   <div class="admin-header">
     <div>
       <span class="gv-eyebrow">{{ 'admin.eyebrow' | translate }}</span>
-      <h1>{{ 'admin.dashTitle' | translate }}</h1>
+      <h1>{{ 'admin.dashTitle' | translate }} <span class="super-badge">PLATFORM</span></h1>
     </div>
     <div class="admin-actions">
       <a routerLink="/admin/shops" class="action-link">
@@ -17,14 +17,12 @@
   </div>
 
   @if (loading()) {
-    <div class="admin-loading">
-      <p-progressSpinner strokeWidth="3" />
-    </div>
+    <div class="admin-loading"><p-progressSpinner strokeWidth="3" /></div>
   } @else if (errorMessage()) {
-    <div class="admin-empty gv-card">
-      <p>{{ errorMessage() }}</p>
-    </div>
+    <div class="admin-empty gv-card"><p>{{ errorMessage() }}</p></div>
   } @else if (summary()) {
+
+    <!-- ── Core KPI grid (existing, kept) ─────────────────────────────────── -->
     <div class="stat-grid">
       <div class="stat-card gv-card stat-card-highlight">
         <span class="stat-label">{{ 'admin.todayCollectionAllShops' | translate }}</span>
@@ -56,5 +54,125 @@
         <span class="stat-value gv-mono">LKR {{ formatCurrency(summary()!.totalOutstandingLoans) }}</span>
       </div>
     </div>
+
+    <!-- ── NEW: platform health KPIs ───────────────────────────────────────── -->
+    <div class="section-label">Platform health</div>
+    <div class="stat-grid">
+      <div class="stat-card gv-card" [class.stat-card-danger]="npaSeverity() === 'danger'" [class.stat-card-warning]="npaSeverity() === 'warn'">
+        <span class="stat-label">NPA rate (expired tickets)</span>
+        <span class="stat-value">{{ summary()!.npaRatePercent }}%</span>
+      </div>
+
+      <div class="stat-card gv-card">
+        <span class="stat-label">Redemption rate</span>
+        <span class="stat-value">{{ summary()!.redemptionRatePercent }}%</span>
+      </div>
+
+      <div class="stat-card gv-card">
+        <span class="stat-label">Open auctions</span>
+        <span class="stat-value">{{ summary()!.openAuctions }}</span>
+      </div>
+
+      <div class="stat-card gv-card">
+        <span class="stat-label">Total auction bid volume</span>
+        <span class="stat-value gv-mono">LKR {{ formatCurrency(summary()!.totalAuctionBidVolume) }}</span>
+      </div>
+
+      <div class="stat-card gv-card">
+        <span class="stat-label">Platform avg. rating</span>
+        <span class="stat-value">{{ summary()!.platformAverageRating }} ★</span>
+      </div>
+
+      <div class="stat-card gv-card">
+        <span class="stat-label">Total reviews</span>
+        <span class="stat-value">{{ summary()!.totalReviews }}</span>
+      </div>
+
+      <div class="stat-card gv-card">
+        <span class="stat-label">New shops this month</span>
+        <span class="stat-value">{{ summary()!.shopsAddedThisMonth }}</span>
+      </div>
+
+      <div class="stat-card gv-card" [class.stat-card-danger]="summary()!.suspendedShops > 0">
+        <span class="stat-label">Suspended shops</span>
+        <span class="stat-value">{{ summary()!.suspendedShops }}</span>
+      </div>
+    </div>
+
+    <!-- ── NEW: trend charts ──────────────────────────────────────────────── -->
+    <div class="charts-row">
+      <div class="chart-card gv-card">
+        <h2 class="chart-title">Collection trend <span class="chart-period">last 6 months</span></h2>
+        <div class="bar-chart">
+          @for (month of months(summary()!.collectionTrendLast6Months); track month) {
+            <div class="bar-col">
+              <span class="bar-val bar-val-sm">{{ formatCurrency(summary()!.collectionTrendLast6Months[month]) }}</span>
+              <div class="bar-wrap">
+                <div class="bar bar-gold" [style.height]="barHeight(summary()!.collectionTrendLast6Months[month], maxVal(summary()!.collectionTrendLast6Months))"></div>
+              </div>
+              <span class="bar-label">{{ shortMonth(month) }}</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="chart-card gv-card">
+        <h2 class="chart-title">New tickets granted <span class="chart-period">last 6 months</span></h2>
+        <div class="bar-chart">
+          @for (month of months(summary()!.newTicketsTrendLast6Months); track month) {
+            <div class="bar-col">
+              <span class="bar-val">{{ summary()!.newTicketsTrendLast6Months[month] }}</span>
+              <div class="bar-wrap">
+                <div class="bar bar-blue" [style.height]="barHeight(summary()!.newTicketsTrendLast6Months[month], maxVal(summary()!.newTicketsTrendLast6Months))"></div>
+              </div>
+              <span class="bar-label">{{ shortMonth(month) }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- ── NEW: leaderboard + churn risk ──────────────────────────────────── -->
+    <div class="bottom-row">
+      <div class="chart-card gv-card">
+        <h2 class="chart-title">Top shops <span class="chart-period">by loan volume this month</span></h2>
+        @if (summary()!.topShopsByVolume.length === 0) {
+          <p class="no-data">No ticket activity yet this month.</p>
+        } @else {
+          <div class="leaderboard">
+            @for (shop of summary()!.topShopsByVolume; track shop.shopId; let i = $index) {
+              <div class="leaderboard-row">
+                <span class="lb-rank">{{ i + 1 }}</span>
+                <div class="lb-info">
+                  <span class="lb-name">{{ shop.shopName }}</span>
+                  <span class="lb-meta">{{ shop.ticketCount }} ticket(s)</span>
+                </div>
+                <span class="lb-volume gv-mono">LKR {{ formatCurrency(shop.volume) }}</span>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="chart-card gv-card">
+        <h2 class="chart-title">Churn risk <span class="chart-period">no tickets in 30 days</span></h2>
+        @if (summary()!.inactiveShopsLast30Days.length === 0) {
+          <p class="no-data">All active shops have recent activity. 🎉</p>
+        } @else {
+          <div class="leaderboard">
+            @for (shop of summary()!.inactiveShopsLast30Days; track shop.shopId) {
+              <div class="leaderboard-row leaderboard-row-warn">
+                <i class="pi pi-exclamation-triangle lb-warn-icon"></i>
+                <div class="lb-info">
+                  <span class="lb-name">{{ shop.shopName }}</span>
+                  <span class="lb-meta">No new tickets in last 30 days</span>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
   }
 </div>

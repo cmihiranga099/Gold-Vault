@@ -106,3 +106,134 @@
     font-weight: 600;
     color: var(--gv-ink);
   }
+  .super-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    background: #1A1A2E;
+    color: #C9A14A;
+    padding: 2px 8px;
+    border-radius: 5px;
+    vertical-align: middle;
+    margin-left: 8px;
+  }
+  
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #aaa;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    margin: 2rem 0 0.75rem;
+  }
+  
+  .stat-card-danger {
+    border-color: #dc2626;
+    background: rgba(220,38,38,0.04);
+  }
+  
+  // ── Charts ───────────────────────────────────────────────────────────────────
+  .charts-row, .bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  
+    @media (max-width: 760px) { grid-template-columns: 1fr; }
+  }
+  
+  .chart-card { padding: 1.25rem 1.5rem; }
+  
+  .chart-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+    margin: 0 0 1.25rem;
+  }
+  
+  .chart-period {
+    font-size: 11px;
+    font-weight: 400;
+    color: #aaa;
+    margin-left: 6px;
+  }
+  
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 175px;
+    padding-bottom: 28px;
+    position: relative;
+  }
+  
+  .bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+    gap: 4px;
+  }
+  
+  .bar-val { font-size: 11px; font-weight: 600; color: #444; white-space: nowrap; }
+  .bar-val-sm { font-size: 9px; }
+  
+  .bar-wrap { flex: 1; display: flex; align-items: flex-end; width: 100%; }
+  
+  .bar {
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+    min-height: 4px;
+    transition: height 0.3s ease;
+  }
+  
+  .bar-blue { background: #3B8BD4; }
+  .bar-gold { background: #C9A14A; }
+  
+  .bar-label {
+    font-size: 10px;
+    color: #aaa;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+  }
+  
+  // ── Leaderboard ──────────────────────────────────────────────────────────────
+  .leaderboard { display: flex; flex-direction: column; gap: 4px; }
+  
+  .leaderboard-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    transition: background 0.12s;
+  
+    &:hover { background: #f8f6f0; }
+  }
+  
+  .leaderboard-row-warn { background: rgba(217,119,6,0.06); }
+  
+  .lb-rank {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #f0ede8;
+    color: #888;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  
+  .lb-warn-icon { color: #d97706; font-size: 16px; }
+  
+  .lb-info { flex: 1; min-width: 0; }
+  .lb-name { display: block; font-size: 13px; font-weight: 500; color: #222; }
+  .lb-meta { display: block; font-size: 11px; color: #aaa; margin-top: 1px; }
+  .lb-volume { font-size: 13px; color: #1a1a1a; white-space: nowrap; }
+  
+  .no-data { font-size: 13px; color: #aaa; text-align: center; padding: 2rem 0; }

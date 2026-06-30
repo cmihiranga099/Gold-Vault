@@ -37,4 +37,31 @@ export class AdminDashboardComponent implements OnInit {
   formatCurrency(amount: number): string {
     return new Intl.NumberFormat('en-LK', { minimumFractionDigits: 2 }).format(amount);
   }
+
+  // ── Trend chart helpers ─────────────────────────────────────────────────────
+
+  months(map: Record<string, number>): string[] {
+    return Object.keys(map ?? {});
+  }
+
+  shortMonth(ym: string): string {
+    const [y, m] = ym.split('-');
+    return new Date(+y, +m - 1, 1).toLocaleString('en-LK', { month: 'short' }) + ' ' + y.slice(2);
+  }
+
+  maxVal(map: Record<string, number>): number {
+    return Math.max(...Object.values(map ?? {}), 1);
+  }
+
+  barHeight(val: number, max: number): string {
+    if (!max) return '4px';
+    return Math.max(4, Math.round((val / max) * 130)) + 'px';
+  }
+
+  npaSeverity(): 'success' | 'warn' | 'danger' {
+    const rate = this.summary()?.npaRatePercent ?? 0;
+    if (rate < 5) return 'success';
+    if (rate < 15) return 'warn';
+    return 'danger';
+  }
 }
