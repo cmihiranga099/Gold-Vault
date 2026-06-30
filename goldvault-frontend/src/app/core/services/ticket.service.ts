@@ -12,6 +12,20 @@ export interface RenewalRequest {
   paymentMethod: 'CASH' | 'CARD' | 'ONLINE_TRANSFER' | 'LANKAQR';
   referenceNumber?: string;
 }
+export interface CsvImportRowResult {
+  rowNumber:    number;
+  success:      boolean;
+  ticketNumber: string | null;
+  customerNic:  string | null;
+  errorMessage: string | null;
+}
+
+export interface CsvImportSummary {
+  totalRows:     number;
+  successCount:  number;
+  failureCount:  number;
+  results:       CsvImportRowResult[];
+}
 
 @Injectable({ providedIn: 'root' })
 export class TicketService {
@@ -65,6 +79,21 @@ export class TicketService {
     return this.http.get(
       `${this.apiUrl}/shop/tickets/${ticketId}/receipt/pdf`,
       { observe: 'response', responseType: 'blob' }
+    );
+  }
+
+  bulkImportCsv(shopId: number, file: File): Observable<ApiResponse<CsvImportSummary>> {
+    const form = new FormData();
+    form.append('file', file);
+    return this.http.post<ApiResponse<CsvImportSummary>>(
+      `${this.apiUrl}/shop/tickets/bulk-import/${shopId}`, form
+    );
+  }
+
+  downloadCsvTemplate(): Observable<Blob> {
+    return this.http.get(
+      `${this.apiUrl}/shop/tickets/bulk-import/template`,
+      { responseType: 'blob' }
     );
   }
 }

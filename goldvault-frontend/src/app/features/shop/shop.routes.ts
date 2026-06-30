@@ -38,6 +38,10 @@ export const SHOP_ROUTES: Routes = [
     loadComponent: () => import('./marketplace/marketplace.component').then(m => m.ShopMarketplaceComponent)
   },
   {
+    path: 'bulk-import',
+    loadComponent: () => import('./bulk-import/bulk-import.component').then(m => m.BulkImportComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'

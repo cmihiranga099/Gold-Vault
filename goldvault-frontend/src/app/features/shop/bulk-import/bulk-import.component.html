@@ -1,0 +1,102 @@
+<app-topnav />
+
+<div class="import-page">
+  <a routerLink="/shop/dashboard" class="back-link">
+    <i class="pi pi-arrow-left"></i> Back to dashboard
+  </a>
+
+  <div class="import-card gv-card">
+    <span class="gv-eyebrow">Bulk import</span>
+    <h1>Import pawn tickets from CSV</h1>
+    <p class="import-sub">
+      Upload existing pawn tickets in bulk during onboarding. Each row creates one ticket with one gold item.
+      Customers are matched by NIC automatically — new customers are created if no match is found.
+    </p>
+
+    <div class="template-box">
+      <div class="template-info">
+        <i class="pi pi-file-excel"></i>
+        <div>
+          <span class="template-title">Download CSV template</span>
+          <span class="template-desc">Includes correct column headers and 2 example rows.</span>
+        </div>
+      </div>
+      <p-button
+        label="Download template"
+        icon="pi pi-download"
+        severity="secondary"
+        [loading]="templateDownloading()"
+        (onClick)="downloadTemplate()"
+      />
+    </div>
+
+    <!-- Upload area -->
+    <div class="upload-section">
+      @if (fileName()) {
+        <div class="file-selected">
+          <i class="pi pi-file"></i>
+          <span class="file-name">{{ fileName() }}</span>
+          <button type="button" class="remove-file-btn" (click)="removeFile()">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+      } @else {
+        <label for="csvFile" class="drop-zone">
+          <i class="pi pi-cloud-upload"></i>
+          <span>Click to select a CSV file</span>
+          <span class="drop-hint">.csv files only</span>
+          <input id="csvFile" type="file" accept=".csv" (change)="onFileSelected($event)" style="display:none" />
+        </label>
+      }
+
+      @if (uploadError()) {
+        <p class="upload-error">{{ uploadError() }}</p>
+      }
+
+      <p-button
+        label="Import tickets"
+        icon="pi pi-upload"
+        styleClass="gv-submit-btn"
+        [loading]="uploading()"
+        [disabled]="!selectedFile()"
+        (onClick)="upload()"
+      />
+    </div>
+
+    <!-- Results -->
+    @if (summary()) {
+      <div class="results-section">
+        <div class="results-summary">
+          <div class="result-stat result-stat-total">
+            <span class="result-num">{{ summary()!.totalRows }}</span>
+            <span class="result-label">Total rows</span>
+          </div>
+          <div class="result-stat result-stat-success">
+            <span class="result-num">{{ summary()!.successCount }}</span>
+            <span class="result-label">Imported</span>
+          </div>
+          <div class="result-stat result-stat-failed">
+            <span class="result-num">{{ summary()!.failureCount }}</span>
+            <span class="result-label">Failed</span>
+          </div>
+        </div>
+
+        <div class="results-table">
+          @for (row of summary()!.results; track row.rowNumber) {
+            <div class="result-row" [class.result-row-fail]="!row.success">
+              <span class="row-num">Row {{ row.rowNumber }}</span>
+              <span class="row-nic gv-mono">{{ row.customerNic || '—' }}</span>
+              @if (row.success) {
+                <span class="row-ticket gv-mono">{{ row.ticketNumber }}</span>
+                <p-tag value="Imported" severity="success" />
+              } @else {
+                <span class="row-error">{{ row.errorMessage }}</span>
+                <p-tag value="Failed" severity="danger" />
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>
