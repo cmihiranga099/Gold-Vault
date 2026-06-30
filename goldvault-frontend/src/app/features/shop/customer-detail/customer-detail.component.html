@@ -2,66 +2,148 @@
 
 <div class="detail-page">
   <a routerLink="/shop/customers" class="back-link">
-    <i class="pi pi-arrow-left"></i> {{ 'customerDetail.backBtn' | translate }}
+    <i class="pi pi-arrow-left"></i> Back to customers
   </a>
 
   @if (loading()) {
-    <div class="detail-loading">
-      <p-progressSpinner strokeWidth="3" />
-    </div>
+    <div class="detail-loading"><p-progressSpinner strokeWidth="3" /></div>
   } @else if (errorMessage()) {
-    <div class="detail-empty gv-card">
-      <p>{{ errorMessage() }}</p>
-    </div>
+    <div class="detail-empty gv-card"><p>{{ errorMessage() }}</p></div>
   } @else if (customer()) {
-    <div class="profile-card gv-card">
-      <div class="profile-header">
-        <div>
-          <span class="gv-eyebrow">{{ 'customerDetail.eyebrow' | translate }}</span>
-          <h1>{{ customer()!.fullName }}</h1>
-        </div>
-        <p-tag [value]="customer()!.kycStatus" />
-      </div>
+    <div class="detail-grid">
+      <div class="detail-main">
 
-      <div class="profile-grid">
-        <div class="profile-field">
-          <span class="field-label">{{ 'customerDetail.nic' | translate }}</span>
-          <span class="field-value gv-mono">{{ customer()!.nic }}</span>
-        </div>
-        <div class="profile-field">
-          <span class="field-label">{{ 'customerDetail.phone' | translate }}</span>
-          <span class="field-value">{{ customer()!.phone || '—' }}</span>
-        </div>
-        <div class="profile-field">
-          <span class="field-label">{{ 'customerDetail.email' | translate }}</span>
-          <span class="field-value">{{ customer()!.email || '—' }}</span>
-        </div>
-        <div class="profile-field">
-          <span class="field-label">{{ 'customerDetail.address' | translate }}</span>
-          <span class="field-value">{{ customer()!.address || '—' }}</span>
-        </div>
-      </div>
+        <!-- Customer info -->
+        <div class="detail-card gv-card gv-ticket-edge">
+          <div class="detail-card-header">
+            <div>
+              <span class="gv-eyebrow">Customer</span>
+              <h1>{{ customer()!.fullName }}</h1>
+              <span class="customer-nic gv-mono">{{ customer()!.nic }}</span>
+            </div>
+            <p-tag [value]="customer()!.kycStatus" severity="secondary" />
+          </div>
 
-      <a [routerLink]="['/shop/tickets/new']" [queryParams]="{ customerId: customer()!.id }" class="grant-link">
-        <i class="pi pi-plus"></i> {{ 'customerDetail.grantNewTicket' | translate }}
-      </a>
-    </div>
+          <div class="detail-stats">
+            @if (customer()!.phone) {
+              <div class="stat">
+                <span class="stat-label">Phone</span>
+                <span class="stat-value">{{ customer()!.phone }}</span>
+              </div>
+            }
+            @if (customer()!.email) {
+              <div class="stat">
+                <span class="stat-label">Email</span>
+                <span class="stat-value">{{ customer()!.email }}</span>
+              </div>
+            }
+            @if (customer()!.address) {
+              <div class="stat">
+                <span class="stat-label">Address</span>
+                <span class="stat-value">{{ customer()!.address }}</span>
+              </div>
+            }
+          </div>
 
-    <div class="tickets-card gv-card">
-      <h2>{{ 'customerDetail.pawnTickets' | translate }}</h2>
-      @if (tickets().length === 0) {
-        <p class="empty-text">{{ 'customerDetail.noTickets' | translate }}</p>
-      } @else {
-        <div class="ticket-list">
-          @for (ticket of tickets(); track ticket.id) {
-            <a [routerLink]="['/shop/tickets', ticket.id]" class="ticket-row">
-              <span class="ticket-number gv-mono">{{ ticket.ticketNumber }}</span>
-              <span class="ticket-amount gv-mono">LKR {{ formatCurrency(ticket.outstandingBalance) }}</span>
-              <p-tag [value]="ticket.status" [severity]="statusSeverity(ticket.status)" />
-            </a>
+          <!-- Shop rating summary -->
+          @if (shopRating() && shopRating()!.totalReviews > 0) {
+            <div class="rating-summary">
+              <span class="rating-avg">{{ shopRating()!.averageRating.toFixed(1) }}</span>
+              <div class="rating-stars">
+                @for (s of starsArray(5); track s) {
+                  <span [class]="s <= Math.round(shopRating()!.averageRating) ? 'star-filled' : 'star-empty'">★</span>
+                }
+              </div>
+              <span class="rating-count">{{ shopRating()!.totalReviews }} review(s)</span>
+            </div>
           }
         </div>
-      }
+
+        <!-- Tabs -->
+        <div class="tab-bar">
+          <button
+            class="tab-btn"
+            [class.tab-btn-active]="activeTab() === 'tickets'"
+            (click)="activeTab.set('tickets')"
+          >
+            <i class="pi pi-ticket"></i> Tickets ({{ tickets().length }})
+          </button>
+          <button
+            class="tab-btn"
+            [class.tab-btn-active]="activeTab() === 'reviews'"
+            (click)="activeTab.set('reviews')"
+          >
+            <i class="pi pi-star"></i> Reviews ({{ reviews().length }})
+          </button>
+        </div>
+
+        <!-- Tickets tab -->
+        @if (activeTab() === 'tickets') {
+          <div class="detail-card gv-card">
+            @if (tickets().length === 0) {
+              <p class="detail-empty-text">No tickets for this customer.</p>
+            } @else {
+              <div class="ticket-list">
+                @for (ticket of tickets(); track ticket.id) {
+                  <a [routerLink]="['/shop/tickets', ticket.id]" class="ticket-row">
+                    <div>
+                      <span class="ticket-num gv-mono">{{ ticket.ticketNumber }}</span>
+                      <span class="ticket-date">{{ ticket.pawnDate | date:'MMM d, y' }} → {{ ticket.expiryDate | date:'MMM d, y' }}</span>
+                    </div>
+                    <div class="ticket-row-right">
+                      <span class="ticket-amount gv-mono">LKR {{ formatCurrency(ticket.loanAmount) }}</span>
+                      <p-tag [value]="ticket.status" [severity]="statusSeverity(ticket.status)" />
+                    </div>
+                  </a>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Reviews tab -->
+        @if (activeTab() === 'reviews') {
+          <div class="detail-card gv-card">
+            @if (reviews().length === 0) {
+              <p class="detail-empty-text">No reviews for this shop yet.</p>
+            } @else {
+              <div class="reviews-list">
+                @for (review of reviews(); track review.id) {
+                  <div class="review-item" [class.review-hidden]="review.status === 'HIDDEN'">
+                    <div class="review-header">
+                      <div class="review-stars">
+                        @for (s of starsArray(5); track s) {
+                          <span [class]="s <= review.rating ? 'star-filled' : 'star-empty'">★</span>
+                        }
+                      </div>
+                      <span class="review-customer">{{ review.customerName }}</span>
+                      <span class="review-ticket gv-mono">{{ review.ticketNumber }}</span>
+                      <span class="review-date">{{ review.createdAt | date:'MMM d, y' }}</span>
+                      @if (review.status === 'HIDDEN') {
+                        <span class="hidden-badge">Hidden</span>
+                      }
+                    </div>
+                    @if (review.comment) {
+                      <p class="review-comment">"{{ review.comment }}"</p>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+
+      </div>
+
+      <!-- Side: NIC photo if present -->
+      <div class="detail-side">
+        @if (customer()!.nicPhotoUrl) {
+          <div class="gv-card nic-photo-card">
+            <span class="gv-eyebrow">NIC Photo</span>
+            <img [src]="customer()!.nicPhotoUrl" alt="NIC photo" class="nic-photo" />
+          </div>
+        }
+      </div>
     </div>
   }
 </div>

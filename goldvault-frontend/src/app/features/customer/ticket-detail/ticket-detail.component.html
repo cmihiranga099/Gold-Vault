@@ -6,22 +6,20 @@
   </a>
 
   @if (loading()) {
-    <div class="detail-loading">
-      <p-progressSpinner strokeWidth="3" />
-    </div>
+    <div class="detail-loading"><p-progressSpinner strokeWidth="3" /></div>
   } @else if (errorMessage()) {
-    <div class="detail-empty gv-card">
-      <p>{{ errorMessage() }}</p>
-    </div>
+    <div class="detail-empty gv-card"><p>{{ errorMessage() }}</p></div>
   } @else if (ticket()) {
     <div class="detail-grid">
-      <!-- Left column: ticket info -->
+
       <div class="detail-main">
+        <!-- Ticket info card -->
         <div class="detail-card gv-card gv-ticket-edge">
           <div class="detail-card-header">
             <div>
               <span class="gv-eyebrow">{{ 'ticketDetail.eyebrow' | translate }}</span>
               <h1 class="gv-mono">{{ ticket()!.ticketNumber }}</h1>
+              <span class="shop-name-line">{{ ticket()!.shopName }}</span>
             </div>
             <p-tag [value]="ticket()!.status" [severity]="statusSeverity(ticket()!.status)" />
           </div>
@@ -62,6 +60,7 @@
           }
         </div>
 
+        <!-- Gold items -->
         <div class="detail-card gv-card">
           <h2>{{ 'ticketDetail.pawnedItems' | translate }}</h2>
           <div class="items-list">
@@ -79,6 +78,7 @@
           </div>
         </div>
 
+        <!-- Payment history -->
         <div class="detail-card gv-card">
           <h2>{{ 'ticketDetail.paymentHistory' | translate }}</h2>
           @if (payments().length === 0) {
@@ -97,9 +97,97 @@
             </div>
           }
         </div>
+
+        <!-- ── Review section — only shown for REDEEMED tickets ── -->
+        @if (ticket()!.status === 'REDEEMED') {
+          <div class="detail-card gv-card review-card">
+
+            @if (alreadyReviewed() && existingReview()) {
+              <!-- Already reviewed — show submitted review -->
+              <div class="review-submitted">
+                <span class="gv-eyebrow">Your review</span>
+                <div class="review-stars-display">
+                  @for (s of starsArray(5); track s) {
+                    <span [class]="s <= existingReview()!.rating ? 'star-filled' : 'star-empty'">★</span>
+                  }
+                  <span class="review-date">
+                    {{ existingReview()!.createdAt | date:'MMM d, y' }}
+                  </span>
+                </div>
+                @if (existingReview()!.comment) {
+                  <p class="review-comment-display">"{{ existingReview()!.comment }}"</p>
+                }
+                <p class="review-thankyou">
+                  <i class="pi pi-check-circle"></i> Thank you for your feedback!
+                </p>
+              </div>
+
+            } @else {
+              <!-- Review form -->
+              <span class="gv-eyebrow">Rate your experience</span>
+              <h3 class="review-title">How was your visit?</h3>
+              <p class="review-sub">Your honest review helps others find trustworthy pawn shops.</p>
+
+              <!-- Star picker -->
+              <div class="star-picker" (mouseleave)="clearHover()">
+                @for (s of starsArray(5); track s) {
+                  <button
+                    type="button"
+                    class="star-btn"
+                    [class]="starClass(s)"
+                    (mouseenter)="hoverStar(s)"
+                    (click)="selectStar(s)"
+                    [attr.aria-label]="starLabels[s]"
+                  >★</button>
+                }
+                @if (hoveredStar() > 0) {
+                  <span class="star-label">{{ starLabels[hoveredStar()] }}</span>
+                } @else if (selectedRating() > 0) {
+                  <span class="star-label">{{ starLabels[selectedRating()] }}</span>
+                }
+              </div>
+
+              <!-- Comment -->
+              <form [formGroup]="reviewForm" (ngSubmit)="submitReview()" class="review-form">
+                <div class="field">
+                  <label for="comment">Comment <span class="optional-tag">optional</span></label>
+                  <textarea
+                    id="comment"
+                    pTextarea                    formControlName="comment"
+                    rows="3"
+                    placeholder="Share your experience with this shop..."
+                    class="w-full review-textarea"
+                    maxlength="500"
+                  ></textarea>
+                  <span class="char-count">
+                    {{ reviewForm.get('comment')?.value?.length || 0 }} / 500
+                  </span>
+                </div>
+
+                @if (reviewSuccess()) {
+                  <p-message severity="success" [text]="reviewSuccess()!" styleClass="w-full" />
+                }
+                @if (reviewError()) {
+                  <p-message severity="error" [text]="reviewError()!" styleClass="w-full" />
+                }
+
+                <p-button
+                  type="submit"
+                  label="Submit review"
+                  icon="pi pi-star"
+                  styleClass="gv-submit-btn"
+                  [loading]="reviewLoading()"
+                  [disabled]="selectedRating() === 0"
+                />
+              </form>
+            }
+
+          </div>
+        }
+
       </div>
 
-      <!-- Right column: QR code -->
+      <!-- Right column: QR -->
       <div class="detail-side">
         <div class="qr-card gv-card">
           <span class="gv-eyebrow">{{ 'ticketDetail.showAtShop' | translate }}</span>
@@ -107,6 +195,7 @@
           <p class="qr-hint">{{ 'ticketDetail.qrHint' | translate }}</p>
         </div>
       </div>
+
     </div>
   }
 </div>

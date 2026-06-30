@@ -85,7 +85,6 @@ public class PawnTicketService {
         PawnTicket ticket = pawnTicketRepository.findById(ticketId)
                 .orElseThrow(() -> new RuntimeException("Ticket not found: " + ticketId));
 
-        // Only ACTIVE or EXPIRED tickets can be renewed
         if (ticket.getStatus() != TicketStatus.ACTIVE
                 && ticket.getStatus() != TicketStatus.EXPIRED) {
             throw new RuntimeException(
@@ -95,7 +94,6 @@ public class PawnTicketService {
 
         LocalDate today = LocalDate.now();
 
-        // Validate the interest payment covers at least the accrued interest
         BigDecimal accruedInterest = interestCalculatorService
                 .calculateAccruedInterest(ticket, today);
 
@@ -107,7 +105,6 @@ public class PawnTicketService {
                         request.getInterestPaid(), accruedInterest));
         }
 
-        // Record the renewal interest payment
         Payment renewalPayment = Payment.builder()
                 .ticket(ticket)
                 .amount(request.getInterestPaid())
@@ -121,20 +118,16 @@ public class PawnTicketService {
         paymentRepository.save(renewalPayment);
         ticket.getPayments().add(renewalPayment);
 
-        // Extend the expiry date
-        // If already expired, extend from today; if still active, extend from current expiry
         LocalDate baseDate = ticket.getExpiryDate().isBefore(today)
                 ? today : ticket.getExpiryDate();
         LocalDate newExpiry = baseDate.plusMonths(request.getExtensionMonths());
 
         ticket.setExpiryDate(newExpiry);
 
-        // Reactivate if it was expired
         if (ticket.getStatus() == TicketStatus.EXPIRED) {
             ticket.setStatus(TicketStatus.ACTIVE);
         }
 
-        // Append renewal note
         String renewalNote = String.format(
             "[RENEWED %s] Extended by %d month(s). New expiry: %s. Interest paid: LKR %.2f.",
             today, request.getExtensionMonths(), newExpiry,
@@ -236,7 +229,6 @@ public class PawnTicketService {
                                 .build())
                         .toList();
 
-        // Count renewals from payment history
         int renewalCount = ticket.getPayments() == null ? 0 :
                 (int) ticket.getPayments().stream()
                         .filter(p -> p.getPaymentType() == PaymentType.RENEWAL)
@@ -252,6 +244,7 @@ public class PawnTicketService {
                 .customerName(ticket.getCustomer().getFullName())
                 .customerNic(ticket.getCustomer().getNic())
                 .shopId(ticket.getShop().getId())
+                .shopName(ticket.getShop().getName())          // ← ADDED
                 .branchId(ticket.getBranch() != null ? ticket.getBranch().getId() : null)
                 .loanAmount(ticket.getLoanAmount())
                 .interestRate(ticket.getInterestRate())

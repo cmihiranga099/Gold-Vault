@@ -54,6 +54,7 @@ export interface PawnTicketResponse {
   outstandingBalance:  number;
   daysElapsed:         number;
   overdue:             boolean;
+  shopName: string;
   // Renewal fields
   renewalCount:        number;
   accruedInterestToday: number;

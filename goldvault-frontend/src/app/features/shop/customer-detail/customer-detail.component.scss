@@ -134,3 +134,136 @@
     color: var(--gv-jade);
     font-weight: 600;
   }
+  // ── Tabs ─────────────────────────────────────────────────────────────────────
+.tab-bar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #888;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.15s;
+
+  &:hover { color: #C9A14A; }
+}
+
+.tab-btn-active {
+  color: #C9A14A;
+  border-bottom-color: #C9A14A;
+}
+
+// ── Ticket list ───────────────────────────────────────────────────────────────
+.ticket-list { display: flex; flex-direction: column; gap: 4px; }
+
+.ticket-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.12s;
+
+  &:hover { background: #f8f6f0; }
+}
+
+.ticket-num  { display: block; font-size: 13px; font-weight: 600; color: #222; }
+.ticket-date { display: block; font-size: 11px; color: #aaa; margin-top: 2px; }
+
+.ticket-row-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ticket-amount { font-size: 13px; color: #1a1a1a; }
+
+// ── Reviews list ──────────────────────────────────────────────────────────────
+.reviews-list { display: flex; flex-direction: column; gap: 14px; }
+
+.review-item {
+  padding: 14px;
+  border-radius: 8px;
+  background: #fafafa;
+  border: 1px solid #f0ede8;
+}
+
+.review-hidden { opacity: 0.5; background: #f9f0f0; border-color: #fcc; }
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.review-stars { display: flex; gap: 2px; font-size: 16px; }
+.star-filled  { color: #C9A14A; }
+.star-empty   { color: #ddd; }
+
+.review-customer { font-size: 13px; font-weight: 600; color: #222; }
+.review-ticket   { font-size: 11px; color: #aaa; }
+.review-date     { font-size: 11px; color: #aaa; margin-left: auto; }
+
+.review-comment {
+  font-size: 13px;
+  color: #555;
+  font-style: italic;
+  border-left: 3px solid #C9A14A;
+  padding-left: 10px;
+  margin: 0;
+}
+
+.hidden-badge {
+  font-size: 10px;
+  background: #fecaca;
+  color: #dc2626;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+// ── Rating summary ────────────────────────────────────────────────────────────
+.rating-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #f0ede8;
+}
+
+.rating-avg {
+  font-size: 28px;
+  font-weight: 700;
+  color: #C9A14A;
+  line-height: 1;
+}
+
+.rating-stars { display: flex; gap: 2px; font-size: 18px; }
+.rating-count { font-size: 12px; color: #aaa; }
+
+// ── NIC photo ─────────────────────────────────────────────────────────────────
+.nic-photo-card { padding: 1rem; }
+
+.nic-photo {
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 8px;
+  border: 1px solid #eee;
+}

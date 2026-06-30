@@ -30,6 +30,8 @@ public class PawnTicketResponse {
     private String qrCode;
     private String notes;
     private List<GoldItemResponse> goldItems;
+    private String shopName;
+    
 
     /** Calculated fields */
     private BigDecimal totalPaid;

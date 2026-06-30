@@ -7,7 +7,7 @@ export const CUSTOMER_ROUTES: Routes = [
   },
   {
     path: 'tickets/:id',
-    loadComponent: () => import('./ticket-detail/ticket-detail.component').then(m => m.TicketDetailComponent)
+    loadComponent: () => import('./ticket-detail/ticket-detail.component').then(m => m.CustomerTicketDetailComponent)
   },
   {
     path: 'marketplace',
