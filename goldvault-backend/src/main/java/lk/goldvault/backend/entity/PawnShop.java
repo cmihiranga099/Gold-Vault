@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lk.goldvault.backend.enums.ShopStatus;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "pawn_shop")
 @Getter
@@ -34,6 +36,12 @@ public class PawnShop extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String address;
+
+    @Column(precision = 10, scale = 7)
+    private BigDecimal latitude;
+
+    @Column(precision = 10, scale = 7)
+    private BigDecimal longitude;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

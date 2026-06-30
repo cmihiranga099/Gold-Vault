@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -18,6 +19,12 @@ public class ShopResponse {
     private String phone;
     private String email;
     private String address;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
     private ShopStatus status;
     private LocalDateTime createdAt;
+
+    /** Populated only when returned alongside review data (optional, default null) */
+    private Double averageRating;
+    private Long totalReviews;
 }
