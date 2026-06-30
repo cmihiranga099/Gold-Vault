@@ -133,14 +133,15 @@
             <artifactId>itextpdf</artifactId>
             <version>5.5.13.3</version>
         </dependency>
-
-    </dependencies>
-    <!-- CSV parsing for bulk ticket import -->
+        <!-- CSV parsing for bulk ticket import -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>1.11.0</version>
         </dependency>
+
+    </dependencies>
+    
 
     <build>
         <plugins>

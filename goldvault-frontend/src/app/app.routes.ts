@@ -39,6 +39,14 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'auctions',
+    loadComponent: () => import('./features/public/auctions/auctions.component').then(m => m.AuctionsListComponent)
+  },
+  {
+    path: 'auctions/:id',
+    loadComponent: () => import('./features/public/auction-detail/auction-detail.component').then(m => m.AuctionDetailComponent)
+  },
+  {
     path: '**',
     redirectTo: 'auth/login'
   }

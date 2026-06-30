@@ -1,0 +1,78 @@
+<div class="auction-detail-page">
+    <a routerLink="/auctions" class="back-link"><i class="pi pi-arrow-left"></i> Back to auctions</a>
+  
+    @if (loading()) {
+      <div class="detail-loading"><p-progressSpinner strokeWidth="3" /></div>
+    } @else if (error()) {
+      <p class="detail-error">{{ error() }}</p>
+    } @else if (auction()) {
+      <div class="detail-grid">
+  
+        <div class="detail-main gv-card">
+          <div class="detail-top">
+            <span class="gv-eyebrow">Auction · {{ auction()!.ticketNumber }}</span>
+            <p-tag [value]="auction()!.status" [severity]="auction()!.status === 'OPEN' ? 'success' : 'secondary'" />
+          </div>
+  
+          @if (auction()!.goldItems.length > 0) {
+            <h1>{{ auction()!.goldItems[0].description }}</h1>
+            <p class="item-meta">
+              {{ auction()!.goldItems[0].goldType }} &middot;
+              {{ auction()!.goldItems[0].purity }} &middot;
+              {{ auction()!.goldItems[0].weightGrams }}g
+            </p>
+          }
+  
+          <div class="price-box">
+            <span class="price-label">{{ auction()!.bidCount > 0 ? 'Current highest bid' : 'Starting price' }}</span>
+            <span class="price-value gv-mono">LKR {{ formatCurrency(currentPrice()) }}</span>
+            <span class="bid-count">{{ auction()!.bidCount }} bid(s) &middot; ends {{ auction()!.endsAt | date:'MMM d, y, h:mm a' }}</span>
+          </div>
+  
+          @if (auction()!.status === 'OPEN' && !auction()!.ended) {
+            <form [formGroup]="bidForm" (ngSubmit)="submitBid()" class="bid-form">
+              <h3>Place your bid</h3>
+              <div class="field-row">
+                <div class="field">
+                  <label>Your name</label>
+                  <input type="text" pInputText formControlName="bidderName" class="w-full" />
+                </div>
+                <div class="field">
+                  <label>Phone number</label>
+                  <input type="text" pInputText formControlName="bidderPhone" class="w-full" />
+                </div>
+              </div>
+              <div class="field">
+                <label>Bid amount (LKR)</label>
+                <p-inputNumber formControlName="amount" mode="decimal" [minFractionDigits]="2" styleClass="w-full" />
+              </div>
+  
+              @if (bidError())   { <p-message severity="error"   [text]="bidError()!"   styleClass="w-full" /> }
+              @if (bidSuccess()) { <p-message severity="success" [text]="bidSuccess()!" styleClass="w-full" /> }
+  
+              <p-button type="submit" label="Place bid" icon="pi pi-gavel" styleClass="gv-submit-btn" [loading]="bidLoading()" />
+            </form>
+          } @else {
+            <p class="auction-ended-note">This auction has ended and is no longer accepting bids.</p>
+          }
+        </div>
+  
+        <div class="detail-side gv-card">
+          <h3>Bid history</h3>
+          @if (bids().length === 0) {
+            <p class="no-bids">No bids placed yet. Be the first!</p>
+          } @else {
+            <div class="bid-list">
+              @for (bid of bids(); track bid.id; let i = $index) {
+                <div class="bid-row" [class.bid-row-top]="i === 0">
+                  <span class="bid-name">{{ bid.bidderName }}</span>
+                  <span class="bid-amount gv-mono">LKR {{ formatCurrency(bid.amount) }}</span>
+                </div>
+              }
+            </div>
+          }
+        </div>
+  
+      </div>
+    }
+  </div>
