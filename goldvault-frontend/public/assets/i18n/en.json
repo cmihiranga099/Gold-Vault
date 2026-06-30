@@ -269,5 +269,12 @@
     "en": "English",
     "si": "සිංහල",
     "ta": "தமிழ்"
+  },
+  "shopFinder": {
+    "eyebrow": "Find a shop",
+    "title": "Pawn shops near you",
+    "subtitle": "Browse all active GoldVault pawn shops on the map.",
+    "noShops": "No shops with map locations yet.",
+    "navLabel": "Find shops"
   }
 }

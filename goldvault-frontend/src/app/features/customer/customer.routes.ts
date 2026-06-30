@@ -18,6 +18,10 @@ export const CUSTOMER_ROUTES: Routes = [
     loadComponent: () => import('./listing-detail/listing-detail.component').then(m => m.ListingDetailComponent)
   },
   {
+    path: 'find-shops',
+    loadComponent: () => import('./shop-finder/shop-finder.component').then(m => m.ShopFinderComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'

@@ -1,0 +1,62 @@
+<app-topnav />
+
+<div class="finder-page">
+  <div class="finder-header">
+    <span class="gv-eyebrow">{{ 'shopFinder.eyebrow' | translate }}</span>
+    <h1>{{ 'shopFinder.title' | translate }}</h1>
+    <p class="finder-sub">{{ 'shopFinder.subtitle' | translate }}</p>
+  </div>
+
+  <div class="finder-layout">
+
+    <!-- Shop list sidebar -->
+    <div class="shop-list-panel gv-card">
+      @if (loading()) {
+        <div class="list-loading"><p-progressSpinner strokeWidth="3" /></div>
+      } @else if (error()) {
+        <p class="list-error">{{ error() }}</p>
+      } @else if (shops().length === 0) {
+        <p class="list-empty">{{ 'shopFinder.noShops' | translate }}</p>
+      } @else {
+        <div class="shop-list">
+          @for (shop of sortedShops(); track shop.id) {
+            <div
+              class="shop-item"
+              [class.shop-item-active]="selected()?.id === shop.id"
+              (click)="focusShop(shop)"
+            >
+              <div class="shop-item-top">
+                <span class="shop-item-name">{{ shop.name }}</span>
+                @if (distanceFromUser(shop)) {
+                  <span class="shop-item-distance">{{ distanceFromUser(shop) }}</span>
+                }
+              </div>
+              @if (shop.averageRating && shop.totalReviews) {
+                <div class="shop-item-rating">
+                  <span class="rating-stars">
+                    @for (s of [1,2,3,4,5]; track s) {
+                      <span [class]="s <= Math.round(shop.averageRating!) ? 'star-on' : 'star-off'">★</span>
+                    }
+                  </span>
+                  <span class="rating-count">({{ shop.totalReviews }})</span>
+                </div>
+              }
+              @if (shop.address) {
+                <span class="shop-item-address">{{ shop.address }}</span>
+              }
+              @if (shop.phone) {
+                <span class="shop-item-phone"><i class="pi pi-phone"></i> {{ shop.phone }}</span>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Map -->
+    <div class="map-panel gv-card">
+      <div id="shop-map" class="map-container"></div>
+    </div>
+
+  </div>
+</div>
