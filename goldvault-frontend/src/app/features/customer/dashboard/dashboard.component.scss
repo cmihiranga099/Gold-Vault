@@ -162,3 +162,36 @@
   text-transform: uppercase;
   color: var(--gv-brick);
 }
+.loyalty-card {
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.loyalty-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.loyalty-points { display: flex; flex-direction: column; gap: 2px; }
+.loyalty-num { font-size: 28px; font-weight: 700; color: #C9A14A; line-height: 1; }
+.loyalty-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: .04em; }
+
+.loyalty-icon { font-size: 26px; color: #C9A14A; opacity: 0.6; }
+
+.loyalty-progress-track {
+  height: 6px;
+  background: #f0ede8;
+  border-radius: 3px;
+  margin: 12px 0 6px;
+  overflow: hidden;
+}
+
+.loyalty-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #C9A14A, #e6c878);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.loyalty-hint { font-size: 11px; color: #aaa; }

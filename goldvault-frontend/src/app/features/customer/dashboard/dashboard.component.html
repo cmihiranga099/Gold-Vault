@@ -13,6 +13,27 @@
       <i class="pi pi-map-marker"></i> {{ 'shopFinder.navLabel' | translate }}
     </a>
   </div> 
+
+  @if (loyalty()) {
+    <div class="loyalty-card gv-card">
+      <div class="loyalty-top">
+        <div class="loyalty-points">
+          <span class="loyalty-num">{{ loyalty()!.currentPoints }}</span>
+          <span class="loyalty-label">loyalty points</span>
+        </div>
+        <i class="pi pi-star-fill loyalty-icon"></i>
+      </div>
+      <div class="loyalty-progress-track">
+        <div
+          class="loyalty-progress-fill"
+          [style.width.%]="((100 - loyalty()!.pointsToNextReward) / 100) * 100"
+        ></div>
+      </div>
+      <span class="loyalty-hint">
+        {{ loyalty()!.pointsToNextReward }} more points until your next reward milestone
+      </span>
+    </div>
+  }
   
   @if (loading()) {
     <div class="dash-loading">

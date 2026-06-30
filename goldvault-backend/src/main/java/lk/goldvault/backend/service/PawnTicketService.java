@@ -36,6 +36,7 @@ public class PawnTicketService {
     private final TicketNumberGenerator     ticketNumberGenerator;
     private final QrCodeUtil                qrCodeUtil;
     private final InterestCalculatorService interestCalculatorService;
+    private final LoyaltyService loyaltyService;
 
     // ── Grant ────────────────────────────────────────────────────────────────────
 
@@ -181,7 +182,12 @@ public class PawnTicketService {
         }
 
         ticket.setStatus(TicketStatus.REDEEMED);
-        return toResponse(pawnTicketRepository.save(ticket));
+        PawnTicket saved = pawnTicketRepository.save(ticket);
+
+        // Award loyalty points for on-time redemption (no-op if late)
+        loyaltyService.awardForRedemption(saved);
+
+        return toResponse(saved);
     }
 
     /** Marks all active, past-expiry tickets as EXPIRED. Intended for daily schedule. */

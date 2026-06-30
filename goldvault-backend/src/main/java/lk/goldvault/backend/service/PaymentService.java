@@ -27,6 +27,7 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final PawnTicketRepository pawnTicketRepository;
     private final InterestCalculatorService interestCalculatorService;
+    private final LoyaltyService loyaltyService;
 
     @Transactional
     public PaymentResponse recordPayment(PaymentRequest request) {
@@ -59,7 +60,7 @@ public class PaymentService {
                 .receivedBy(request.getReceivedBy())
                 .build();
 
-        payment = paymentRepository.save(payment);
+        loyaltyService.awardForPayment(ticket, request.getAmount());
 
         // Attach to ticket's in-memory payment list so the balance recalculation below sees it
         ticket.getPayments().add(payment);

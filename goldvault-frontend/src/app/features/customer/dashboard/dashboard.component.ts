@@ -9,6 +9,8 @@ import { TopnavComponent } from '../../../shared/components/topnav/topnav.compon
 import { AuthService } from '../../../core/auth/auth.service';
 import { TicketService } from '../../../core/services/ticket.service';
 import { PawnTicketResponse } from '../../../core/models/ticket.model';
+import { LoyaltyService } from '../../../core/services/loyalty.service';
+import { LoyaltySummaryResponse } from '../../../core/models/loyalty.model';
 
 @Component({
   selector: 'app-customer-dashboard',
@@ -21,6 +23,7 @@ export class DashboardComponent implements OnInit {
   tickets = signal<PawnTicketResponse[]>([]);
   loading = signal(true);
   errorMessage = signal<string | null>(null);
+  loyalty = signal<LoyaltySummaryResponse | null>(null);
 
   activeTickets = computed(() => this.tickets().filter(t => t.status === 'ACTIVE'));
 
@@ -38,7 +41,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private ticketService: TicketService
+    private ticketService: TicketService,
+    private loyaltyService: LoyaltyService
   ) {}
 
   ngOnInit(): void {
@@ -55,10 +59,17 @@ export class DashboardComponent implements OnInit {
         this.tickets.set(tickets);
         this.loading.set(false);
       },
+      
       error: () => {
         this.errorMessage.set('Could not load your tickets. Please try again.');
         this.loading.set(false);
       }
+      
+    });
+
+    this.loyaltyService.getSummary(customerId).subscribe({
+      next: (summary) => this.loyalty.set(summary),
+      error: () => {}
     });
   }
 
