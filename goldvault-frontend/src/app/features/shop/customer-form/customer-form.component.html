@@ -75,6 +75,18 @@
         @if (nicPhotoError()) {
           <span class="nic-hint nic-hint-err">{{ nicPhotoError() }}</span>
         }
+
+        <!-- OCR scanning feedback -->
+        @if (ocrScanning()) {
+          <div class="ocr-status ocr-scanning">
+            <i class="pi pi-spin pi-spinner"></i> Scanning NIC for details…
+          </div>
+        } @else if (ocrMessage()) {
+          <div class="ocr-status" [class.ocr-success]="ocrDetected()" [class.ocr-warn]="!ocrDetected()">
+            <i [class]="ocrDetected() ? 'pi pi-check-circle' : 'pi pi-info-circle'"></i>
+            {{ ocrMessage() }}
+          </div>
+        }
       </div>
 
       <!-- Phone & Email -->

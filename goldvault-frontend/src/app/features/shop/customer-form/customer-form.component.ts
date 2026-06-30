@@ -97,50 +97,71 @@ export class CustomerFormComponent {
 
   // ── NIC photo ────────────────────────────────────────────────────────────────
 
-  onNicPhotoSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-    if (!file) return;
+ // ── NIC photo with OCR ──────────────────────────────────────────────────────
 
-    // Client-side validation
-    if (!['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(file.type)) {
-      this.nicPhotoError.set('Only JPEG, PNG, or WEBP images allowed.');
-      return;
-    }
-    if (file.size > 5 * 1024 * 1024) {
-      this.nicPhotoError.set('File must be under 5 MB.');
-      return;
-    }
+ ocrScanning = signal(false);
+ ocrMessage  = signal<string | null>(null);
+ ocrDetected = signal(false);
 
-    this.nicPhotoError.set(null);
-    this.nicPhotoFile.set(file);
+ onNicPhotoSelected(event: Event): void {
+   const input = event.target as HTMLInputElement;
+   const file = input.files?.[0];
+   if (!file) return;
 
-    // Preview
-    const reader = new FileReader();
-    reader.onload = (e) => this.nicPhotoPreview.set(e.target?.result as string);
-    reader.readAsDataURL(file);
+   // Client-side validation
+   if (!['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(file.type)) {
+     this.nicPhotoError.set('Only JPEG, PNG, or WEBP images allowed.');
+     return;
+   }
+   if (file.size > 5 * 1024 * 1024) {
+     this.nicPhotoError.set('File must be under 5 MB.');
+     return;
+   }
 
-    // Auto-upload
-    this.nicPhotoUploading.set(true);
-    this.customerService.uploadNicPhoto(file).subscribe({
-      next: (res) => {
-        this.nicPhotoUrl.set(res.url);
-        this.nicPhotoUploading.set(false);
-      },
-      error: () => {
-        this.nicPhotoError.set('Upload failed. Try again.');
-        this.nicPhotoUploading.set(false);
-      }
-    });
-  }
+   this.nicPhotoError.set(null);
+   this.ocrMessage.set(null);
+   this.ocrDetected.set(false);
+   this.nicPhotoFile.set(file);
 
-  removeNicPhoto(): void {
-    this.nicPhotoFile.set(null);
-    this.nicPhotoPreview.set(null);
-    this.nicPhotoUrl.set(null);
-    this.nicPhotoError.set(null);
-  }
+   // Preview
+   const reader = new FileReader();
+   reader.onload = (e) => this.nicPhotoPreview.set(e.target?.result as string);
+   reader.readAsDataURL(file);
 
+   // Upload + OCR scan in one call
+   this.nicPhotoUploading.set(true);
+   this.ocrScanning.set(true);
+
+   this.customerService.uploadNicPhotoWithOcr(file).subscribe({
+     next: (res) => {
+       this.nicPhotoUrl.set(res.photoUrl);
+       this.nicPhotoUploading.set(false);
+       this.ocrScanning.set(false);
+       this.ocrMessage.set(res.message);
+
+       if (res.ocrSuccess && res.nic) {
+         this.ocrDetected.set(true);
+         // Auto-fill the NIC field — staff can still edit if OCR got it wrong
+         this.form.patchValue({ nic: res.nic });
+         this.nicControl.markAsTouched();
+       }
+     },
+     error: () => {
+       this.nicPhotoError.set('Upload failed. Try again.');
+       this.nicPhotoUploading.set(false);
+       this.ocrScanning.set(false);
+     }
+   });
+ }
+
+ removeNicPhoto(): void {
+  this.nicPhotoFile.set(null);
+  this.nicPhotoPreview.set(null);
+  this.nicPhotoUrl.set(null);
+  this.nicPhotoError.set(null);
+  this.ocrMessage.set(null);
+  this.ocrDetected.set(false);
+}
   // ── Submit ───────────────────────────────────────────────────────────────────
 
   onSubmit(): void {

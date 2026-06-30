@@ -167,3 +167,28 @@
   font-size: 11px;
   &:hover { background: #dc2626; }
 }
+// ── OCR feedback ──────────────────────────────────────────────────────────────
+.ocr-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  margin-top: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.ocr-scanning {
+  color: #888;
+  background: #f5f5f5;
+}
+
+.ocr-success {
+  color: #16a34a;
+  background: rgba(22,163,74,0.08);
+}
+
+.ocr-warn {
+  color: #d97706;
+  background: rgba(217,119,6,0.08);
+}

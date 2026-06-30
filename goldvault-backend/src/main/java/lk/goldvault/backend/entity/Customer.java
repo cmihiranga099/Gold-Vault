@@ -45,6 +45,10 @@ public class Customer extends BaseEntity {
     @Builder.Default
     private KycStatus kycStatus = KycStatus.PENDING;
 
+    @Column(name = "loyalty_points", nullable = false)
+    @Builder.Default
+    private Integer loyaltyPoints = 0;
+
     @Column(name = "nic_photo_url", length = 500)
     private String nicPhotoUrl;
 }

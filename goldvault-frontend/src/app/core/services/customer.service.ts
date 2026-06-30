@@ -6,6 +6,16 @@ import { environment } from '../../../environments/environment';
 import { ApiResponse, PagedResponse } from '../models/auth.model';
 import { CustomerRequest, CustomerResponse } from '../models/customer.model';
 
+
+export interface NicOcrResponse {
+  photoUrl:   string;
+  ocrSuccess: boolean;
+  nic:        string | null;
+  dob:        string | null;
+  gender:     string | null;
+  message:    string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class CustomerService {
   private apiUrl = environment.apiUrl;
@@ -68,11 +78,11 @@ export class CustomerService {
 
   // ── File uploads ─────────────────────────────────────────────────────────────
 
-  uploadNicPhoto(file: File): Observable<{ url: string }> {
+  uploadNicPhotoWithOcr(file: File): Observable<NicOcrResponse> {
     const form = new FormData();
     form.append('file', file);
     return this.http
-      .post<ApiResponse<{ url: string }>>(`${this.apiUrl}/shop/upload/nic-photo`, form)
+      .post<ApiResponse<NicOcrResponse>>(`${this.apiUrl}/shop/upload/nic-photo-ocr`, form)
       .pipe(map((res) => res.data));
   }
 
