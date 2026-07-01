@@ -51,6 +51,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/public/gold-rates/gold-rates-public.component').then(m => m.GoldRatesPublicComponent)
   },
   {
+    path: 'auth/shop-register',
+    loadComponent: () => import('./features/auth/shop-register/shop-register.component').then(m => m.ShopRegisterComponent)
+  },
+  {
     path: '**',
     redirectTo: 'auth/login'
   }

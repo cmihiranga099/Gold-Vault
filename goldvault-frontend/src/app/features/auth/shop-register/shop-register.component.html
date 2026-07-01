@@ -1,0 +1,83 @@
+<div class="shop-reg-page">
+    <div class="shop-reg-brand">
+      <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="18" stroke="#C9A14A" stroke-width="2"/>
+        <path d="M12 20 L20 12 L28 20 L20 28 Z" stroke="#C9A14A" stroke-width="1.5" fill="none"/>
+        <circle cx="20" cy="20" r="3" fill="#C9A14A"/>
+      </svg>
+      <h1>GoldVault</h1>
+    </div>
+  
+    @if (success()) {
+      <div class="success-card gv-card gv-ticket-edge">
+        <i class="pi pi-check-circle success-icon"></i>
+        <h2>Application submitted!</h2>
+        <p>Your shop registration is under review. Our team will approve it within 24 hours. You'll receive login credentials by email after approval.</p>
+        <a routerLink="/auth/login" class="back-login">Back to login</a>
+      </div>
+    } @else {
+      <div class="shop-reg-card gv-card gv-ticket-edge">
+        <span class="gv-eyebrow">Shop registration</span>
+        <h2>Register your pawn shop</h2>
+        <p class="reg-sub">Join GoldVault. Your shop will be reviewed and approved by our admin team before going live.</p>
+  
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="reg-form">
+  
+          <div class="field">
+            <label for="name">Shop name <span class="required">*</span></label>
+            <input id="name" type="text" pInputText formControlName="name"
+                   placeholder="e.g. Kamal Gold Pawn Centre" class="w-full" />
+          </div>
+  
+          <div class="field">
+            <label for="regNumber">Pawn broker license number <span class="required">*</span></label>
+            <input id="regNumber" type="text" pInputText formControlName="regNumber"
+                   placeholder="e.g. WP/PB/2023/001" class="w-full" />
+            <span class="field-hint">Issued by your provincial council.</span>
+          </div>
+  
+          <div class="field">
+            <label for="ownerName">Owner's full name <span class="required">*</span></label>
+            <input id="ownerName" type="text" pInputText formControlName="ownerName"
+                   placeholder="As on NIC" class="w-full" />
+          </div>
+  
+          <div class="field-row">
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input id="phone" type="text" pInputText formControlName="phone"
+                     placeholder="07X XXX XXXX" class="w-full" />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" type="email" pInputText formControlName="email"
+                     placeholder="you@shop.com" class="w-full" />
+            </div>
+          </div>
+  
+          <div class="field">
+            <label for="address">Shop address</label>
+            <input id="address" type="text" pInputText formControlName="address"
+                   placeholder="No. 12, Main St, Colombo 07" class="w-full" />
+          </div>
+  
+          @if (errorMessage()) {
+            <p-message severity="error" [text]="errorMessage()!" styleClass="w-full" />
+          }
+  
+          <p-button
+            type="submit"
+            label="Submit application"
+            icon="pi pi-send"
+            styleClass="gv-submit-btn w-full"
+            [loading]="loading()"
+          />
+        </form>
+  
+        <div class="reg-footer">
+          <span>Already registered?</span>
+          <a routerLink="/auth/login">Log in</a>
+        </div>
+      </div>
+    }
+  </div>

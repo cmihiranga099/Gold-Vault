@@ -46,12 +46,12 @@ public class SecurityConfig {
         "/api/marketplace/**",
         "/api/shops/register",
         "/api/shops/active",
+        "/api/public/**",
         "/v3/api-docs/**",
         "/swagger-ui/**",
         "/swagger-ui.html",
         "/actuator/health",
-        "/uploads/**",
-"/api/public/**"
+        "/uploads/**"
 ).permitAll()
                         // Admin only
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
