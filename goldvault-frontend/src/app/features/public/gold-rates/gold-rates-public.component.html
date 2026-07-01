@@ -1,0 +1,80 @@
+<div class="public-rates-page">
+    <div class="rates-hero">
+      <span class="gv-eyebrow">Live gold rates</span>
+      <h1>Today's gold buying rates in Sri Lanka</h1>
+      <p class="hero-sub">Compare rates from all GoldVault shops. Updated daily.</p>
+    </div>
+    @if (loading()) {
+      <div class="rates-loading"><p-progressSpinner strokeWidth="3" /></div>
+    } @else {
+      <!-- Market rate cards -->
+      <div class="market-grid">
+        @for (mr of marketRates(); track mr.id) {
+          <div class="market-card gv-card" [class.market-card-active]="selectedPurity() === mr.purity"
+               (click)="loadComparison(mr.purity)">
+            <span class="mc-purity">{{ mr.purity }}</span>
+            <span class="mc-rate gv-mono">LKR {{ formatCurrency(mr.ratePerGram) }}</span>
+            <span class="mc-label">per gram</span>
+            <span class="mc-date">{{ mr.effectiveDate | date:'MMM d' }}</span>
+          </div>
+        }
+      </div>
+      <div class="rates-body">
+        <!-- Purity selector + chart -->
+        <div class="chart-card gv-card">
+          <div class="chart-header">
+            <h2>30-day price trend</h2>
+            <div class="purity-tabs">
+              @for (p of purities; track p) {
+                <button class="purity-tab" [class.purity-tab-active]="selectedPurity() === p"
+                        (click)="loadComparison(p)">{{ p }}</button>
+              }
+            </div>
+          </div>
+          @if (history().length === 0) {
+            <p class="no-data">No price history available yet.</p>
+          } @else {
+            <div class="sparkline">
+              @for (h of history(); track h.id) {
+                <div class="spark-col">
+                  <div class="spark-bar" [style.height]="barHeight(h.ratePerGram)"></div>
+                  <span class="spark-label">{{ shortDate(h.effectiveDate) }}</span>
+                </div>
+              }
+            </div>
+            @if (history().length > 0) {
+              <div class="chart-range">
+                <span>Low: LKR {{ formatCurrency(lowRate()) }}/g</span>
+                <span>High: LKR {{ formatCurrency(highRate()) }}/g</span>
+              </div>
+            }
+          }
+        </div>
+        <!-- Shop comparison -->
+        <div class="comparison-card gv-card">
+          <h2>Best shops for {{ selectedPurity() }} gold</h2>
+          @if (!comparison() || comparison()!.shopRates.length === 0) {
+            <p class="no-data">No shops have published {{ selectedPurity() }} rates yet.</p>
+          } @else {
+            <div class="comp-list">
+              @for (entry of comparison()!.shopRates; track entry.shopId; let i = $index) {
+                <div class="comp-row" [class.comp-row-best]="i === 0">
+                  <div class="comp-rank">{{ i + 1 }}</div>
+                  <div class="comp-info">
+                    <span class="comp-name">{{ entry.shopName }}</span>
+                    @if (comparison()!.marketRate) {
+                      <span class="comp-vs" [class.vs-above]="entry.aboveMarket">
+                        {{ entry.aboveMarket ? '+' : '' }}{{ entry.diffPercent }}% vs market
+                      </span>
+                    }
+                  </div>
+                  <span class="comp-rate gv-mono">LKR {{ formatCurrency(entry.ratePerGram) }}/g</span>
+                </div>
+              }
+            </div>
+          }
+          <p class="comp-hint">Higher rates = better value when selling your gold.</p>
+        </div>
+      </div>
+    }
+  </div>

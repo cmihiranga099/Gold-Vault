@@ -47,6 +47,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/public/auction-detail/auction-detail.component').then(m => m.AuctionDetailComponent)
   },
   {
+    path: 'gold-rates',
+    loadComponent: () => import('./features/public/gold-rates/gold-rates-public.component').then(m => m.GoldRatesPublicComponent)
+  },
+  {
     path: '**',
     redirectTo: 'auth/login'
   }

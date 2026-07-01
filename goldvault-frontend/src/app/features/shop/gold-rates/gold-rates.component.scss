@@ -1,88 +1,166 @@
 .rates-page {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: var(--gv-space-6) var(--gv-space-4);
-  }
-  
-  .page-header {
-    margin-bottom: var(--gv-space-5);
-  
-    h1 {
-      font-size: 1.75rem;
-      margin-top: var(--gv-space-1);
-    }
-  }
-  
-  .publish-card, .rates-card {
-    padding: var(--gv-space-5);
-    margin-bottom: var(--gv-space-4);
-  
-    h2 {
-      font-size: 1.1rem;
-      margin-bottom: var(--gv-space-4);
-    }
-  }
-  
-  .publish-form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--gv-space-4);
-  }
-  
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: var(--gv-space-2);
-  
-    label {
-      font-size: 0.825rem;
-      font-weight: 600;
-      color: var(--gv-ink);
-    }
-  }
-  
-  :host ::ng-deep .gv-submit-btn .p-button {
-    background: var(--gv-ink) !important;
-    border-color: var(--gv-ink) !important;
-  
-    &:hover { background: var(--gv-ink-soft) !important; }
-  }
-  
-  .publish-hint {
-    font-size: 0.8rem;
-    color: var(--gv-stone-light);
-    margin: var(--gv-space-4) 0 0;
-  }
-  
-  .empty-text {
-    color: var(--gv-stone-light);
-    font-size: 0.9rem;
-    margin: 0;
-  }
-  
-  .rate-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--gv-space-2);
-  }
-  
-  .rate-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--gv-space-3);
-    background: var(--gv-paper-dim);
-    border-radius: var(--gv-radius-sm);
-  }
-  
-  .rate-purity {
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--gv-ink);
-  }
-  
-  .rate-value {
-    font-size: 0.9rem;
-    color: var(--gv-jade);
-    font-weight: 600;
-  }
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.page-header { margin-bottom: 1.5rem; h1 { font-size: 1.5rem; font-weight: 600; margin: 4px 0; } }
+
+// ── Market ticker ─────────────────────────────────────────────────────────────
+.market-ticker {
+  padding: 14px 18px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  border-color: #C9A14A;
+  background: linear-gradient(135deg, rgba(201,161,74,0.06) 0%, rgba(201,161,74,0.01) 100%);
+}
+
+.ticker-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #C9A14A;
+  white-space: nowrap;
+
+  i { font-size: 16px; }
+}
+
+.ticker-source { font-size: 11px; color: #aaa; font-weight: 400; }
+
+.ticker-rates {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.ticker-item { display: flex; flex-direction: column; align-items: center; }
+.ticker-purity { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: .04em; }
+.ticker-rate { font-size: 14px; font-weight: 700; color: #1a1a1a; }
+
+// ── Grid ──────────────────────────────────────────────────────────────────────
+.rates-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  @media (max-width: 700px) { grid-template-columns: 1fr; }
+}
+
+.publish-card, .rates-card { padding: 1.25rem 1.5rem; }
+h2 { font-size: 14px; font-weight: 600; margin: 0 0 1rem; }
+
+.publish-form { display: flex; flex-direction: column; gap: 12px; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field label { font-size: 12px; color: #888; }
+
+.market-hint { font-size: 11px; color: #C9A14A; margin-top: 3px; }
+.publish-hint { font-size: 11px; color: #aaa; margin-top: 10px; }
+
+// ── Rate list ─────────────────────────────────────────────────────────────────
+.rate-list { display: flex; flex-direction: column; gap: 6px; }
+
+.rate-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #f8f6f0;
+}
+
+.rate-purity { font-size: 13px; font-weight: 600; color: #C9A14A; min-width: 50px; }
+.rate-right { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.rate-value { font-size: 14px; font-weight: 700; color: #1a1a1a; }
+.rate-vs-market { font-size: 11px; color: #888; }
+.empty-text { font-size: 13px; color: #aaa; }
+
+// ── Comparison ────────────────────────────────────────────────────────────────
+.comparison-card { padding: 1.25rem 1.5rem; }
+
+.comparison-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.purity-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+
+.purity-tab {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid #e0ddd8;
+  background: transparent;
+  cursor: pointer;
+  color: #888;
+  transition: all 0.15s;
+  &:hover { border-color: #C9A14A; color: #C9A14A; }
+}
+
+.purity-tab-active { background: #C9A14A; border-color: #C9A14A; color: #fff !important; }
+
+.market-rate-ref {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 12px;
+  strong { color: #C9A14A; }
+}
+
+.no-market-rate { font-size: 13px; color: #aaa; margin-bottom: 12px; }
+
+.comparison-table { display: flex; flex-direction: column; gap: 4px; }
+
+.comparison-header-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 100px;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: #aaa;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.comparison-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 100px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  background: #fafafa;
+  position: relative;
+  gap: 8px;
+
+  &:hover { background: #f5f2ec; }
+}
+
+.comparison-row-top { background: rgba(201,161,74,0.08); }
+
+.best-badge {
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  font-size: 9px;
+  font-weight: 700;
+  background: #C9A14A;
+  color: #fff;
+  padding: 1px 6px;
+  border-radius: 4px;
+  letter-spacing: .04em;
+}
+
+.comp-shop { font-weight: 500; color: #222; }
+.comp-rate { color: #1a1a1a; font-weight: 600; }
+
+.comp-diff { font-size: 12px; font-weight: 600; }
+.diff-above { color: #16a34a; }
+.diff-below { color: #888; }

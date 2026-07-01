@@ -6,55 +6,124 @@
     <h1>{{ 'goldRates.title' | translate }}</h1>
   </div>
 
-  <div class="publish-card gv-card">
-    <h2>{{ 'goldRates.publishTitle' | translate }}</h2>
-    <form [formGroup]="form" (ngSubmit)="onPublish()" class="publish-form">
-      <div class="field">
-        <label for="purity">{{ 'goldRates.purity' | translate }}</label>
-        <p-select
-          inputId="purity"
-          formControlName="purity"
-          [options]="purities"
-          styleClass="w-full"
-        />
+  <!-- ── Market reference rates ticker ─────────────────────────────────────── -->
+  @if (marketRates().length > 0) {
+    <div class="market-ticker gv-card">
+      <div class="ticker-label">
+        <i class="pi pi-globe"></i>
+        <span>Today's market reference rates</span>
+        <span class="ticker-source">Updated by GoldVault admin</span>
       </div>
-      <div class="field">
-        <label for="ratePerGram">{{ 'goldRates.ratePerGram' | translate }}</label>
-        <p-inputNumber
-          inputId="ratePerGram"
-          formControlName="ratePerGram"
-          mode="decimal"
-          [minFractionDigits]="2"
-          styleClass="w-full"
-        />
-      </div>
-      <p-button type="submit" [label]="'goldRates.publishBtn' | translate" styleClass="gv-submit-btn" [loading]="publishing()" />
-    </form>
-    @if (publishError()) {
-      <p-message severity="error" [text]="publishError()!" styleClass="w-full" />
-    }
-    <p class="publish-hint">{{ 'goldRates.publishHint' | translate }}</p>
-  </div>
-
-  <div class="rates-card gv-card">
-    <h2>{{ 'goldRates.activeRatesTitle' | translate }}</h2>
-    @if (loading()) {
-      <p class="empty-text">{{ 'common.loading' | translate }}</p>
-    } @else if (errorMessage()) {
-      <p class="empty-text">{{ errorMessage() }}</p>
-      <p-button [label]="'common.tryAgain' | translate" size="small" [text]="true" (onClick)="loadRates()" />
-    } @else if (rates().length === 0) {
-      <p class="empty-text">{{ 'goldRates.noRates' | translate }}</p>
-    } @else {
-      <div class="rate-list">
-        @for (rate of rates(); track rate.id) {
-          <div class="rate-row">
-            <span class="rate-purity">{{ rate.purity }}</span>
-            <span class="rate-value gv-mono">LKR {{ formatCurrency(rate.ratePerGram) }} {{ 'goldRates.perGram' | translate }}</span>
-            <p-tag [value]="'goldRates.active' | translate" severity="success" />
+      <div class="ticker-rates">
+        @for (mr of marketRates(); track mr.id) {
+          <div class="ticker-item">
+            <span class="ticker-purity">{{ mr.purity }}</span>
+            <span class="ticker-rate gv-mono">LKR {{ formatCurrency(mr.ratePerGram) }}/g</span>
           </div>
         }
       </div>
+    </div>
+  }
+
+  <div class="rates-grid">
+    <!-- ── Publish form ─────────────────────────────────────────────────────── -->
+    <div class="publish-card gv-card">
+      <h2>{{ 'goldRates.publishTitle' | translate }}</h2>
+      <form [formGroup]="form" (ngSubmit)="onPublish()" class="publish-form">
+        <div class="field">
+          <label for="purity">{{ 'goldRates.purity' | translate }}</label>
+          <p-select inputId="purity" formControlName="purity" [options]="purities" styleClass="w-full" />
+        </div>
+        <div class="field">
+          <label for="ratePerGram">{{ 'goldRates.ratePerGram' | translate }}</label>
+          <p-inputNumber inputId="ratePerGram" formControlName="ratePerGram"
+            mode="decimal" [minFractionDigits]="2" styleClass="w-full" />
+          @if (form.get('purity')?.value && marketRateForPurity(form.get('purity')?.value)) {
+            <span class="market-hint">
+              Market rate: LKR {{ formatCurrency(marketRateForPurity(form.get('purity')!.value)!) }}/g
+            </span>
+          }
+        </div>
+        <p-button type="submit" [label]="'goldRates.publishBtn' | translate"
+          styleClass="gv-submit-btn" [loading]="publishing()" />
+      </form>
+      @if (publishError()) {
+        <p-message severity="error" [text]="publishError()!" styleClass="w-full" />
+      }
+      <p class="publish-hint">{{ 'goldRates.publishHint' | translate }}</p>
+    </div>
+
+    <!-- ── Your active rates ────────────────────────────────────────────────── -->
+    <div class="rates-card gv-card">
+      <h2>{{ 'goldRates.activeRatesTitle' | translate }}</h2>
+      @if (loading()) {
+        <p class="empty-text">{{ 'common.loading' | translate }}</p>
+      } @else if (rates().length === 0) {
+        <p class="empty-text">{{ 'goldRates.noRates' | translate }}</p>
+      } @else {
+        <div class="rate-list">
+          @for (rate of rates(); track rate.id) {
+            <div class="rate-row">
+              <span class="rate-purity">{{ rate.purity }}</span>
+              <div class="rate-right">
+                <span class="rate-value gv-mono">LKR {{ formatCurrency(rate.ratePerGram) }}/g</span>
+                @if (vsMarket(rate.ratePerGram, rate.purity.toString())) {
+                  <span class="rate-vs-market">{{ vsMarket(rate.ratePerGram, rate.purity.toString()) }}</span>
+                }
+              </div>
+              <p-tag [value]="'goldRates.active' | translate" severity="success" />
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- ── Market comparison table ─────────────────────────────────────────────── -->
+  <div class="comparison-card gv-card">
+    <div class="comparison-header">
+      <h2>Shop rate comparison</h2>
+      <div class="purity-tabs">
+        @for (p of purities; track p) {
+          <button
+            class="purity-tab"
+            [class.purity-tab-active]="selectedPurity() === p"
+            (click)="loadComparison(p)"
+          >{{ p }}</button>
+        }
+      </div>
+    </div>
+
+    @if (comparison()) {
+      @if (comparison()!.marketRate) {
+        <div class="market-rate-ref">
+          Market reference: <strong class="gv-mono">LKR {{ formatCurrency(comparison()!.marketRate!) }}/g</strong>
+        </div>
+      } @else {
+        <p class="no-market-rate">No market reference rate set for {{ selectedPurity() }} yet.</p>
+      }
+
+      @if (comparison()!.shopRates.length === 0) {
+        <p class="empty-text">No shops have published a {{ selectedPurity() }} rate yet.</p>
+      } @else {
+        <div class="comparison-table">
+          <div class="comparison-header-row">
+            <span>Shop</span>
+            <span>Rate / gram</span>
+            <span>vs Market</span>
+          </div>
+          @for (entry of comparison()!.shopRates; track entry.shopId; let i = $index) {
+            <div class="comparison-row" [class.comparison-row-top]="i === 0">
+              @if (i === 0) { <span class="best-badge">Best</span> }
+              <span class="comp-shop">{{ entry.shopName }}</span>
+              <span class="comp-rate gv-mono">LKR {{ formatCurrency(entry.ratePerGram) }}</span>
+              <span class="comp-diff" [class.diff-above]="entry.aboveMarket" [class.diff-below]="!entry.aboveMarket">
+                {{ entry.aboveMarket ? '+' : '' }}{{ entry.diffPercent }}%
+              </span>
+            </div>
+          }
+        </div>
+      }
     }
   </div>
 </div>

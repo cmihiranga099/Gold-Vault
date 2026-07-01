@@ -10,9 +10,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MarketplaceService } from '../../../core/services/marketplace.service';
+import { MarketRateService } from '../../../core/services/market-rate.service';
 import { GoldPurity, GoldRateResponse } from '../../../core/models/marketplace.model';
-
-const PURITIES: GoldPurity[] = ['K24', 'K22', 'K21', 'K18', 'P916', 'P750', 'OTHER'];
+import { MarketRateResponse, RateComparisonResponse, PURITIES } from '../../../core/models/market-rate.model';
 
 @Component({
   selector: 'app-shop-gold-rates',
@@ -20,87 +20,102 @@ const PURITIES: GoldPurity[] = ['K24', 'K22', 'K21', 'K18', 'P916', 'P750', 'OTH
   imports: [
     CommonModule, ReactiveFormsModule,
     ButtonModule, InputNumberModule, SelectModule, MessageModule, TagModule,
-    TranslatePipe,
-    TopnavComponent
+    TranslatePipe, TopnavComponent
   ],
   templateUrl: './gold-rates.component.html',
   styleUrl: './gold-rates.component.scss'
 })
 export class GoldRatesComponent implements OnInit {
-  rates = signal<GoldRateResponse[]>([]);
-  loading = signal(true);
-  publishing = signal(false);
+  rates        = signal<GoldRateResponse[]>([]);
+  marketRates  = signal<MarketRateResponse[]>([]);
+  comparison   = signal<RateComparisonResponse | null>(null);
+  loading      = signal(true);
+  publishing   = signal(false);
   errorMessage = signal<string | null>(null);
   publishError = signal<string | null>(null);
 
-  purities = PURITIES;
+  selectedPurity = signal<string>('K22');
+  purities = [...PURITIES];
   private shopId: number | null = null;
 
   form: ReturnType<FormBuilder['group']>;
 
   constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private marketplaceService: MarketplaceService
+    private fb:                FormBuilder,
+    private authService:       AuthService,
+    private marketplaceService: MarketplaceService,
+    private marketRateService:  MarketRateService
   ) {
     this.form = this.fb.group({
-      purity: ['K22', Validators.required],
+      purity:      ['K22', Validators.required],
       ratePerGram: [null as number | null, [Validators.required, Validators.min(0.01)]]
     });
   }
 
   ngOnInit(): void {
     this.shopId = this.authService.currentUser()?.shopId ?? null;
-
-    if (!this.shopId) {
-      this.errorMessage.set('No shop linked to this account.');
-      this.loading.set(false);
-      return;
-    }
-
+    if (!this.shopId) { this.errorMessage.set('No shop linked.'); this.loading.set(false); return; }
     this.loadRates();
+    this.loadMarketRates();
+    this.loadComparison('K22');
   }
 
-   loadRates(): void {
+  loadRates(): void {
     if (!this.shopId) return;
     this.loading.set(true);
     this.marketplaceService.getShopRates(this.shopId).subscribe({
-      next: (rates) => {
-        this.rates.set(rates);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.errorMessage.set('Could not load rates.');
-        this.loading.set(false);
-      }
+      next:  (rates) => { this.rates.set(rates); this.loading.set(false); },
+      error: ()      => { this.errorMessage.set('Could not load rates.'); this.loading.set(false); }
+    });
+  }
+
+  loadMarketRates(): void {
+    this.marketRateService.getLatestMarketRates().subscribe({
+      next:  (rates) => this.marketRates.set(rates),
+      error: ()      => {}
+    });
+  }
+
+  loadComparison(purity: string): void {
+    this.selectedPurity.set(purity);
+    this.marketRateService.getComparison(purity).subscribe({
+      next:  (c) => this.comparison.set(c),
+      error: ()  => this.comparison.set(null)
     });
   }
 
   onPublish(): void {
-    if (this.form.invalid || !this.shopId) {
-      this.form.markAllAsTouched();
-      return;
-    }
-
+    if (this.form.invalid || !this.shopId) { this.form.markAllAsTouched(); return; }
     this.publishing.set(true);
     this.publishError.set(null);
-
     const raw = this.form.getRawValue();
 
     this.marketplaceService.publishRate(this.shopId, {
-      purity: raw.purity,
+      purity:      raw.purity,
       ratePerGram: raw.ratePerGram
     }).subscribe({
       next: () => {
         this.publishing.set(false);
         this.form.patchValue({ ratePerGram: null });
         this.loadRates();
+        this.loadComparison(raw.purity);
       },
       error: (err) => {
         this.publishing.set(false);
         this.publishError.set(err?.error?.message || 'Could not publish rate.');
       }
     });
+  }
+
+  marketRateForPurity(purity: string): number | null {
+    return this.marketRates().find(r => r.purity === purity)?.ratePerGram ?? null;
+  }
+
+  vsMarket(shopRate: number, purity: string): string | null {
+    const market = this.marketRateForPurity(purity);
+    if (!market) return null;
+    const diff = ((shopRate - market) / market * 100).toFixed(1);
+    return `${Number(diff) >= 0 ? '+' : ''}${diff}% vs market`;
   }
 
   formatCurrency(amount: number): string {
