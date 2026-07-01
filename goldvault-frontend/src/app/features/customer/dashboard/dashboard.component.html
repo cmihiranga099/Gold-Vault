@@ -37,6 +37,28 @@
       </span>
     </div>
   }
+  @if (promotions().length > 0) {
+    <div class="promos-section">
+      <span class="section-label">🎉 Special offers from shops</span>
+      <div class="promos-feed">
+        @for (promo of promotions(); track promo.id) {
+          <div class="promo-feed-card gv-card">
+            <div class="promo-feed-top">
+              <span class="promo-feed-shop">{{ promo.shopName }}</span>
+              <span class="promo-feed-days">{{ promo.daysRemaining }}d left</span>
+            </div>
+            <span class="promo-feed-title">{{ promo.title }}</span>
+            @if (promo.description) {
+              <span class="promo-feed-desc">{{ promo.description }}</span>
+            }
+            @if (promo.promoValue && promo.promoType === 'REDUCED_INTEREST') {
+              <span class="promo-feed-value">Only {{ promo.promoValue }}% interest rate!</span>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
   
   @if (loading()) {
     <div class="dash-loading">

@@ -1,0 +1,106 @@
+.promos-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  
+  .promos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  
+    h1 { font-size: 1.5rem; font-weight: 600; margin: 4px 0; }
+  }
+  
+  .promos-sub { font-size: 13px; color: #888; }
+  
+  .promos-empty { font-size: 13px; color: #aaa; text-align: center; padding: 2rem 0; }
+  
+  .promos-empty-card {
+    padding: 2.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  
+    p { font-size: 13px; color: #888; }
+  }
+  
+  .empty-icon { font-size: 40px; color: #ddd; }
+  
+  .promos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  
+  .promo-card {
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: border-color 0.15s;
+  }
+  
+  .promo-card-live {
+    border-color: #C9A14A;
+    background: linear-gradient(135deg, rgba(201,161,74,0.05) 0%, transparent 100%);
+  }
+  
+  .promo-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .cancel-btn {
+    background: none;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 13px;
+    &:hover { color: #dc2626; }
+  }
+  
+  .promo-title { font-size: 14px; font-weight: 600; color: #1a1a1a; margin: 0; }
+  
+  .promo-type-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  
+  .promo-type-badge {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    background: #f0ede8;
+    color: #888;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+  
+  .promo-value { font-size: 13px; font-weight: 700; color: #C9A14A; }
+  
+  .promo-desc { font-size: 12px; color: #888; line-height: 1.5; }
+  
+  .promo-dates {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 4px;
+  
+    i { font-size: 11px; }
+  }
+  
+  .date-arrow { color: #ddd; }
+  .date-urgent { color: #dc2626; font-weight: 600; }
+  
+  // ── Create form ───────────────────────────────────────────────────────────────
+  .promo-form { display: flex; flex-direction: column; gap: 12px; }
+  .field { display: flex; flex-direction: column; gap: 4px; label { font-size: 12px; color: #666; } }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .req { color: #dc2626; }

@@ -195,3 +195,28 @@
 }
 
 .loyalty-hint { font-size: 11px; color: #aaa; }
+.promos-section { margin-bottom: 1.25rem; }
+
+.section-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.promos-feed { display: flex; flex-direction: column; gap: 8px; }
+
+.promo-feed-card { padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; }
+
+.promo-feed-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.promo-feed-shop { font-size: 11px; color: #C9A14A; font-weight: 600; }
+.promo-feed-days { font-size: 11px; color: #aaa; }
+.promo-feed-title { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+.promo-feed-desc { font-size: 12px; color: #888; }
+.promo-feed-value { font-size: 13px; font-weight: 700; color: #16a34a; }

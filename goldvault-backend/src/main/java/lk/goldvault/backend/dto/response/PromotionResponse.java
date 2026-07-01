@@ -1,4 +1,4 @@
-PromotionResponse.javapackage lk.goldvault.backend.dto.response;
+package lk.goldvault.backend.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

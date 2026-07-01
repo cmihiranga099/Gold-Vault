@@ -1,0 +1,118 @@
+<app-topnav />
+
+<div class="promos-page">
+  <div class="promos-header">
+    <div>
+      <span class="gv-eyebrow">Shop portal</span>
+      <h1>Promotional campaigns</h1>
+      <p class="promos-sub">Run time-limited offers to attract customers and boost ticket volume.</p>
+    </div>
+    <p-button
+      label="New campaign"
+      icon="pi pi-plus"
+      styleClass="gv-submit-btn"
+      (onClick)="openDialog()"
+    />
+  </div>
+
+  @if (loading()) {
+    <p class="promos-empty">Loading…</p>
+  } @else if (error()) {
+    <p class="promos-empty">{{ error() }}</p>
+  } @else if (promotions().length === 0) {
+    <div class="promos-empty-card gv-card">
+      <i class="pi pi-megaphone empty-icon"></i>
+      <p>No campaigns yet. Create your first promotion to attract more customers.</p>
+      <p-button label="Create campaign" icon="pi pi-plus" (onClick)="openDialog()" />
+    </div>
+  } @else {
+    <div class="promos-grid">
+      @for (promo of promotions(); track promo.id) {
+        <div class="promo-card gv-card" [class.promo-card-live]="promo.currentlyActive">
+          <div class="promo-card-top">
+            <p-tag [value]="statusLabel(promo)" [severity]="statusSeverity(promo)" />
+            @if (promo.currentlyActive || promo.status === 'ACTIVE') {
+              <button class="cancel-btn" (click)="cancelPromotion(promo)">
+                <i class="pi pi-times"></i>
+              </button>
+            }
+          </div>
+
+          <h3 class="promo-title">{{ promo.title }}</h3>
+
+          <div class="promo-type-row">
+            <span class="promo-type-badge">{{ promoTypeLabel(promo.promoType) }}</span>
+            @if (promoValueLabel(promo)) {
+              <span class="promo-value">{{ promoValueLabel(promo) }}</span>
+            }
+          </div>
+
+          @if (promo.description) {
+            <p class="promo-desc">{{ promo.description }}</p>
+          }
+
+          <div class="promo-dates">
+            <span><i class="pi pi-calendar"></i> {{ promo.startsAt | date:'MMM d, y' }}</span>
+            <span class="date-arrow">→</span>
+            <span [class.date-urgent]="promo.daysRemaining <= 3 && promo.currentlyActive">
+              {{ promo.endsAt | date:'MMM d, y' }}
+            </span>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
+
+<!-- Create dialog -->
+<p-dialog
+  header="New promotional campaign"
+  [(visible)]="showDialog"
+  [modal]="true"
+  [style]="{ width: '460px' }"
+>
+  <form [formGroup]="form" (ngSubmit)="submitPromotion()" class="promo-form">
+    <div class="field">
+      <label>Campaign title <span class="req">*</span></label>
+      <input type="text" pInputText formControlName="title"
+             placeholder="e.g. July Special — Only 1.5% interest!" class="w-full" />
+    </div>
+
+    <div class="field">
+      <label>Campaign type <span class="req">*</span></label>
+      <p-select formControlName="promoType" [options]="promoTypes"
+                optionLabel="label" optionValue="value" styleClass="w-full" />
+    </div>
+
+    @if (showPromoValue()) {
+      <div class="field">
+        <label>{{ promoValueLabel2() }} <span class="req">*</span></label>
+        <p-inputNumber formControlName="promoValue" mode="decimal" [minFractionDigits]="2" styleClass="w-full" />
+      </div>
+    }
+
+    <div class="field">
+      <label>Description (optional)</label>
+      <input type="text" pInputText formControlName="description"
+             placeholder="Short note shown to customers" class="w-full" />
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Starts <span class="req">*</span></label>
+        <input type="datetime-local" pInputText formControlName="startsAt" class="w-full" />
+      </div>
+      <div class="field">
+        <label>Ends <span class="req">*</span></label>
+        <input type="datetime-local" pInputText formControlName="endsAt" class="w-full" />
+      </div>
+    </div>
+
+    @if (createError()) {
+      <p-message severity="error" [text]="createError()!" styleClass="w-full" />
+    }
+
+    <p-button type="submit" label="Launch campaign" icon="pi pi-megaphone"
+              styleClass="gv-submit-btn w-full" [loading]="creating()" />
+  </form>
+</p-dialog>

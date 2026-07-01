@@ -42,6 +42,10 @@ export const SHOP_ROUTES: Routes = [
     loadComponent: () => import('./bulk-import/bulk-import.component').then(m => m.BulkImportComponent)
   },
   {
+    path: 'promotions',
+    loadComponent: () => import('./promotions/promotions.component').then(m => m.ShopPromotionsComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'

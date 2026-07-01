@@ -11,6 +11,8 @@ import { TicketService } from '../../../core/services/ticket.service';
 import { PawnTicketResponse } from '../../../core/models/ticket.model';
 import { LoyaltyService } from '../../../core/services/loyalty.service';
 import { LoyaltySummaryResponse } from '../../../core/models/loyalty.model';
+import { PromotionService } from '../../../core/services/promotion.service';
+import { PromotionResponse } from '../../../core/models/promotion.model';
 
 @Component({
   selector: 'app-customer-dashboard',
@@ -24,7 +26,7 @@ export class DashboardComponent implements OnInit {
   loading = signal(true);
   errorMessage = signal<string | null>(null);
   loyalty = signal<LoyaltySummaryResponse | null>(null);
-
+  promotions = signal<PromotionResponse[]>([]);
   activeTickets = computed(() => this.tickets().filter(t => t.status === 'ACTIVE'));
 
   totalOutstanding = computed(() =>
@@ -42,7 +44,9 @@ export class DashboardComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private ticketService: TicketService,
-    private loyaltyService: LoyaltyService
+    private loyaltyService: LoyaltyService,
+    private promotionService: PromotionService
+
   ) {}
 
   ngOnInit(): void {
@@ -69,6 +73,10 @@ export class DashboardComponent implements OnInit {
 
     this.loyaltyService.getSummary(customerId).subscribe({
       next: (summary) => this.loyalty.set(summary),
+      error: () => {}
+    });
+    this.promotionService.getAllActivePromotions().subscribe({
+      next: (p) => this.promotions.set(p.slice(0, 3)), // show top 3
       error: () => {}
     });
   }
