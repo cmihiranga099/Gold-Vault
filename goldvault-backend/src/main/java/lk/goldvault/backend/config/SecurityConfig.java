@@ -29,7 +29,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthFilter jwtAuthFilter;
+    private final JwtAuthFilter     jwtAuthFilter;
+    private final ApiKeyFilter      apiKeyFilter;
     private final UserDetailsService userDetailsService;
 
     @Bean
@@ -41,18 +42,19 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints
-.requestMatchers(
-        "/api/auth/**",
-        "/api/marketplace/**",
-        "/api/shops/register",
-        "/api/shops/active",
-        "/api/public/**",
-        "/v3/api-docs/**",
-        "/swagger-ui/**",
-        "/swagger-ui.html",
-        "/actuator/health",
-        "/uploads/**"
-).permitAll()
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/api/marketplace/**",
+                                "/api/shops/register",
+                                "/api/shops/active",
+                                "/api/public/**",
+                                "/api/v1/pos/**",      // POS API — auth handled by ApiKeyFilter
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/actuator/health",
+                                "/uploads/**"
+                        ).permitAll()
                         // Admin only
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         // Shop staff
@@ -63,7 +65,9 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                // ApiKeyFilter runs BEFORE JwtAuthFilter for /api/v1/pos/** requests
+                .addFilterBefore(apiKeyFilter,    UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthFilter,   UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
@@ -72,11 +76,12 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of(
                 "http://localhost:4200",
-                "http://localhost:3000"
+                "http://localhost:3000",
+                "*"   // POS systems can be on any origin
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
+        config.setAllowCredentials(false); // must be false when origin is *
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
