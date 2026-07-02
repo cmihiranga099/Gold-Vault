@@ -55,6 +55,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/shop-register/shop-register.component').then(m => m.ShopRegisterComponent)
   },
   {
+    path: 'calculator',
+    loadComponent: () => import('./features/public/calculator/calculator.component').then(m => m.InterestCalculatorComponent)
+  },
+  {
     path: '**',
     redirectTo: 'auth/login'
   }
