@@ -22,6 +22,10 @@ export const CUSTOMER_ROUTES: Routes = [
     loadComponent: () => import('./shop-finder/shop-finder.component').then(m => m.ShopFinderComponent)
   },
   {
+    path: 'calculator',
+    loadComponent: () => import('../public/calculator/calculator.component').then(m => m.InterestCalculatorComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
