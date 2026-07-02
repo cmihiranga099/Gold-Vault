@@ -46,6 +46,10 @@ export const SHOP_ROUTES: Routes = [
     loadComponent: () => import('./promotions/promotions.component').then(m => m.ShopPromotionsComponent)
   },
   {
+    path: 'api-keys',
+    loadComponent: () => import('./api-keys/api-keys.component').then(m => m.ApiKeysComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'

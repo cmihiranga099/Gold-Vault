@@ -1,0 +1,148 @@
+.apikeys-page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #888;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    &:hover { color: #333; }
+  }
+  
+  .apikeys-header { margin-bottom: 1.5rem; }
+  .apikeys-header h1 { font-size: 1.5rem; font-weight: 600; margin: 4px 0; display: flex; align-items: center; gap: 10px; }
+  .apikeys-sub { font-size: 13px; color: #888; line-height: 1.6; code { background: #f0ede8; padding: 1px 6px; border-radius: 4px; font-size: 12px; } }
+  
+  .dev-badge {
+    font-size: 10px;
+    font-weight: 700;
+    background: #7F77DD;
+    color: #fff;
+    padding: 2px 7px;
+    border-radius: 5px;
+  }
+  
+  // ── New key alert ─────────────────────────────────────────────────────────────
+  .new-key-alert {
+    padding: 1.25rem 1.5rem;
+    border-color: #16a34a;
+    background: rgba(22,163,74,0.04);
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .new-key-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #14532d;
+  }
+  
+  .new-key-value {
+    font-size: 13px;
+    background: #f8f6f0;
+    border: 1px solid #e0ddd8;
+    border-radius: 8px;
+    padding: 10px 14px;
+    word-break: break-all;
+    color: #1a1a1a;
+  }
+  
+  // ── Key list ──────────────────────────────────────────────────────────────────
+  .apikeys-card, .docs-card {
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .apikeys-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 10px;
+    h2 { font-size: 14px; font-weight: 600; margin: 0; }
+  }
+  
+  .empty-text { font-size: 13px; color: #aaa; }
+  
+  .key-list { display: flex; flex-direction: column; gap: 6px; }
+  
+  .key-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #fafafa;
+    flex-wrap: wrap;
+  }
+  
+  .key-info { flex: 1; min-width: 0; }
+  .key-preview { display: block; font-size: 13px; color: #1a1a1a; }
+  .key-label { display: block; font-size: 11px; color: #aaa; margin-top: 2px; }
+  
+  .key-meta { display: flex; flex-direction: column; gap: 2px; }
+  .key-date { font-size: 11px; color: #bbb; }
+  
+  // ── Docs card ─────────────────────────────────────────────────────────────────
+  .docs-sub {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 1rem;
+    code { background: #f0ede8; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+  }
+  
+  .endpoint-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 1.25rem; }
+  
+  .endpoint {
+    display: grid;
+    grid-template-columns: 60px 220px 1fr;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    &:hover { background: #f8f6f0; }
+  }
+  
+  .method {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  .get  { background: #e1f5ee; color: #085041; }
+  .post { background: #e6f1fb; color: #0C447C; }
+  .put  { background: #faeeda; color: #633806; }
+  
+  .path { font-size: 12px; color: #333; }
+  .desc { font-size: 12px; color: #888; }
+  
+  .code-block {
+    background: #1a1a2e;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  
+  .code-label { font-size: 11px; color: #666; margin-bottom: 8px; }
+  
+  .code {
+    font-size: 12px;
+    color: #e2e8f0;
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin: 0;
+    line-height: 1.7;
+  }
