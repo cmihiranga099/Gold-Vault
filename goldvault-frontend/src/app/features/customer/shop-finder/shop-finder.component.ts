@@ -111,14 +111,19 @@ export class ShopFinderComponent implements OnInit, AfterViewInit {
            </div>`
         : '';
 
-      marker.bindPopup(`
-        <div style="font-family:inherit;min-width:180px;">
-          <strong style="font-size:14px;">${shop.name}</strong>
-          ${ratingHtml}
-          <div style="font-size:12px;color:#666;margin-top:6px;">${shop.address ?? ''}</div>
-          ${shop.phone ? `<div style="font-size:12px;color:#666;margin-top:2px;">📞 ${shop.phone}</div>` : ''}
-        </div>
-      `);
+        marker.bindPopup(`
+          <div style="font-family:inherit;min-width:200px;">
+            <strong style="font-size:14px;">${shop.name}</strong>
+            ${ratingHtml}
+            <div style="font-size:12px;color:#666;margin-top:6px;">${shop.address ?? ''}</div>
+            ${shop.phone ? `<div style="font-size:12px;color:#666;margin-top:2px;">📞 ${shop.phone}</div>` : ''}
+            <a href="/shops/${shop.id}"
+               style="display:block;margin-top:10px;background:#C9A14A;color:#fff;text-align:center;
+                      padding:6px;border-radius:6px;text-decoration:none;font-size:12px;font-weight:600;">
+              View full profile →
+            </a>
+          </div>
+        `);
 
       marker.on('click', () => this.selected.set(shop));
       this.markers.push(marker);
