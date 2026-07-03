@@ -13,11 +13,12 @@ import { LoyaltyService } from '../../../core/services/loyalty.service';
 import { LoyaltySummaryResponse } from '../../../core/models/loyalty.model';
 import { PromotionService } from '../../../core/services/promotion.service';
 import { PromotionResponse } from '../../../core/models/promotion.model';
+import { CurrencyConvertPipe } from '../../../core/pipes/currency-convert.pipe';
 
 @Component({
   selector: 'app-customer-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, TagModule, ButtonModule, ProgressSpinnerModule, TranslatePipe, TopnavComponent],
+  imports: [CommonModule, RouterLink, TagModule, ButtonModule, ProgressSpinnerModule, TranslatePipe, TopnavComponent,CurrencyConvertPipe],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })

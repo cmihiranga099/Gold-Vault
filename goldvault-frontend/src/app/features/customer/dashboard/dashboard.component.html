@@ -79,7 +79,7 @@
       </div>
       <div class="summary-card gv-card">
         <span class="summary-label">{{ 'customerDash.totalOutstanding' | translate }}</span>
-        <span class="summary-value gv-mono">LKR {{ formatCurrency(totalOutstanding()) }}</span>
+        <span class="summary-value gv-mono">{{ totalOutstanding() | currencyConvert }}</span>
       </div>
       <div class="summary-card gv-card">
         <span class="summary-label">{{ 'customerDash.nextDue' | translate }}</span>
@@ -107,11 +107,11 @@
             <div class="ticket-row-details">
               <div class="ticket-detail">
                 <span class="detail-label">{{ 'customerDash.loanAmount' | translate }}</span>
-                <span class="detail-value gv-mono">LKR {{ formatCurrency(ticket.loanAmount) }}</span>
+                <span class="detail-value gv-mono">{{ ticket.loanAmount | currencyConvert }}</span>
               </div>
               <div class="ticket-detail">
                 <span class="detail-label">{{ 'customerDash.outstanding' | translate }}</span>
-                <span class="detail-value gv-mono">LKR {{ formatCurrency(ticket.outstandingBalance) }}</span>
+                <span class="detail-value gv-mono">{{ ticket.outstandingBalance | currencyConvert }}</span>
               </div>
               <div class="ticket-detail">
                 <span class="detail-label">{{ 'customerDash.dueDate' | translate }}</span>
