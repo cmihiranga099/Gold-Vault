@@ -14,7 +14,9 @@ import { CurrencyConvertPipe } from '../../../core/pipes/currency-convert.pipe';
   templateUrl: './shop-profile.component.html',
   styleUrl:    './shop-profile.component.scss'
 })
-export class ShopProfileComponent implements OnInit {
+export class PublicShopProfileComponent implements OnInit {
+  protected Math = Math;
+
   profile  = signal<ShopProfileResponse | null>(null);
   loading  = signal(true);
   error    = signal<string | null>(null);

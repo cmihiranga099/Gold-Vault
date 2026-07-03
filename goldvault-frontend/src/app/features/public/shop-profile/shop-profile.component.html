@@ -182,7 +182,7 @@
           @if (profile()!.latitude && profile()!.longitude) {
             <div class="section-card gv-card map-card">
               <h2>Location</h2>
-              
+                <a
                 [href]="'https://www.google.com/maps/search/?api=1&query=' + profile()!.latitude + ',' + profile()!.longitude"
                 target="_blank"
                 class="map-link"

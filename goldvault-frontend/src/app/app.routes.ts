@@ -56,7 +56,7 @@ export const routes: Routes = [
   },
   {
     path: 'shops/:id',
-    loadComponent: () => import('./features/public/shop-profile/shop-profile.component').then(m => m.ShopProfileComponent)
+    loadComponent: () => import('./features/public/shop-profile/shop-profile.component').then(m => m.PublicShopProfileComponent)
   },
   {
     path: 'calculator',
