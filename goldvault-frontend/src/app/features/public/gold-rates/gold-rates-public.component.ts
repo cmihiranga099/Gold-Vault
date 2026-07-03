@@ -4,13 +4,15 @@ import { RouterLink } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MarketRateService } from '../../../core/services/market-rate.service';
 import { MarketRateResponse, RateComparisonResponse, PURITIES } from '../../../core/models/market-rate.model';
+import { CurrencyConvertPipe } from '../../../core/pipes/currency-convert.pipe';
+import { CurrencyService } from '../../../core/services/currency.service';
 
 @Component({
   selector: 'app-gold-rates-public',
   standalone: true,
-  imports: [CommonModule, RouterLink, ProgressSpinnerModule],
+  imports: [CommonModule, RouterLink, ProgressSpinnerModule, CurrencyConvertPipe],
   templateUrl: './gold-rates-public.component.html',
-  styleUrl:    './gold-rates-public.component.scss'
+  styleUrl:    './gold-rates-public.component.scss',
 })
 export class GoldRatesPublicComponent implements OnInit {
   marketRates  = signal<MarketRateResponse[]>([]);
@@ -20,7 +22,10 @@ export class GoldRatesPublicComponent implements OnInit {
   selectedPurity = signal<string>('K22');
   purities = [...PURITIES];
 
-  constructor(private marketRateService: MarketRateService) {}
+  constructor(
+    private marketRateService: MarketRateService,
+    public  currencyService:   CurrencyService
+  ) {}
 
   ngOnInit(): void {
     this.marketRateService.getLatestMarketRates().subscribe({
