@@ -1,161 +1,111 @@
-package lk.goldvault.backend.service;
+package lk.goldvault.backend.controller;
 
-import lk.goldvault.backend.dto.request.ShopRegistrationRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lk.goldvault.backend.dto.response.ApiResponse;
 import lk.goldvault.backend.dto.response.ShopResponse;
 import lk.goldvault.backend.entity.PawnShop;
 import lk.goldvault.backend.enums.ShopStatus;
 import lk.goldvault.backend.repository.PawnShopRepository;
-import lk.goldvault.backend.repository.ShopReviewRepository;
+import lk.goldvault.backend.service.ShopManagementService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
-@Service
+@RestController
+@RequestMapping("/api/admin/licenses")
 @RequiredArgsConstructor
-public class ShopManagementService {
+@Tag(name = "License Verification", description = "Admin: verify pawn broker license documents")
+public class LicenseVerificationController {
 
     private final PawnShopRepository    pawnShopRepository;
-    private final ShopReviewRepository  shopReviewRepository;
+    private final ShopManagementService shopManagementService;
 
-    public ShopResponse register(ShopRegistrationRequest request) {
-        if (pawnShopRepository.existsByRegNumber(request.getRegNumber())) {
-            throw new RuntimeException(
-                    "A shop with registration number " + request.getRegNumber() + " already exists");
-        }
-
-        PawnShop shop = PawnShop.builder()
-                .name(request.getName())
-                .regNumber(request.getRegNumber())
-                .ownerName(request.getOwnerName())
-                .phone(request.getPhone())
-                .email(request.getEmail())
-                .address(request.getAddress())
-                .latitude(request.getLatitude())
-                .longitude(request.getLongitude())
-                .status(ShopStatus.PENDING)
-                .build();
-
-        shop = pawnShopRepository.save(shop);
-        return toResponse(shop);
-    }
-
-    public List<ShopResponse> getAll() {
-        return pawnShopRepository.findAll()
-                .stream()
-                .map(this::toResponse)
+    /** List all shops with PENDING license verification */
+    @GetMapping("/pending")
+    @Operation(summary = "List shops with pending license verification")
+    public ResponseEntity<ApiResponse<List<ShopResponse>>> getPending() {
+        List<ShopResponse> pending = shopManagementService.getAll().stream()
+                .filter(s -> "PENDING".equals(s.getLicenseStatus()))
                 .toList();
+        return ResponseEntity.ok(ApiResponse.success(pending));
     }
 
-    public List<ShopResponse> getByStatus(ShopStatus status) {
-        return pawnShopRepository.findByStatus(status)
-                .stream()
-                .map(this::toResponseWithRating)
-                .toList();
+    /** List all shops with any license status */
+    @GetMapping
+    @Operation(summary = "List all shops with license info")
+    public ResponseEntity<ApiResponse<List<ShopResponse>>> getAll() {
+        return ResponseEntity.ok(ApiResponse.success(shopManagementService.getAll()));
     }
 
-    public ShopResponse getById(Long id) {
-        PawnShop shop = pawnShopRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Shop not found with id: " + id));
-        return toResponseWithRating(shop);
-    }
+    /** Admin verifies a shop's license */
+    @PutMapping("/{shopId}/verify")
+    @Operation(summary = "Mark a shop's license as VERIFIED")
+    public ResponseEntity<ApiResponse<ShopResponse>> verify(
+            @PathVariable Long shopId,
+            @RequestParam(defaultValue = "Admin") String verifiedBy) {
 
-    public ShopResponse approve(Long id) {
-        PawnShop shop = pawnShopRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Shop not found with id: " + id));
+        PawnShop shop = pawnShopRepository.findById(shopId)
+                .orElseThrow(() -> new RuntimeException("Shop not found: " + shopId));
 
-        if (shop.getStatus() != ShopStatus.PENDING) {
-            throw new RuntimeException("Only PENDING shops can be approved. Current status: " + shop.getStatus());
+        shop.setLicenseStatus("VERIFIED");
+        shop.setLicenseVerifiedAt(LocalDateTime.now());
+        shop.setLicenseVerifiedBy(verifiedBy);
+        shop.setLicenseRejectReason(null);
+
+        // Auto-activate shop once license is verified
+        if (shop.getStatus() == ShopStatus.PENDING) {
+            shop.setStatus(ShopStatus.ACTIVE);
         }
 
-        shop.setStatus(ShopStatus.ACTIVE);
-        shop = pawnShopRepository.save(shop);
-        return toResponse(shop);
+        pawnShopRepository.save(shop);
+        return ResponseEntity.ok(ApiResponse.success(
+                "License verified. Shop is now ACTIVE.", shopManagementService.getById(shopId)));
     }
 
-    public ShopResponse suspend(Long id) {
-        PawnShop shop = pawnShopRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Shop not found with id: " + id));
+    /** Admin rejects a shop's license */
+    @PutMapping("/{shopId}/reject")
+    @Operation(summary = "Reject a shop's license with a reason")
+    public ResponseEntity<ApiResponse<ShopResponse>> reject(
+            @PathVariable Long shopId,
+            @RequestBody Map<String, String> body) {
 
-        if (shop.getStatus() == ShopStatus.SUSPENDED) {
-            throw new RuntimeException("Shop is already suspended");
-        }
+        String reason     = body.getOrDefault("reason", "License document is invalid or incomplete.");
+        String reviewedBy = body.getOrDefault("reviewedBy", "Admin");
 
-        shop.setStatus(ShopStatus.SUSPENDED);
-        shop = pawnShopRepository.save(shop);
-        return toResponse(shop);
+        PawnShop shop = pawnShopRepository.findById(shopId)
+                .orElseThrow(() -> new RuntimeException("Shop not found: " + shopId));
+
+        shop.setLicenseStatus("REJECTED");
+        shop.setLicenseRejectReason(reason);
+        shop.setLicenseVerifiedBy(reviewedBy);
+        shop.setLicenseVerifiedAt(LocalDateTime.now());
+
+        pawnShopRepository.save(shop);
+        return ResponseEntity.ok(ApiResponse.success(
+                "License rejected.", shopManagementService.getById(shopId)));
     }
 
-    public ShopResponse reactivate(Long id) {
-        PawnShop shop = pawnShopRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Shop not found with id: " + id));
+    /** Shop uploads/re-uploads their license document */
+    @PutMapping("/{shopId}/upload")
+    @Operation(summary = "Link an uploaded license document to a shop")
+    public ResponseEntity<ApiResponse<ShopResponse>> linkDocument(
+            @PathVariable Long shopId,
+            @RequestBody Map<String, String> body) {
 
-        if (shop.getStatus() != ShopStatus.SUSPENDED) {
-            throw new RuntimeException("Only SUSPENDED shops can be reactivated. Current status: " + shop.getStatus());
-        }
+        PawnShop shop = pawnShopRepository.findById(shopId)
+                .orElseThrow(() -> new RuntimeException("Shop not found: " + shopId));
 
-        shop.setStatus(ShopStatus.ACTIVE);
-        shop = pawnShopRepository.save(shop);
-        return toResponse(shop);
-    }
+        shop.setLicenseDocumentUrl(body.get("licenseDocumentUrl"));
+        shop.setLicenseStatus("PENDING"); // Reset to pending for re-review
+        shop.setLicenseRejectReason(null);
 
-    /** Updates a shop's geolocation — used by shop admin to pin their location on the map. */
-    public ShopResponse updateLocation(Long id, java.math.BigDecimal lat, java.math.BigDecimal lng) {
-        PawnShop shop = pawnShopRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Shop not found with id: " + id));
-        shop.setLatitude(lat);
-        shop.setLongitude(lng);
-        shop = pawnShopRepository.save(shop);
-        return toResponse(shop);
-    }
-
-    // ── Helpers ──────────────────────────────────────────────────────────────────
-
-    private ShopResponse toResponse(PawnShop shop) {
-        return ShopResponse.builder()
-                .id(shop.getId())
-                .name(shop.getName())
-                .regNumber(shop.getRegNumber())
-                .ownerName(shop.getOwnerName())
-                .phone(shop.getPhone())
-                .email(shop.getEmail())
-                .address(shop.getAddress())
-                .latitude(shop.getLatitude())
-                .longitude(shop.getLongitude())
-                .status(shop.getStatus())
-                .createdAt(shop.getCreatedAt())
-                .licenseDocumentUrl(shop.getLicenseDocumentUrl())
-                .licenseStatus(shop.getLicenseStatus())
-                .licenseRejectReason(shop.getLicenseRejectReason())
-                .licenseVerifiedAt(shop.getLicenseVerifiedAt())
-                .licenseVerifiedBy(shop.getLicenseVerifiedBy())
-                .build();
-    }
-
-    /** Same as toResponse but also attaches average rating + review count for map popups. */
-    private ShopResponse toResponseWithRating(PawnShop shop) {
-        Double avg   = shopReviewRepository.averageRatingByShop(shop.getId());
-        long   count = shopReviewRepository.countByShopIdAndStatus(shop.getId(), "VISIBLE");
-
-        return ShopResponse.builder()
-                .id(shop.getId())
-                .name(shop.getName())
-                .regNumber(shop.getRegNumber())
-                .ownerName(shop.getOwnerName())
-                .phone(shop.getPhone())
-                .email(shop.getEmail())
-                .address(shop.getAddress())
-                .latitude(shop.getLatitude())
-                .longitude(shop.getLongitude())
-                .status(shop.getStatus())
-                .createdAt(shop.getCreatedAt())
-                .licenseDocumentUrl(shop.getLicenseDocumentUrl())
-                .licenseStatus(shop.getLicenseStatus())
-                .licenseRejectReason(shop.getLicenseRejectReason())
-                .licenseVerifiedAt(shop.getLicenseVerifiedAt())
-                .licenseVerifiedBy(shop.getLicenseVerifiedBy())
-                .averageRating(avg != null ? Math.round(avg * 10.0) / 10.0 : 0.0)
-                .totalReviews(count)
-                .build();
+        pawnShopRepository.save(shop);
+        return ResponseEntity.ok(ApiResponse.success(
+                "License document submitted for review.", shopManagementService.getById(shopId)));
     }
 }
