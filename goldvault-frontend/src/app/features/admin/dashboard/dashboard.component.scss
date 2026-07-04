@@ -237,3 +237,21 @@
   .lb-volume { font-size: 13px; color: #1a1a1a; white-space: nowrap; }
   
   .no-data { font-size: 13px; color: #aaa; text-align: center; padding: 2rem 0; }
+
+  .action-link-aml {
+    background: rgba(220,38,38,0.08);
+    border-color: #dc2626;
+    color: #dc2626;
+    position: relative;
+  }
+  
+  .aml-alert-dot {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 10px;
+    height: 10px;
+    background: #dc2626;
+    border-radius: 50%;
+    border: 2px solid #fff;
+  }

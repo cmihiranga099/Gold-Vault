@@ -1,0 +1,112 @@
+.aml-page { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+.aml-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;
+  h1 { font-size: 1.5rem; font-weight: 600; margin: 4px 0; display: flex; align-items: center; gap: 10px; }
+}
+
+.aml-sub { font-size: 13px; color: #888; }
+
+.aml-badge {
+  font-size: 10px; font-weight: 700; background: #dc2626;
+  color: #fff; padding: 2px 7px; border-radius: 5px;
+}
+
+.header-actions { display: flex; align-items: center; gap: 10px; }
+.back-link { font-size: 13px; color: #888; text-decoration: none; &:hover { color: #333; } }
+
+// ── Summary ───────────────────────────────────────────────────────────────────
+.summary-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px; margin-bottom: 1.25rem;
+}
+
+.summary-card {
+  padding: 14px; display: flex; flex-direction: column; gap: 4px; text-align: center;
+}
+
+.summary-open { border-color: #dc2626; background: rgba(220,38,38,0.04); }
+
+.summary-num { font-size: 28px; font-weight: 700; color: #1a1a1a; line-height: 1; }
+.summary-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: .04em; }
+
+// ── Filter ────────────────────────────────────────────────────────────────────
+.filter-bar {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap;
+}
+
+.filter-btn {
+  font-size: 12px; padding: 5px 12px; border-radius: 20px;
+  border: 1px solid #e0ddd8; background: transparent; cursor: pointer; color: #888;
+  transition: all 0.15s; &:hover { border-color: #C9A14A; color: #C9A14A; }
+}
+
+.filter-btn-active { background: #1a1a2e; border-color: #1a1a2e; color: #C9A14A; }
+.flag-count { font-size: 12px; color: #aaa; margin-left: auto; }
+
+// ── Loading/empty ─────────────────────────────────────────────────────────────
+.aml-loading { display: flex; justify-content: center; padding: 3rem 0; }
+
+.aml-empty {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 12px; padding: 2.5rem; text-align: center;
+  p { font-size: 13px; color: #888; }
+}
+
+// ── Flag cards ────────────────────────────────────────────────────────────────
+.flags-list { display: flex; flex-direction: column; gap: 10px; }
+
+.flag-card { padding: 1.1rem 1.25rem; }
+.flag-card-open { border-color: #fca5a5; }
+
+.flag-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 8px; flex-wrap: wrap; gap: 6px;
+}
+
+.flag-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.flag-date { font-size: 11px; color: #aaa; }
+
+.flag-description { font-size: 13px; color: #333; line-height: 1.6; margin: 0 0 10px; }
+
+.flag-meta {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  font-size: 12px; color: #888; margin-bottom: 8px;
+  span { display: flex; align-items: center; gap: 5px; }
+  i { font-size: 11px; color: #C9A14A; }
+}
+
+.flag-amount { color: #dc2626 !important; font-weight: 600; }
+
+.review-note {
+  font-size: 12px; color: #666; background: #f8f6f0;
+  border-radius: 6px; padding: 8px 10px; margin: 6px 0 0;
+  border-left: 3px solid #C9A14A;
+}
+
+.review-by { color: #aaa; font-style: italic; margin-left: 6px; }
+
+.flag-actions { display: flex; gap: 8px; margin-top: 8px; }
+
+// ── Review dialog ─────────────────────────────────────────────────────────────
+.review-dialog { display: flex; flex-direction: column; gap: 14px; }
+.review-flag-desc { font-size: 13px; color: #666; background: #f8f6f0; border-radius: 8px; padding: 10px 12px; }
+.field { display: flex; flex-direction: column; gap: 4px; label { font-size: 12px; color: #666; } }
+
+.action-toggle { display: flex; gap: 0; border: 1px solid #e0ddd8; border-radius: 8px; overflow: hidden; }
+.action-btn {
+  flex: 1; padding: 8px; font-size: 12px; font-weight: 500; border: none;
+  background: transparent; cursor: pointer; display: flex; align-items: center;
+  justify-content: center; gap: 5px; color: #888; transition: all 0.15s;
+}
+.action-btn-review  { background: rgba(22,163,74,0.1);  color: #16a34a; }
+.action-btn-dismiss { background: rgba(107,114,128,0.1); color: #666; }
+
+.review-input {
+  border: 1px solid #e0ddd8; border-radius: 8px; padding: 8px 10px;
+  font-size: 13px; font-family: inherit; outline: none;
+  &:focus { border-color: #C9A14A; }
+}
+
+.review-textarea { resize: vertical; min-height: 70px; }

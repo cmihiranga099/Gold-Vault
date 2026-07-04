@@ -13,6 +13,12 @@
       <a routerLink="/admin/reports" class="action-link action-link-primary">
         <i class="pi pi-chart-bar"></i> {{ 'admin.revenueReportLink' | translate }}
       </a>
+      <a routerLink="/admin/aml" class="action-link action-link-aml">
+        <i class="pi pi-shield"></i> AML Monitoring
+        @if (summary() && summary()!.pendingShopApprovals > 0) {
+          <span class="aml-alert-dot"></span>
+        }
+      </a>
     </div>
   </div>
 

@@ -1,0 +1,170 @@
+<app-topnav />
+
+<div class="aml-page">
+  <div class="aml-header">
+    <div>
+      <span class="gv-eyebrow">Compliance</span>
+      <h1>AML Monitoring <span class="aml-badge">CBSL</span></h1>
+      <p class="aml-sub">Anti-Money Laundering flags for suspicious pawn transactions.</p>
+    </div>
+    <div class="header-actions">
+      <p-button
+        label="Run scan now"
+        icon="pi pi-search"
+        severity="secondary"
+        [loading]="scanning()"
+        (onClick)="triggerScan()"
+      />
+      <a routerLink="/admin/dashboard" class="back-link">← Dashboard</a>
+    </div>
+  </div>
+
+  <!-- Summary KPIs -->
+  @if (summary()) {
+    <div class="summary-grid">
+      <div class="summary-card summary-open gv-card">
+        <span class="summary-num">{{ summary()!.openFlags }}</span>
+        <span class="summary-label">Open flags</span>
+      </div>
+      <div class="summary-card gv-card">
+        <span class="summary-num">{{ summary()!.reviewedFlags }}</span>
+        <span class="summary-label">Reviewed</span>
+      </div>
+      <div class="summary-card gv-card">
+        <span class="summary-num">{{ summary()!.dismissedFlags }}</span>
+        <span class="summary-label">Dismissed</span>
+      </div>
+      @for (entry of summary()!.byType | keyvalue; track entry.key) {
+        <div class="summary-card gv-card">
+          <span class="summary-num">{{ entry.value }}</span>
+          <span class="summary-label">{{ entry.key | titlecase }}</span>
+        </div>
+      }
+    </div>
+  }
+
+  @if (scanMsg()) {
+    <p-message severity="info" [text]="scanMsg()!" styleClass="w-full" />
+  }
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <button
+      class="filter-btn"
+      [class.filter-btn-active]="openOnly()"
+      (click)="openOnly.set(true); load()"
+    >🚨 Open flags only</button>
+    <button
+      class="filter-btn"
+      [class.filter-btn-active]="!openOnly()"
+      (click)="openOnly.set(false); load()"
+    >All flags</button>
+    <span class="flag-count">{{ flags().length }} flag(s)</span>
+  </div>
+
+  <!-- Flags list -->
+  @if (loading()) {
+    <div class="aml-loading"><p-progressSpinner strokeWidth="3" /></div>
+  } @else if (flags().length === 0) {
+    <div class="aml-empty gv-card">
+      <i class="pi pi-shield" style="font-size:36px;color:#16a34a;"></i>
+      <p>No {{ openOnly() ? 'open ' : '' }}AML flags. Platform looks clean.</p>
+    </div>
+  } @else {
+    <div class="flags-list">
+      @for (flag of flags(); track flag.id) {
+        <div class="flag-card gv-card" [class.flag-card-open]="flag.status === 'OPEN'">
+          <div class="flag-top">
+            <div class="flag-tags">
+              <p-tag [value]="flag.status"       [severity]="flagSeverity(flag.status)" />
+              <p-tag [value]="flag.flagTypeLabel" [severity]="typeSeverity(flag.flagType)" />
+            </div>
+            <span class="flag-date">{{ flag.createdAt | date:'MMM d, y, h:mm a' }}</span>
+          </div>
+
+          <p class="flag-description">{{ flag.description }}</p>
+
+          <div class="flag-meta">
+            <span><i class="pi pi-user"></i> {{ flag.customerName }} ({{ flag.customerNic }})</span>
+            <span><i class="pi pi-building"></i> {{ flag.shopName }}</span>
+            @if (flag.ticketNumber) {
+              <span><i class="pi pi-ticket"></i> {{ flag.ticketNumber }}</span>
+            }
+            @if (flag.amount) {
+              <span class="flag-amount gv-mono"><i class="pi pi-money-bill"></i> LKR {{ formatCurrency(flag.amount) }}</span>
+            }
+          </div>
+
+          @if (flag.reviewNote) {
+            <p class="review-note">
+              <i class="pi pi-comment"></i> {{ flag.reviewNote }}
+              <span class="review-by">— {{ flag.reviewedBy }}, {{ flag.reviewedAt | date:'MMM d, y' }}</span>
+            </p>
+          }
+
+          @if (flag.status === 'OPEN') {
+            <div class="flag-actions">
+              <p-button
+                label="Mark reviewed"
+                icon="pi pi-check"
+                severity="success"
+                [text]="true"
+                (onClick)="reviewStatus = 'REVIEWED'; openReviewDialog(flag)"
+              />
+              <p-button
+                label="Dismiss"
+                icon="pi pi-times"
+                severity="secondary"
+                [text]="true"
+                (onClick)="reviewStatus = 'DISMISSED'; openReviewDialog(flag)"
+              />
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>
+
+<!-- Review dialog -->
+<p-dialog header="Review AML Flag" [(visible)]="showReview" [modal]="true" [style]="{ width: '440px' }">
+  @if (selectedFlag()) {
+    <div class="review-dialog">
+      <p class="review-flag-desc">{{ selectedFlag()!.description }}</p>
+
+      <div class="field">
+        <label>Action</label>
+        <div class="action-toggle">
+          <button class="action-btn" [class.action-btn-review]="reviewStatus === 'REVIEWED'"
+                  (click)="reviewStatus = 'REVIEWED'">
+            <i class="pi pi-check"></i> Mark reviewed
+          </button>
+          <button class="action-btn" [class.action-btn-dismiss]="reviewStatus === 'DISMISSED'"
+                  (click)="reviewStatus = 'DISMISSED'">
+            <i class="pi pi-times"></i> Dismiss
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Your name</label>
+        <input type="text" [(ngModel)]="reviewingBy" class="w-full review-input" />
+      </div>
+
+      <div class="field">
+        <label>Review note (optional)</label>
+        <textarea [(ngModel)]="reviewNote" rows="3"
+                  placeholder="Reason for review/dismissal..."
+                  class="w-full review-input review-textarea"></textarea>
+      </div>
+
+      <p-button
+        label="Submit"
+        icon="pi pi-check"
+        styleClass="gv-submit-btn w-full"
+        [loading]="reviewLoading()"
+        (onClick)="submitReview()"
+      />
+    </div>
+  }
+</p-dialog>

@@ -14,6 +14,10 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () => import('./reports/reports.component').then(m => m.AdminReportsComponent)
   },
   {
+    path: 'aml',
+    loadComponent: () => import('./aml/aml.component').then(m => m.AmlDashboardComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
