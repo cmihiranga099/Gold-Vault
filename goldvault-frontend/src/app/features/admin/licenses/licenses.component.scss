@@ -1,0 +1,116 @@
+.licenses-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+.page-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;
+  h1 { font-size: 1.5rem; font-weight: 600; margin: 4px 0; }
+}
+
+.page-sub { font-size: 13px; color: #888; }
+.back-link { font-size: 13px; color: #888; text-decoration: none; &:hover { color: #333; } }
+.page-loading { display: flex; justify-content: center; padding: 3rem 0; }
+
+.empty-card {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 10px; padding: 2.5rem; text-align: center;
+  p { font-size: 13px; color: #888; }
+}
+
+// ── Filter tabs ───────────────────────────────────────────────────────────────
+.filter-tabs {
+  display: flex; gap: 4px; margin-bottom: 1.25rem;
+  border-bottom: 1px solid #eee; padding-bottom: 0;
+}
+
+.filter-tab {
+  background: none; border: none; padding: 8px 16px; font-size: 13px;
+  font-weight: 500; color: #888; cursor: pointer;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  display: flex; align-items: center; gap: 6px; transition: color 0.15s;
+  &:hover { color: #C9A14A; }
+}
+
+.filter-tab-active { color: #C9A14A; border-bottom-color: #C9A14A; }
+
+.tab-count {
+  background: #f0ede8; color: #888; font-size: 10px;
+  padding: 1px 6px; border-radius: 10px; font-weight: 700;
+}
+
+// ── Shop cards ────────────────────────────────────────────────────────────────
+.shops-list { display: flex; flex-direction: column; gap: 10px; }
+
+.shop-card { padding: 1.1rem 1.25rem; }
+.shop-card-pending  { border-left: 4px solid #d97706; }
+.shop-card-rejected { border-left: 4px solid #dc2626; }
+
+.shop-card-top {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; margin-bottom: 8px; gap: 10px;
+}
+
+.shop-info { flex: 1; }
+h3 { font-size: 15px; font-weight: 600; color: #1a1a1a; margin: 0 0 3px; }
+.shop-reg   { display: block; font-size: 12px; color: #C9A14A; margin-bottom: 2px; }
+.shop-owner { display: block; font-size: 12px; color: #888; }
+
+.shop-badges { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+
+.shop-address, .shop-contact {
+  font-size: 12px; color: #888; margin: 4px 0;
+  display: flex; align-items: center; gap: 8px;
+  i { color: #C9A14A; font-size: 11px; }
+  span { display: flex; align-items: center; gap: 5px; }
+}
+
+// ── License doc ───────────────────────────────────────────────────────────────
+.license-doc-row {
+  background: #f8f6f0; border-radius: 8px; padding: 10px 12px;
+  margin: 10px 0; display: flex; flex-direction: column; gap: 6px;
+}
+
+.license-doc { display: flex; align-items: center; gap: 10px; }
+
+.doc-icon { font-size: 22px; color: #dc2626; }
+
+.doc-label { display: block; font-size: 12px; color: #666; }
+
+.view-doc-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: none; border: 1px solid #C9A14A; color: #C9A14A;
+  border-radius: 6px; padding: 3px 10px; font-size: 11px; cursor: pointer;
+  margin-top: 4px; transition: all 0.15s;
+  &:hover { background: rgba(201,161,74,0.08); }
+}
+
+.no-doc {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: #d97706;
+}
+
+.verified-by { font-size: 11px; color: #16a34a; }
+
+.reject-reason {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 12px; color: #dc2626;
+  i { flex-shrink: 0; margin-top: 1px; }
+}
+
+.card-actions { display: flex; gap: 8px; margin-top: 8px; }
+
+// ── Reject dialog ─────────────────────────────────────────────────────────────
+.reject-dialog { display: flex; flex-direction: column; gap: 14px; }
+
+.reject-shop {
+  font-size: 13px; font-weight: 600; color: #1a1a1a;
+  background: #f8f6f0; border-radius: 8px; padding: 10px 12px;
+}
+
+.field { display: flex; flex-direction: column; gap: 4px; label { font-size: 12px; color: #666; } }
+
+.reject-textarea {
+  border: 1px solid #e0ddd8; border-radius: 8px; padding: 8px 10px;
+  font-size: 13px; font-family: inherit; resize: vertical;
+  min-height: 90px; outline: none;
+  &:focus { border-color: #dc2626; }
+}

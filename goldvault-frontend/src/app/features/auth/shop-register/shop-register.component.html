@@ -60,6 +60,36 @@
             <input id="address" type="text" pInputText formControlName="address"
                    placeholder="No. 12, Main St, Colombo 07" class="w-full" />
           </div>
+          <!-- License document upload -->
+        <div class="field">
+          <label>Pawn broker license document <span class="required">*</span></label>
+          @if (licenseFileName()) {
+            <div class="license-uploaded">
+              <i class="pi pi-file-pdf" style="color:#dc2626;font-size:18px;"></i>
+              <span>{{ licenseFileName() }}</span>
+              @if (licenseUploading()) {
+                <span class="uploading-text"><i class="pi pi-spin pi-spinner"></i> Uploading…</span>
+              } @else if (licenseUrl()) {
+                <span class="uploaded-ok"><i class="pi pi-check"></i> Uploaded</span>
+              }
+            </div>
+          } @else {
+            <label for="licenseFile" class="license-drop-zone">
+              <i class="pi pi-upload"></i>
+              <span>Upload pawn broker license</span>
+              <span class="drop-hint">PDF, JPEG or PNG · max 10 MB</span>
+              <input id="licenseFile" type="file" accept=".pdf,image/jpeg,image/png,image/webp"
+                     (change)="onLicenseSelected($event)" style="display:none" />
+            </label>
+          }
+          @if (licenseError()) {
+            <span style="font-size:12px;color:#dc2626;">{{ licenseError() }}</span>
+          }
+          <span class="field-hint">
+            Upload your pawn broker license issued by your provincial council.
+            Your application will be reviewed within 24–48 hours.
+          </span>
+        </div>
   
           @if (errorMessage()) {
             <p-message severity="error" [text]="errorMessage()!" styleClass="w-full" />

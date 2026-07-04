@@ -25,4 +25,9 @@ export interface ShopResponse {
   createdAt:     string;
   averageRating: number | null;
   totalReviews:  number | null;
+  licenseDocumentUrl:   string | null;
+  licenseStatus:        'PENDING' | 'VERIFIED' | 'REJECTED';
+  licenseRejectReason:  string | null;
+  licenseVerifiedAt:    string | null;
+  licenseVerifiedBy:    string | null;
 }

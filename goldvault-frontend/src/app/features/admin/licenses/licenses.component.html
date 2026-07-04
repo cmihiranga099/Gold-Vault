@@ -1,0 +1,171 @@
+<app-topnav />
+
+<div class="licenses-page">
+  <div class="page-header">
+    <div>
+      <span class="gv-eyebrow">Admin</span>
+      <h1>License Verification</h1>
+      <p class="page-sub">Review and verify pawn broker license documents submitted by shops.</p>
+    </div>
+    <a routerLink="/admin/dashboard" class="back-link">← Dashboard</a>
+  </div>
+
+  @if (successMsg()) {
+    <p-message severity="success" [text]="successMsg()!" styleClass="w-full" />
+  }
+
+  <!-- Filter tabs -->
+  <div class="filter-tabs">
+    @for (f of ['PENDING','VERIFIED','REJECTED','ALL']; track f) {
+      <button
+        class="filter-tab"
+        [class.filter-tab-active]="filter() === f"
+        (click)="filter.set(f as any)"
+      >
+        {{ f }}
+        <span class="tab-count">{{ f === 'ALL' ? shops().length : shops().filter(s => s.licenseStatus === f).length }}</span>
+      </button>
+    }
+  </div>
+
+  @if (loading()) {
+    <div class="page-loading"><p-progressSpinner strokeWidth="3" /></div>
+  } @else if (filtered().length === 0) {
+    <div class="empty-card gv-card">
+      <i class="pi pi-check-circle" style="font-size:36px;color:#16a34a;"></i>
+      <p>No shops with {{ filter() === 'ALL' ? '' : filter().toLowerCase() + ' ' }}license status.</p>
+    </div>
+  } @else {
+    <div class="shops-list">
+      @for (shop of filtered(); track shop.id) {
+        <div class="shop-card gv-card"
+             [class.shop-card-pending]="shop.licenseStatus === 'PENDING'"
+             [class.shop-card-rejected]="shop.licenseStatus === 'REJECTED'">
+
+          <div class="shop-card-top">
+            <div class="shop-info">
+              <h3>{{ shop.name }}</h3>
+              <span class="shop-reg gv-mono">{{ shop.regNumber }}</span>
+              <span class="shop-owner">{{ shop.ownerName }}</span>
+            </div>
+            <div class="shop-badges">
+              <p-tag [value]="shop.licenseStatus" [severity]="licenseSeverity(shop.licenseStatus)" />
+              <p-tag [value]="shop.status" severity="secondary" />
+            </div>
+          </div>
+
+          @if (shop.address) {
+            <p class="shop-address"><i class="pi pi-map-marker"></i> {{ shop.address }}</p>
+          }
+
+          @if (shop.phone || shop.email) {
+            <p class="shop-contact">
+              @if (shop.phone) { <span><i class="pi pi-phone"></i> {{ shop.phone }}</span> }
+              @if (shop.email) { <span><i class="pi pi-envelope"></i> {{ shop.email }}</span> }
+            </p>
+          }
+
+          <!-- License document -->
+          <div class="license-doc-row">
+            @if (shop.licenseDocumentUrl) {
+              <div class="license-doc">
+                <i class="pi pi-file-pdf doc-icon"></i>
+                <div>
+                  <span class="doc-label">License document uploaded</span>
+                  <button class="view-doc-btn" (click)="openDocument(shop.licenseDocumentUrl)">
+                    <i class="pi pi-external-link"></i> View document
+                  </button>
+                </div>
+              </div>
+            } @else {
+              <div class="no-doc">
+                <i class="pi pi-exclamation-triangle" style="color:#d97706;"></i>
+                <span>No license document uploaded yet.</span>
+              </div>
+            }
+
+            @if (shop.licenseStatus === 'VERIFIED') {
+              <span class="verified-by">
+                Verified by {{ shop.licenseVerifiedBy }}
+                on {{ shop.licenseVerifiedAt | date:'MMM d, y' }}
+              </span>
+            }
+
+            @if (shop.licenseStatus === 'REJECTED' && shop.licenseRejectReason) {
+              <div class="reject-reason">
+                <i class="pi pi-times-circle"></i>
+                <span>{{ shop.licenseRejectReason }}</span>
+              </div>
+            }
+          </div>
+
+          <!-- Actions -->
+          @if (shop.licenseStatus === 'PENDING' && shop.licenseDocumentUrl) {
+            <div class="card-actions">
+              <p-button
+                label="Verify license"
+                icon="pi pi-check"
+                severity="success"
+                [loading]="actionLoading()"
+                (onClick)="verify(shop)"
+              />
+              <p-button
+                label="Reject"
+                icon="pi pi-times"
+                severity="danger"
+                [text]="true"
+                (onClick)="openReject(shop)"
+              />
+            </div>
+          }
+
+          @if (shop.licenseStatus === 'REJECTED') {
+            <div class="card-actions">
+              <p-button
+                label="Re-verify after resubmission"
+                icon="pi pi-check"
+                severity="success"
+                [text]="true"
+                [loading]="actionLoading()"
+                (onClick)="verify(shop)"
+              />
+            </div>
+          }
+
+        </div>
+      }
+    </div>
+  }
+</div>
+
+<!-- Reject dialog -->
+<p-dialog
+  header="Reject License"
+  [(visible)]="showReject"
+  [modal]="true"
+  [style]="{ width: '420px' }"
+>
+  @if (selectedShop()) {
+    <div class="reject-dialog">
+      <p class="reject-shop">{{ selectedShop()!.name }} — {{ selectedShop()!.regNumber }}</p>
+      <div class="field">
+        <label>Rejection reason <span style="color:#dc2626;">*</span></label>
+        <textarea
+          [(ngModel)]="rejectReason"
+          rows="4"
+          placeholder="e.g. License number does not match provincial council records. Please resubmit with correct document."
+          class="reject-textarea w-full"
+        ></textarea>
+      </div>
+      <p-button
+        label="Submit rejection"
+        icon="pi pi-times"
+        severity="danger"
+        styleClass="w-full"
+        [loading]="actionLoading()"
+        [disabled]="!rejectReason.trim()"
+        (onClick)="submitReject()"
+      />
+    </div>
+  }
+</p-dialog>

@@ -18,6 +18,10 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () => import('./aml/aml.component').then(m => m.AmlDashboardComponent)
   },
   {
+    path: 'licenses',
+    loadComponent: () => import('./licenses/licenses.component').then(m => m.LicenseVerificationComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
