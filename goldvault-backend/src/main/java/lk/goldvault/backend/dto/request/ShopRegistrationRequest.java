@@ -14,7 +14,7 @@ public class ShopRegistrationRequest {
     @NotBlank(message = "Shop name is required")
     private String name;
 
-    @NotBlank(message = "Registration number is required")
+    @NotBlank(message = "Pawn broker license number is required")
     private String regNumber;
 
     @NotBlank(message = "Owner name is required")
@@ -29,4 +29,7 @@ public class ShopRegistrationRequest {
 
     private BigDecimal latitude;
     private BigDecimal longitude;
+
+    /** Path to the uploaded license document — set after upload */
+    private String licenseDocumentUrl;
 }

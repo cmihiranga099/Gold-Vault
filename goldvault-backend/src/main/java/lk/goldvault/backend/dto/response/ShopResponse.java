@@ -12,19 +12,26 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class ShopResponse {
-    private Long id;
-    private String name;
-    private String regNumber;
-    private String ownerName;
-    private String phone;
-    private String email;
-    private String address;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
-    private ShopStatus status;
+    private Long        id;
+    private String      name;
+    private String      regNumber;
+    private String      ownerName;
+    private String      phone;
+    private String      email;
+    private String      address;
+    private BigDecimal  latitude;
+    private BigDecimal  longitude;
+    private ShopStatus  status;
     private LocalDateTime createdAt;
 
-    /** Populated only when returned alongside review data (optional, default null) */
+    // ── License ───────────────────────────────────────────────────────────────
+    private String      licenseDocumentUrl;
+    private String      licenseStatus;
+    private String      licenseRejectReason;
+    private LocalDateTime licenseVerifiedAt;
+    private String      licenseVerifiedBy;
+
+    // ── Rating (optional, populated when returned with review data) ───────────
     private Double averageRating;
-    private Long totalReviews;
+    private Long   totalReviews;
 }

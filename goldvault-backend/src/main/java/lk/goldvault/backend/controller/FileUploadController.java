@@ -50,6 +50,18 @@ public class FileUploadController {
         String path = fileUploadService.save(file, "gold");
         return ResponseEntity.ok(ApiResponse.success("Gold photo uploaded", Map.of("url", path)));
     }
+    /**
+     * Upload a pawn broker license document (PDF or image).
+     * Returns: { "url": "uploads/licenses/abc123.pdf" }
+     */
+    @PostMapping("/license-document")
+    @Operation(summary = "Upload pawn broker license document")
+    public ResponseEntity<ApiResponse<Map<String, String>>> uploadLicense(
+            @RequestParam("file") MultipartFile file) {
+        String path = fileUploadService.save(file, "licenses");
+        return ResponseEntity.ok(ApiResponse.success("License document uploaded",
+                Map.of("url", path)));
+    }
 
     /**
      * Upload a NIC photo AND run OCR on it in one step.

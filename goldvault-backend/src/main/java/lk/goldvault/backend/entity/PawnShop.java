@@ -5,6 +5,7 @@ import lk.goldvault.backend.enums.ShopStatus;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "pawn_shop")
@@ -37,6 +38,24 @@ public class PawnShop extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String address;
 
+    // ── License verification fields ──────────────────────────────────────────
+    @Column(name = "license_document_url", length = 500)
+    private String licenseDocumentUrl;
+
+    @Column(name = "license_status", nullable = false, length = 20)
+    @Builder.Default
+    private String licenseStatus = "PENDING"; // PENDING, VERIFIED, REJECTED
+
+    @Column(name = "license_reject_reason", columnDefinition = "TEXT")
+    private String licenseRejectReason;
+
+    @Column(name = "license_verified_at")
+    private LocalDateTime licenseVerifiedAt;
+
+    @Column(name = "license_verified_by", length = 100)
+    private String licenseVerifiedBy;
+
+    // ── Location ─────────────────────────────────────────────────────────────
     @Column(precision = 10, scale = 7)
     private BigDecimal latitude;
 

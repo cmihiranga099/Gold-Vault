@@ -16,7 +16,8 @@ import java.util.UUID;
 public class FileUploadService {
 
     private static final Set<String> ALLOWED_TYPES = Set.of(
-            "image/jpeg", "image/jpg", "image/png", "image/webp"
+            "image/jpeg", "image/jpg", "image/png", "image/webp",
+            "application/pdf"
     );
     private static final long MAX_BYTES = 5 * 1024 * 1024; // 5 MB
 
