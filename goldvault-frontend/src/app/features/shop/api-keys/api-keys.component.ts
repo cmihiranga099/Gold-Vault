@@ -5,7 +5,8 @@ import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { TagModule } from 'primeng/tag';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
+import { TooltipModule } from 'primeng/tooltip';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../../core/auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
@@ -22,7 +23,7 @@ interface ApiKeyInfo {
 @Component({
   selector: 'app-api-keys',
   standalone: true,
-  imports: [CommonModule, RouterLink, ButtonModule, MessageModule, TagModule, ProgressSpinnerModule, TopnavComponent],
+  imports: [CommonModule, RouterLink, ButtonModule, MessageModule, TagModule, ProgressSpinnerModule, TooltipModule, TranslatePipe],
   templateUrl: './api-keys.component.html',
   styleUrl:    './api-keys.component.scss'
 })
@@ -37,7 +38,8 @@ export class ApiKeysComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private http:        HttpClient
+    private http:        HttpClient,
+    private translate:   TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -49,12 +51,12 @@ export class ApiKeysComponent implements OnInit {
     this.loading.set(true);
     this.http.get<any>(`${environment.apiUrl}/shop/api-keys/${this.shopId}`).subscribe({
       next:  (res) => { this.keys.set(res.data); this.loading.set(false); },
-      error: ()    => { this.error.set('Could not load API keys.'); this.loading.set(false); }
+      error: ()    => { this.error.set(this.translate.instant('apiKeys.errLoad')); this.loading.set(false); }
     });
   }
 
   generateKey(): void {
-    if (!confirm('Generate a new API key? You will see it only once.')) return;
+    if (!confirm(this.translate.instant('apiKeys.confirmGenerate'))) return;
     this.generating.set(true);
     this.newKey.set(null);
     this.http.post<any>(
@@ -65,22 +67,22 @@ export class ApiKeysComponent implements OnInit {
         this.newKey.set(res.data.apiKey);
         this.loadKeys();
       },
-      error: () => { this.generating.set(false); this.error.set('Could not generate key.'); }
+      error: () => { this.generating.set(false); this.error.set(this.translate.instant('apiKeys.errGenerate')); }
     });
   }
 
   revokeKey(keyId: number): void {
-    if (!confirm('Revoke this API key? Any POS using it will stop working immediately.')) return;
+    if (!confirm(this.translate.instant('apiKeys.confirmRevoke'))) return;
     this.http.delete<any>(`${environment.apiUrl}/shop/api-keys/${this.shopId}/revoke/${keyId}`).subscribe({
       next:  () => { this.newKey.set(null); this.loadKeys(); },
-      error: () => this.error.set('Could not revoke key.')
+      error: () => this.error.set(this.translate.instant('apiKeys.errRevoke'))
     });
   }
 
   copyKey(): void {
     if (this.newKey()) {
       navigator.clipboard.writeText(this.newKey()!);
-      alert('API key copied to clipboard!');
+      alert(this.translate.instant('apiKeys.copiedAlert'));
     }
   }
 }

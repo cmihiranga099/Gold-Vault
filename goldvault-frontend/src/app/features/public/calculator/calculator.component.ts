@@ -2,6 +2,7 @@ import { Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 interface AmortisationRow {
   month:          number;
@@ -14,7 +15,7 @@ interface AmortisationRow {
 @Component({
   selector: 'app-interest-calculator',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, TranslatePipe],
   templateUrl: './calculator.component.html',
   styleUrl:    './calculator.component.scss'
 })

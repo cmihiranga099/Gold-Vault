@@ -1,16 +1,13 @@
-<app-topnav />
-
 <div class="apikeys-page">
   <a routerLink="/shop/dashboard" class="back-link">
-    <i class="pi pi-arrow-left"></i> Back to dashboard
+    <i class="pi pi-arrow-left"></i> {{ 'apiKeys.backToDashboard' | translate }}
   </a>
 
   <div class="apikeys-header">
-    <span class="gv-eyebrow">Developer</span>
-    <h1>POS API Keys <span class="dev-badge">BETA</span></h1>
+    <span class="gv-eyebrow">{{ 'apiKeys.eyebrow' | translate }}</span>
+    <h1>{{ 'apiKeys.title' | translate }} <span class="dev-badge">{{ 'apiKeys.badge' | translate }}</span></h1>
     <p class="apikeys-sub">
-      Connect your Point of Sale software directly to GoldVault. Use the API key below to authenticate
-      all requests with the <code>X-API-Key</code> header.
+      {{ 'apiKeys.subtitle' | translate }} <code>X-API-Key</code> {{ 'apiKeys.subtitleHeader' | translate }}
     </p>
   </div>
 
@@ -19,18 +16,18 @@
     <div class="new-key-alert gv-card">
       <div class="new-key-header">
         <i class="pi pi-check-circle" style="color:#16a34a;font-size:20px;"></i>
-        <span>New API key generated — copy it now, it will not be shown again.</span>
+        <span>{{ 'apiKeys.newKeyGenerated' | translate }}</span>
       </div>
       <div class="new-key-value gv-mono">{{ newKey() }}</div>
-      <p-button label="Copy to clipboard" icon="pi pi-copy" severity="secondary" (onClick)="copyKey()" />
+      <p-button [label]="'apiKeys.copyBtn' | translate" icon="pi pi-copy" severity="secondary" (onClick)="copyKey()" />
     </div>
   }
 
   <div class="apikeys-card gv-card">
     <div class="apikeys-card-header">
-      <h2>Your API keys</h2>
+      <h2>{{ 'apiKeys.yourKeys' | translate }}</h2>
       <p-button
-        label="Generate new key"
+        [label]="'apiKeys.generateBtn' | translate"
         icon="pi pi-plus"
         styleClass="gv-submit-btn"
         [loading]="generating()"
@@ -39,9 +36,9 @@
     </div>
 
     @if (loading()) {
-      <p class="empty-text">Loading…</p>
+      <p class="empty-text">{{ 'apiKeys.loading' | translate }}</p>
     } @else if (keys().length === 0) {
-      <p class="empty-text">No API keys yet. Generate one to connect your POS system.</p>
+      <p class="empty-text">{{ 'apiKeys.noKeys' | translate }}</p>
     } @else {
       <div class="key-list">
         @for (key of keys(); track key.id) {
@@ -51,15 +48,15 @@
               <span class="key-label">{{ key.label }}</span>
             </div>
             <div class="key-meta">
-              <span class="key-date">Created {{ key.createdAt | date:'MMM d, y' }}</span>
+              <span class="key-date">{{ 'apiKeys.created' | translate }} {{ key.createdAt | date:'MMM d, y' }}</span>
               @if (key.lastUsed) {
-                <span class="key-date">Last used {{ key.lastUsed | date:'MMM d, y' }}</span>
+                <span class="key-date">{{ 'apiKeys.lastUsed' | translate }} {{ key.lastUsed | date:'MMM d, y' }}</span>
               }
             </div>
-            <p-tag [value]="key.enabled ? 'Active' : 'Revoked'" [severity]="key.enabled ? 'success' : 'danger'" />
+            <p-tag [value]="(key.enabled ? 'apiKeys.active' : 'apiKeys.revoked') | translate" [severity]="key.enabled ? 'success' : 'danger'" />
             @if (key.enabled) {
               <p-button icon="pi pi-ban" severity="danger" [text]="true"
-                        pTooltip="Revoke" (onClick)="revokeKey(key.id)" />
+                        [pTooltip]="'apiKeys.revokeTooltip' | translate" (onClick)="revokeKey(key.id)" />
             }
           </div>
         }
@@ -73,59 +70,59 @@
 
   <!-- API Reference card -->
   <div class="docs-card gv-card">
-    <h2>Quick API reference</h2>
-    <p class="docs-sub">Base URL: <code>http://localhost:8080/api/v1/pos</code></p>
+    <h2>{{ 'apiKeys.apiRefTitle' | translate }}</h2>
+    <p class="docs-sub">{{ 'apiKeys.baseUrl' | translate }} <code>http://localhost:8080/api/v1/pos</code></p>
 
     <div class="endpoint-list">
       <div class="endpoint">
         <span class="method get">GET</span>
         <span class="path gv-mono">/customers</span>
-        <span class="desc">List all customers</span>
+        <span class="desc">{{ 'apiKeys.epListCustomers' | translate }}</span>
       </div>
       <div class="endpoint">
         <span class="method get">GET</span>
         <span class="path gv-mono">/customers/nic/&#123;nic&#125;</span>
-        <span class="desc">Look up customer by NIC</span>
+        <span class="desc">{{ 'apiKeys.epLookupNic' | translate }}</span>
       </div>
       <div class="endpoint">
         <span class="method post">POST</span>
         <span class="path gv-mono">/customers</span>
-        <span class="desc">Register a new customer</span>
+        <span class="desc">{{ 'apiKeys.epRegisterCustomer' | translate }}</span>
       </div>
       <div class="endpoint">
         <span class="method get">GET</span>
         <span class="path gv-mono">/tickets?status=ACTIVE</span>
-        <span class="desc">List tickets (filter by status)</span>
+        <span class="desc">{{ 'apiKeys.epListTickets' | translate }}</span>
       </div>
       <div class="endpoint">
         <span class="method get">GET</span>
         <span class="path gv-mono">/tickets/number/&#123;ticketNum&#125;</span>
-        <span class="desc">Get ticket by ticket number</span>
+        <span class="desc">{{ 'apiKeys.epGetTicket' | translate }}</span>
       </div>
       <div class="endpoint">
         <span class="method post">POST</span>
         <span class="path gv-mono">/tickets</span>
-        <span class="desc">Grant a new pawn ticket</span>
+        <span class="desc">{{ 'apiKeys.epGrantTicket' | translate }}</span>
       </div>
       <div class="endpoint">
         <span class="method put">PUT</span>
         <span class="path gv-mono">/tickets/&#123;id&#125;/redeem</span>
-        <span class="desc">Redeem a ticket</span>
+        <span class="desc">{{ 'apiKeys.epRedeem' | translate }}</span>
       </div>
       <div class="endpoint">
         <span class="method post">POST</span>
         <span class="path gv-mono">/payments</span>
-        <span class="desc">Record a payment</span>
+        <span class="desc">{{ 'apiKeys.epRecordPayment' | translate }}</span>
       </div>
       <div class="endpoint">
         <span class="method get">GET</span>
         <span class="path gv-mono">/tickets/&#123;id&#125;/payments</span>
-        <span class="desc">Get payment history</span>
+        <span class="desc">{{ 'apiKeys.epPaymentHistory' | translate }}</span>
       </div>
     </div>
 
     <div class="code-block">
-      <p class="code-label">Example request (curl):</p>
+      <p class="code-label">{{ 'apiKeys.exampleRequest' | translate }}</p>
       <pre class="code gv-mono">curl -X GET http://localhost:8080/api/v1/pos/tickets \
   -H "X-API-Key: gv_YOUR_API_KEY_HERE" \
   -H "Content-Type: application/json"</pre>

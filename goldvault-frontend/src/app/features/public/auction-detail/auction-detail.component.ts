@@ -8,6 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AuctionService } from '../../../core/services/auction.service';
 import { AuctionResponse, AuctionBidResponse } from '../../../core/models/auction.model';
 
@@ -16,7 +17,8 @@ import { AuctionResponse, AuctionBidResponse } from '../../../core/models/auctio
   standalone: true,
   imports: [
     CommonModule, RouterLink, ReactiveFormsModule,
-    TagModule, ButtonModule, InputTextModule, InputNumberModule, MessageModule, ProgressSpinnerModule
+    TagModule, ButtonModule, InputTextModule, InputNumberModule, MessageModule, ProgressSpinnerModule,
+    TranslatePipe
   ],
   templateUrl: './auction-detail.component.html',
   styleUrl:    './auction-detail.component.scss'
@@ -37,7 +39,8 @@ export class AuctionDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private auctionService: AuctionService
+    private auctionService: AuctionService,
+    private translate: TranslateService
   ) {
     this.bidForm = this.fb.group({
       bidderName:  ['', Validators.required],
@@ -60,7 +63,7 @@ export class AuctionDetailComponent implements OnInit {
         this.bidForm.patchValue({ amount: minBid });
         this.loadBids();
       },
-      error: () => { this.error.set('Could not load this auction.'); this.loading.set(false); }
+      error: () => { this.error.set(this.translate.instant('auctionDetail.errorLoad')); this.loading.set(false); }
     });
   }
 
@@ -86,14 +89,14 @@ export class AuctionDetailComponent implements OnInit {
     }).subscribe({
       next: (a) => {
         this.bidLoading.set(false);
-        this.bidSuccess.set('Your bid was placed successfully!');
+        this.bidSuccess.set(this.translate.instant('auctionDetail.bidSuccess'));
         this.auction.set(a);
         this.loadBids();
         this.bidForm.patchValue({ amount: a.currentBid! + 1 });
       },
       error: (err) => {
         this.bidLoading.set(false);
-        this.bidError.set(err?.error?.message || 'Could not place bid.');
+        this.bidError.set(err?.error?.message || this.translate.instant('auctionDetail.bidError'));
       }
     });
   }

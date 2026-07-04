@@ -2,7 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../../core/auth/auth.service';
 import { AnalyticsService } from '../../../core/services/analytics.service';
 import { ShopAnalyticsResponse } from '../../../core/models/analytics.model';
@@ -10,7 +10,7 @@ import { ShopAnalyticsResponse } from '../../../core/models/analytics.model';
 @Component({
   selector: 'app-shop-analytics',
   standalone: true,
-  imports: [CommonModule, RouterLink, ProgressSpinnerModule, TopnavComponent],
+  imports: [CommonModule, RouterLink, ProgressSpinnerModule, TranslatePipe],
   templateUrl: './analytics.component.html',
   styleUrl:    './analytics.component.scss'
 })
@@ -21,16 +21,17 @@ export class ShopAnalyticsComponent implements OnInit {
 
   constructor(
     private authService:     AuthService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private translate:        TranslateService
   ) {}
 
   ngOnInit(): void {
     const shopId = this.authService.currentUser()?.shopId;
-    if (!shopId) { this.error.set('No shop linked.'); this.loading.set(false); return; }
+    if (!shopId) { this.error.set(this.translate.instant('shopAnalytics.errNoShop')); this.loading.set(false); return; }
 
     this.analyticsService.getShopAnalytics(shopId).subscribe({
       next:  (d) => { this.data.set(d); this.loading.set(false); },
-      error: ()  => { this.error.set('Could not load analytics.'); this.loading.set(false); }
+      error: ()  => { this.error.set(this.translate.instant('shopAnalytics.errLoad')); this.loading.set(false); }
     });
   }
 
@@ -71,13 +72,11 @@ export class ShopAnalyticsComponent implements OnInit {
   }
 
   collectionBreakdownItems(d: ShopAnalyticsResponse): { label: string; amount: number; color: string }[] {
-    const total = (d.thisMonthInterest ?? 0) + (d.thisMonthPartial ?? 0)
-                + (d.thisMonthRedemptions ?? 0) + (d.thisMonthRenewals ?? 0);
     return [
-      { label: 'Interest',    amount: d.thisMonthInterest,    color: '#3B8BD4' },
-      { label: 'Partial',     amount: d.thisMonthPartial,     color: '#C9A14A' },
-      { label: 'Redemptions', amount: d.thisMonthRedemptions, color: '#1D9E75' },
-      { label: 'Renewals',    amount: d.thisMonthRenewals,    color: '#7F77DD' }
+      { label: this.translate.instant('shopAnalytics.breakdownInterest'),    amount: d.thisMonthInterest,    color: '#3B8BD4' },
+      { label: this.translate.instant('shopAnalytics.breakdownPartial'),     amount: d.thisMonthPartial,     color: '#C9A14A' },
+      { label: this.translate.instant('shopAnalytics.breakdownRedemptions'), amount: d.thisMonthRedemptions, color: '#1D9E75' },
+      { label: this.translate.instant('shopAnalytics.breakdownRenewals'),    amount: d.thisMonthRenewals,    color: '#7F77DD' }
     ];
   }
 

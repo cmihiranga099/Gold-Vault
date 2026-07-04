@@ -1,28 +1,25 @@
-<app-topnav />
-
 <div class="import-page">
   <a routerLink="/shop/dashboard" class="back-link">
-    <i class="pi pi-arrow-left"></i> Back to dashboard
+    <i class="pi pi-arrow-left"></i> {{ 'bulkImport.backToDashboard' | translate }}
   </a>
 
   <div class="import-card gv-card">
-    <span class="gv-eyebrow">Bulk import</span>
-    <h1>Import pawn tickets from CSV</h1>
+    <span class="gv-eyebrow">{{ 'bulkImport.eyebrow' | translate }}</span>
+    <h1>{{ 'bulkImport.title' | translate }}</h1>
     <p class="import-sub">
-      Upload existing pawn tickets in bulk during onboarding. Each row creates one ticket with one gold item.
-      Customers are matched by NIC automatically — new customers are created if no match is found.
+      {{ 'bulkImport.subtitle' | translate }}
     </p>
 
     <div class="template-box">
       <div class="template-info">
         <i class="pi pi-file-excel"></i>
         <div>
-          <span class="template-title">Download CSV template</span>
-          <span class="template-desc">Includes correct column headers and 2 example rows.</span>
+          <span class="template-title">{{ 'bulkImport.downloadTemplate' | translate }}</span>
+          <span class="template-desc">{{ 'bulkImport.templateDesc' | translate }}</span>
         </div>
       </div>
       <p-button
-        label="Download template"
+        [label]="'bulkImport.downloadBtn' | translate"
         icon="pi pi-download"
         severity="secondary"
         [loading]="templateDownloading()"
@@ -43,8 +40,8 @@
       } @else {
         <label for="csvFile" class="drop-zone">
           <i class="pi pi-cloud-upload"></i>
-          <span>Click to select a CSV file</span>
-          <span class="drop-hint">.csv files only</span>
+          <span>{{ 'bulkImport.selectCsvPrompt' | translate }}</span>
+          <span class="drop-hint">{{ 'bulkImport.csvOnly' | translate }}</span>
           <input id="csvFile" type="file" accept=".csv" (change)="onFileSelected($event)" style="display:none" />
         </label>
       }
@@ -54,7 +51,7 @@
       }
 
       <p-button
-        label="Import tickets"
+        [label]="'bulkImport.importBtn' | translate"
         icon="pi pi-upload"
         styleClass="gv-submit-btn"
         [loading]="uploading()"
@@ -69,29 +66,29 @@
         <div class="results-summary">
           <div class="result-stat result-stat-total">
             <span class="result-num">{{ summary()!.totalRows }}</span>
-            <span class="result-label">Total rows</span>
+            <span class="result-label">{{ 'bulkImport.totalRows' | translate }}</span>
           </div>
           <div class="result-stat result-stat-success">
             <span class="result-num">{{ summary()!.successCount }}</span>
-            <span class="result-label">Imported</span>
+            <span class="result-label">{{ 'bulkImport.imported' | translate }}</span>
           </div>
           <div class="result-stat result-stat-failed">
             <span class="result-num">{{ summary()!.failureCount }}</span>
-            <span class="result-label">Failed</span>
+            <span class="result-label">{{ 'bulkImport.failed' | translate }}</span>
           </div>
         </div>
 
         <div class="results-table">
           @for (row of summary()!.results; track row.rowNumber) {
             <div class="result-row" [class.result-row-fail]="!row.success">
-              <span class="row-num">Row {{ row.rowNumber }}</span>
+              <span class="row-num">{{ 'bulkImport.rowLabel' | translate }} {{ row.rowNumber }}</span>
               <span class="row-nic gv-mono">{{ row.customerNic || '—' }}</span>
               @if (row.success) {
                 <span class="row-ticket gv-mono">{{ row.ticketNumber }}</span>
-                <p-tag value="Imported" severity="success" />
+                <p-tag [value]="'bulkImport.importedTag' | translate" severity="success" />
               } @else {
                 <span class="row-error">{{ row.errorMessage }}</span>
-                <p-tag value="Failed" severity="danger" />
+                <p-tag [value]="'bulkImport.failedTag' | translate" severity="danger" />
               }
             </div>
           }

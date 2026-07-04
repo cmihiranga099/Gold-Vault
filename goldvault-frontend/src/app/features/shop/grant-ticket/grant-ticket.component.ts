@@ -8,7 +8,6 @@ import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { AuthService } from '../../../core/auth/auth.service';
 import { CustomerService } from '../../../core/services/customer.service';
 import { TicketService } from '../../../core/services/ticket.service';
@@ -31,7 +30,7 @@ interface ItemPhotoState {
   imports: [
     CommonModule, ReactiveFormsModule, RouterLink,
     InputTextModule, InputNumberModule, SelectModule, ButtonModule, MessageModule,
-    TranslatePipe, TopnavComponent
+    TranslatePipe
   ],
   templateUrl: './grant-ticket.component.html',
   styleUrl: './grant-ticket.component.scss'

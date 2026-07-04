@@ -1,14 +1,12 @@
-<app-topnav />
-
 <div class="analytics-page">
   <div class="analytics-header">
     <div>
-      <span class="gv-eyebrow">Shop portal</span>
-      <h1>Analytics <span class="pro-badge">PRO</span></h1>
-      <p class="analytics-sub">Real-time performance metrics for your pawn shop.</p>
+      <span class="gv-eyebrow">{{ 'shopAnalytics.eyebrow' | translate }}</span>
+      <h1>{{ 'shopAnalytics.title' | translate }} <span class="pro-badge">{{ 'shopAnalytics.badge' | translate }}</span></h1>
+      <p class="analytics-sub">{{ 'shopAnalytics.subtitle' | translate }}</p>
     </div>
     <a routerLink="/shop/dashboard" class="back-link">
-      <i class="pi pi-arrow-left"></i> Dashboard
+      <i class="pi pi-arrow-left"></i> {{ 'shopAnalytics.backToDashboard' | translate }}
     </a>
   </div>
 
@@ -22,42 +20,42 @@
     <div class="kpi-grid">
 
       <div class="kpi-card gv-card kpi-gold">
-        <span class="kpi-label">Active loan portfolio</span>
+        <span class="kpi-label">{{ 'shopAnalytics.activeLoanPortfolio' | translate }}</span>
         <span class="kpi-value gv-mono">LKR {{ lkr(data()!.totalActiveLoanAmount) }}</span>
-        <span class="kpi-sub">{{ data()!.activeTickets }} active tickets</span>
+        <span class="kpi-sub">{{ data()!.activeTickets }} {{ 'shopAnalytics.activeTicketsSuffix' | translate }}</span>
       </div>
 
       <div class="kpi-card gv-card">
-        <span class="kpi-label">This month collection</span>
+        <span class="kpi-label">{{ 'shopAnalytics.thisMonthCollection' | translate }}</span>
         <span class="kpi-value gv-mono">LKR {{ lkr(data()!.thisMonthCollection) }}</span>
         <span class="kpi-sub" [style.color]="momColor(data()!.thisMonthVsLastMonthPct)">
           {{ momArrow(data()!.thisMonthVsLastMonthPct) }}
-          {{ pct(data()!.thisMonthVsLastMonthPct) }} vs last month
+          {{ pct(data()!.thisMonthVsLastMonthPct) }} {{ 'shopAnalytics.vsLastMonth' | translate }}
         </span>
       </div>
 
       <div class="kpi-card gv-card">
-        <span class="kpi-label">Redemption rate</span>
+        <span class="kpi-label">{{ 'shopAnalytics.redemptionRate' | translate }}</span>
         <span class="kpi-value">{{ pct(data()!.redemptionRatePct) }}</span>
-        <span class="kpi-sub">{{ data()!.redeemedTickets }} tickets redeemed</span>
+        <span class="kpi-sub">{{ data()!.redeemedTickets }} {{ 'shopAnalytics.ticketsRedeemedSuffix' | translate }}</span>
       </div>
 
       <div class="kpi-card gv-card" [class.kpi-danger]="data()!.npaRatePct > 10">
-        <span class="kpi-label">NPA rate</span>
+        <span class="kpi-label">{{ 'shopAnalytics.npaRate' | translate }}</span>
         <span class="kpi-value">{{ pct(data()!.npaRatePct) }}</span>
-        <span class="kpi-sub">{{ data()!.expiredTickets }} expired tickets</span>
+        <span class="kpi-sub">{{ data()!.expiredTickets }} {{ 'shopAnalytics.expiredTicketsSuffix' | translate }}</span>
       </div>
 
       <div class="kpi-card gv-card" [class.kpi-warn]="data()!.expiringSoon7Days > 0">
-        <span class="kpi-label">Expiring in 7 days</span>
+        <span class="kpi-label">{{ 'shopAnalytics.expiringIn7Days' | translate }}</span>
         <span class="kpi-value">{{ data()!.expiringSoon7Days }}</span>
-        <span class="kpi-sub">{{ data()!.expiringSoon30Days }} in 30 days</span>
+        <span class="kpi-sub">{{ data()!.expiringSoon30Days }} {{ 'shopAnalytics.inDays30Suffix' | translate }}</span>
       </div>
 
       <div class="kpi-card gv-card">
-        <span class="kpi-label">Total customers</span>
+        <span class="kpi-label">{{ 'shopAnalytics.totalCustomers' | translate }}</span>
         <span class="kpi-value">{{ data()!.totalCustomers }}</span>
-        <span class="kpi-sub">{{ data()!.totalTicketsEver }} tickets all time</span>
+        <span class="kpi-sub">{{ data()!.totalTicketsEver }} {{ 'shopAnalytics.ticketsAllTimeSuffix' | translate }}</span>
       </div>
 
     </div>
@@ -67,7 +65,7 @@
 
       <!-- Tickets granted chart -->
       <div class="chart-card gv-card">
-        <h2 class="chart-title">Tickets granted <span class="chart-period">last 6 months</span></h2>
+        <h2 class="chart-title">{{ 'shopAnalytics.ticketsGranted' | translate }} <span class="chart-period">{{ 'shopAnalytics.last6Months' | translate }}</span></h2>
         <div class="bar-chart">
           @for (month of months(data()!.ticketsGrantedPerMonth); track month) {
             <div class="bar-col">
@@ -86,7 +84,7 @@
 
       <!-- Monthly collection chart -->
       <div class="chart-card gv-card">
-        <h2 class="chart-title">Monthly collection <span class="chart-period">last 6 months</span></h2>
+        <h2 class="chart-title">{{ 'shopAnalytics.monthlyCollection' | translate }} <span class="chart-period">{{ 'shopAnalytics.last6Months' | translate }}</span></h2>
         <div class="bar-chart">
           @for (month of months(data()!.collectionPerMonth); track month) {
             <div class="bar-col">
@@ -110,7 +108,7 @@
 
       <!-- Payment breakdown -->
       <div class="chart-card gv-card">
-        <h2 class="chart-title">This month breakdown</h2>
+        <h2 class="chart-title">{{ 'shopAnalytics.thisMonthBreakdown' | translate }}</h2>
         <div class="breakdown-list">
           @for (item of collectionBreakdownItems(data()!); track item.label) {
             <div class="breakdown-item">
@@ -131,16 +129,16 @@
         </div>
 
         <div class="breakdown-total">
-          <span>Total collected this month</span>
+          <span>{{ 'shopAnalytics.totalCollectedThisMonth' | translate }}</span>
           <strong class="gv-mono">LKR {{ lkr(data()!.thisMonthCollection) }}</strong>
         </div>
       </div>
 
       <!-- Top customers -->
       <div class="chart-card gv-card">
-        <h2 class="chart-title">Top customers <span class="chart-period">by loan volume</span></h2>
+        <h2 class="chart-title">{{ 'shopAnalytics.topCustomers' | translate }} <span class="chart-period">{{ 'shopAnalytics.byLoanVolume' | translate }}</span></h2>
         @if (data()!.topCustomers.length === 0) {
-          <p class="no-data">No customer data yet.</p>
+          <p class="no-data">{{ 'shopAnalytics.noCustomerData' | translate }}</p>
         } @else {
           <div class="top-customers">
             @for (c of data()!.topCustomers; track c.name; let i = $index) {
@@ -148,7 +146,7 @@
                 <span class="customer-rank">{{ i + 1 }}</span>
                 <div class="customer-info">
                   <span class="customer-name">{{ c.name }}</span>
-                  <span class="customer-meta">{{ c.ticketCount }} ticket{{ c.ticketCount !== 1 ? 's' : '' }}</span>
+                  <span class="customer-meta">{{ c.ticketCount }} {{ (c.ticketCount !== 1 ? 'shopAnalytics.ticketsSuffix' : 'shopAnalytics.ticketSuffix') | translate }}</span>
                 </div>
                 <span class="customer-amount gv-mono">LKR {{ lkr(c.totalLoanAmount) }}</span>
               </div>

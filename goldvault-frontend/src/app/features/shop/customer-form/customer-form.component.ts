@@ -6,7 +6,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { AuthService } from '../../../core/auth/auth.service';
 import { CustomerService } from '../../../core/services/customer.service';
 
@@ -41,7 +40,7 @@ function sriLankaNicValidator(control: AbstractControl): ValidationErrors | null
   imports: [
     CommonModule, ReactiveFormsModule, RouterLink,
     InputTextModule, ButtonModule, MessageModule,
-    TranslatePipe, TopnavComponent
+    TranslatePipe
   ],
   templateUrl: './customer-form.component.html',
   styleUrl: './customer-form.component.scss'

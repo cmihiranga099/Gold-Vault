@@ -1,14 +1,12 @@
-<app-topnav />
-
 <div class="promos-page">
   <div class="promos-header">
     <div>
-      <span class="gv-eyebrow">Shop portal</span>
-      <h1>Promotional campaigns</h1>
-      <p class="promos-sub">Run time-limited offers to attract customers and boost ticket volume.</p>
+      <span class="gv-eyebrow">{{ 'promotionsPage.eyebrow' | translate }}</span>
+      <h1>{{ 'promotionsPage.title' | translate }}</h1>
+      <p class="promos-sub">{{ 'promotionsPage.subtitle' | translate }}</p>
     </div>
     <p-button
-      label="New campaign"
+      [label]="'promotionsPage.newCampaign' | translate"
       icon="pi pi-plus"
       styleClass="gv-submit-btn"
       (onClick)="openDialog()"
@@ -16,14 +14,14 @@
   </div>
 
   @if (loading()) {
-    <p class="promos-empty">Loading…</p>
+    <p class="promos-empty">{{ 'promotionsPage.loading' | translate }}</p>
   } @else if (error()) {
     <p class="promos-empty">{{ error() }}</p>
   } @else if (promotions().length === 0) {
     <div class="promos-empty-card gv-card">
       <i class="pi pi-megaphone empty-icon"></i>
-      <p>No campaigns yet. Create your first promotion to attract more customers.</p>
-      <p-button label="Create campaign" icon="pi pi-plus" (onClick)="openDialog()" />
+      <p>{{ 'promotionsPage.emptyTitle' | translate }}</p>
+      <p-button [label]="'promotionsPage.createCampaign' | translate" icon="pi pi-plus" (onClick)="openDialog()" />
     </div>
   } @else {
     <div class="promos-grid">
@@ -66,20 +64,20 @@
 
 <!-- Create dialog -->
 <p-dialog
-  header="New promotional campaign"
+  [header]="'promotionsPage.dialogTitle' | translate"
   [(visible)]="showDialog"
   [modal]="true"
   [style]="{ width: '460px' }"
 >
   <form [formGroup]="form" (ngSubmit)="submitPromotion()" class="promo-form">
     <div class="field">
-      <label>Campaign title <span class="req">*</span></label>
+      <label>{{ 'promotionsPage.campaignTitle' | translate }} <span class="req">*</span></label>
       <input type="text" pInputText formControlName="title"
-             placeholder="e.g. July Special — Only 1.5% interest!" class="w-full" />
+             [placeholder]="'promotionsPage.campaignTitlePlaceholder' | translate" class="w-full" />
     </div>
 
     <div class="field">
-      <label>Campaign type <span class="req">*</span></label>
+      <label>{{ 'promotionsPage.campaignType' | translate }} <span class="req">*</span></label>
       <p-select formControlName="promoType" [options]="promoTypes"
                 optionLabel="label" optionValue="value" styleClass="w-full" />
     </div>
@@ -92,18 +90,18 @@
     }
 
     <div class="field">
-      <label>Description (optional)</label>
+      <label>{{ 'promotionsPage.description' | translate }}</label>
       <input type="text" pInputText formControlName="description"
-             placeholder="Short note shown to customers" class="w-full" />
+             [placeholder]="'promotionsPage.descriptionPlaceholder' | translate" class="w-full" />
     </div>
 
     <div class="field-row">
       <div class="field">
-        <label>Starts <span class="req">*</span></label>
+        <label>{{ 'promotionsPage.starts' | translate }} <span class="req">*</span></label>
         <input type="datetime-local" pInputText formControlName="startsAt" class="w-full" />
       </div>
       <div class="field">
-        <label>Ends <span class="req">*</span></label>
+        <label>{{ 'promotionsPage.ends' | translate }} <span class="req">*</span></label>
         <input type="datetime-local" pInputText formControlName="endsAt" class="w-full" />
       </div>
     </div>
@@ -112,7 +110,7 @@
       <p-message severity="error" [text]="createError()!" styleClass="w-full" />
     }
 
-    <p-button type="submit" label="Launch campaign" icon="pi pi-megaphone"
+    <p-button type="submit" [label]="'promotionsPage.launchBtn' | translate" icon="pi pi-megaphone"
               styleClass="gv-submit-btn w-full" [loading]="creating()" />
   </form>
 </p-dialog>

@@ -11,20 +11,19 @@
   @if (successMsg()) {
     <p-message severity="success" [text]="successMsg()!" styleClass="w-full" />
   }
-
-  <!-- Filter tabs -->
-  <div class="filter-tabs">
-    @for (f of ['PENDING','VERIFIED','REJECTED','ALL']; track f) {
-      <button
-        class="filter-tab"
-        [class.filter-tab-active]="filter() === f"
-        (click)="filter.set(f as any)"
-      >
-        {{ filterLabel(f) }}
-        <span class="tab-count">{{ f === 'ALL' ? shops().length : shops().filter(s => s.licenseStatus === f).length }}</span>
-      </button>
-    }
-  </div>
+<!-- Filter tabs -->
+<div class="filter-tabs">
+  @for (f of filterOptions; track f) {
+    <button
+      class="filter-tab"
+      [class.filter-tab-active]="filter() === f"
+      (click)="setFilter(f)"
+    >
+      {{ filterLabel(f) }}
+      <span class="tab-count">{{ countForFilter(f) }}</span>
+    </button>
+  }
+</div>
 
   @if (loading()) {
     <div class="page-loading"><p-progressSpinner strokeWidth="3" /></div>

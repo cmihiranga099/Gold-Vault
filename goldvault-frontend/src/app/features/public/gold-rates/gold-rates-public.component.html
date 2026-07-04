@@ -1,8 +1,8 @@
 <div class="public-rates-page">
   <div class="rates-hero">
-    <span class="gv-eyebrow">Live gold rates</span>
-    <h1>Today's gold buying rates in Sri Lanka</h1>
-    <p class="hero-sub">Compare rates from all GoldVault shops. Updated daily.</p>
+    <span class="gv-eyebrow">{{ 'goldRatesPublic.eyebrow' | translate }}</span>
+    <h1>{{ 'goldRatesPublic.title' | translate }}</h1>
+    <p class="hero-sub">{{ 'goldRatesPublic.subtitle' | translate }}</p>
   </div>
   @if (loading()) {
     <div class="rates-loading"><p-progressSpinner strokeWidth="3" /></div>
@@ -14,7 +14,7 @@
              (click)="loadComparison(mr.purity)">
           <span class="mc-purity">{{ mr.purity }}</span>
           <span class="mc-rate gv-mono">{{ mr.ratePerGram | currencyConvert }}</span>
-          <span class="mc-label">per gram</span>
+          <span class="mc-label">{{ 'goldRatesPublic.perGram' | translate }}</span>
           <span class="mc-date">{{ mr.effectiveDate | date:'MMM d' }}</span>
         </div>
       }
@@ -23,7 +23,7 @@
       <!-- Purity selector + chart -->
       <div class="chart-card gv-card">
         <div class="chart-header">
-          <h2>30-day price trend</h2>
+          <h2>{{ 'goldRatesPublic.trendTitle' | translate }}</h2>
           <div class="purity-tabs">
             @for (p of purities; track p) {
               <button class="purity-tab" [class.purity-tab-active]="selectedPurity() === p"
@@ -32,7 +32,7 @@
           </div>
         </div>
         @if (history().length === 0) {
-          <p class="no-data">No price history available yet.</p>
+          <p class="no-data">{{ 'goldRatesPublic.noHistory' | translate }}</p>
         } @else {
           <div class="sparkline">
             @for (h of history(); track h.id) {
@@ -44,17 +44,17 @@
           </div>
           @if (history().length > 0) {
             <div class="chart-range">
-              <span>Low: {{ lowRate() | currencyConvert }}/g</span>
-              <span>High: {{ highRate() | currencyConvert }}/g</span>
+              <span>{{ 'goldRatesPublic.low' | translate }}: {{ lowRate() | currencyConvert }}/g</span>
+              <span>{{ 'goldRatesPublic.high' | translate }}: {{ highRate() | currencyConvert }}/g</span>
             </div>
           }
         }
       </div>
       <!-- Shop comparison -->
       <div class="comparison-card gv-card">
-        <h2>Best shops for {{ selectedPurity() }} gold</h2>
+        <h2>{{ 'goldRatesPublic.bestShopsTitle' | translate: { purity: selectedPurity() } }}</h2>
         @if (!comparison() || comparison()!.shopRates.length === 0) {
-          <p class="no-data">No shops have published {{ selectedPurity() }} rates yet.</p>
+          <p class="no-data">{{ 'goldRatesPublic.noShopsPublished' | translate: { purity: selectedPurity() } }}</p>
         } @else {
           <div class="comp-list">
             @for (entry of comparison()!.shopRates; track entry.shopId; let i = $index) {
@@ -64,7 +64,7 @@
                   <span class="comp-name">{{ entry.shopName }}</span>
                   @if (comparison()!.marketRate) {
                     <span class="comp-vs" [class.vs-above]="entry.aboveMarket">
-                      {{ entry.aboveMarket ? '+' : '' }}{{ entry.diffPercent }}% vs market
+                      {{ entry.aboveMarket ? '+' : '' }}{{ entry.diffPercent }}% {{ 'goldRatesPublic.vsMarket' | translate }}
                     </span>
                   }
                 </div>
@@ -73,7 +73,7 @@
             }
           </div>
         }
-        <p class="comp-hint">Higher rates = better value when selling your gold.</p>
+        <p class="comp-hint">{{ 'goldRatesPublic.compHint' | translate }}</p>
       </div>
     </div>
   }

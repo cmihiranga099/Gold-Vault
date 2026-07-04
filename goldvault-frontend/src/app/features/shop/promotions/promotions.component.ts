@@ -9,7 +9,7 @@ import { SelectModule } from 'primeng/select';
 import { MessageModule } from 'primeng/message';
 import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
-import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../../core/auth/auth.service';
 import { PromotionService } from '../../../core/services/promotion.service';
 import { PromotionResponse, PromoType } from '../../../core/models/promotion.model';
@@ -21,7 +21,7 @@ import { PromotionResponse, PromoType } from '../../../core/models/promotion.mod
     CommonModule, RouterLink, ReactiveFormsModule,
     ButtonModule, InputTextModule, InputNumberModule,
     SelectModule, MessageModule, TagModule, DialogModule,
-    TopnavComponent
+    TranslatePipe
   ],
   templateUrl: './promotions.component.html',
   styleUrl:    './promotions.component.scss'
@@ -35,12 +35,7 @@ export class ShopPromotionsComponent implements OnInit {
   creating    = signal(false);
   createError = signal<string | null>(null);
 
-  promoTypes: { label: string; value: PromoType }[] = [
-    { label: 'Reduced interest rate',  value: 'REDUCED_INTEREST' },
-    { label: 'Bonus loyalty points',   value: 'BONUS_POINTS'     },
-    { label: 'Free ticket renewal',    value: 'FREE_RENEWAL'     },
-    { label: 'Custom promotion',       value: 'CUSTOM'           }
-  ];
+  promoTypes: { label: string; value: PromoType }[] = [];
 
   form: FormGroup;
   private shopId!: number;
@@ -48,7 +43,8 @@ export class ShopPromotionsComponent implements OnInit {
   constructor(
     private fb:               FormBuilder,
     private authService:      AuthService,
-    private promotionService: PromotionService
+    private promotionService: PromotionService,
+    private translate:        TranslateService
   ) {
     this.form = this.fb.group({
       title:       ['', Validators.required],
@@ -58,6 +54,13 @@ export class ShopPromotionsComponent implements OnInit {
       startsAt:    ['', Validators.required],
       endsAt:      ['', Validators.required]
     });
+
+    this.promoTypes = [
+      { label: this.translate.instant('promotionsPage.typeReducedInterest'), value: 'REDUCED_INTEREST' },
+      { label: this.translate.instant('promotionsPage.typeBonusPoints'),     value: 'BONUS_POINTS'     },
+      { label: this.translate.instant('promotionsPage.typeFreeRenewal'),     value: 'FREE_RENEWAL'     },
+      { label: this.translate.instant('promotionsPage.typeCustom'),          value: 'CUSTOM'           }
+    ];
   }
 
   ngOnInit(): void {
@@ -69,7 +72,7 @@ export class ShopPromotionsComponent implements OnInit {
     this.loading.set(true);
     this.promotionService.getShopPromotions(this.shopId).subscribe({
       next:  (p) => { this.promotions.set(p); this.loading.set(false); },
-      error: ()  => { this.error.set('Could not load promotions.'); this.loading.set(false); }
+      error: ()  => { this.error.set(this.translate.instant('promotionsPage.errLoad')); this.loading.set(false); }
     });
   }
 
@@ -100,13 +103,13 @@ export class ShopPromotionsComponent implements OnInit {
       },
       error: (err) => {
         this.creating.set(false);
-        this.createError.set(err?.error?.message || 'Could not create promotion.');
+        this.createError.set(err?.error?.message || this.translate.instant('promotionsPage.errCreate'));
       }
     });
   }
 
   cancelPromotion(promo: PromotionResponse): void {
-    if (!confirm(`Cancel "${promo.title}"?`)) return;
+    if (!confirm(this.translate.instant('promotionsPage.confirmCancel', { title: promo.title }))) return;
     this.promotionService.cancelPromotion(promo.id, this.shopId).subscribe({
       next:  () => this.loadPromotions(),
       error: () => {}
@@ -123,26 +126,26 @@ export class ShopPromotionsComponent implements OnInit {
   }
 
   statusLabel(p: PromotionResponse): string {
-    if (p.currentlyActive) return `Live · ${p.daysRemaining}d left`;
-    if (p.status === 'EXPIRED') return 'Expired';
-    if (p.status === 'CANCELLED') return 'Cancelled';
-    return 'Scheduled';
+    if (p.currentlyActive) return `${this.translate.instant('promotionsPage.live')} · ${p.daysRemaining}${this.translate.instant('promotionsPage.daysLeftSuffix')}`;
+    if (p.status === 'EXPIRED') return this.translate.instant('promotionsPage.expired');
+    if (p.status === 'CANCELLED') return this.translate.instant('promotionsPage.cancelled');
+    return this.translate.instant('promotionsPage.scheduled');
   }
 
   promoTypeLabel(type: string): string {
     const labels: Record<string, string> = {
-      REDUCED_INTEREST: 'Reduced interest',
-      BONUS_POINTS:     'Bonus points',
-      FREE_RENEWAL:     'Free renewal',
-      CUSTOM:           'Custom'
+      REDUCED_INTEREST: 'promotionsPage.promoTypeReducedInterest',
+      BONUS_POINTS:     'promotionsPage.promoTypeBonusPoints',
+      FREE_RENEWAL:     'promotionsPage.promoTypeFreeRenewal',
+      CUSTOM:           'promotionsPage.promoTypeCustom'
     };
-    return labels[type] ?? type;
+    return labels[type] ? this.translate.instant(labels[type]) : type;
   }
 
   promoValueLabel(p: PromotionResponse): string {
     if (!p.promoValue) return '';
-    if (p.promoType === 'REDUCED_INTEREST') return `${p.promoValue}% interest rate`;
-    if (p.promoType === 'BONUS_POINTS') return `${p.promoValue}x bonus points`;
+    if (p.promoType === 'REDUCED_INTEREST') return `${p.promoValue}${this.translate.instant('promotionsPage.interestRateSuffix')}`;
+    if (p.promoType === 'BONUS_POINTS') return `${p.promoValue}${this.translate.instant('promotionsPage.bonusPointsSuffix')}`;
     return `${p.promoValue}`;
   }
 
@@ -153,8 +156,8 @@ export class ShopPromotionsComponent implements OnInit {
 
   promoValueLabel2(): string {
     const t = this.form.get('promoType')?.value;
-    if (t === 'REDUCED_INTEREST') return 'Promotional interest rate (%)';
-    if (t === 'BONUS_POINTS') return 'Points multiplier';
-    return 'Value';
+    if (t === 'REDUCED_INTEREST') return this.translate.instant('promotionsPage.promoValueRate');
+    if (t === 'BONUS_POINTS') return this.translate.instant('promotionsPage.promoValuePoints');
+    return this.translate.instant('promotionsPage.promoValueGeneric');
   }
 }

@@ -4,8 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { TranslatePipe } from '@ngx-translate/core';
-import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CustomerService } from '../../../core/services/customer.service';
 import { TicketService } from '../../../core/services/ticket.service';
 import { ReviewService } from '../../../core/services/review.service';
@@ -20,7 +19,7 @@ import { ReviewResponse, ShopRatingResponse } from '../../../core/models/review.
   imports: [
     CommonModule, RouterLink,
     TagModule, ButtonModule, ProgressSpinnerModule,
-    TranslatePipe, TopnavComponent
+    TranslatePipe
   ],
   templateUrl: './customer-detail.component.html',
   styleUrl:    './customer-detail.component.scss'
@@ -40,12 +39,13 @@ export class CustomerDetailComponent implements OnInit {
     private customerService: CustomerService,
     private ticketService:   TicketService,
     private reviewService:   ReviewService,
-    private authService:     AuthService
+    private authService:     AuthService,
+    private translate:       TranslateService
   ) {}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (!id) { this.errorMessage.set('Invalid customer.'); this.loading.set(false); return; }
+    if (!id) { this.errorMessage.set(this.translate.instant('customerDetailPage.errInvalid')); this.loading.set(false); return; }
 
     this.customerService.getById(id).subscribe({
       next: (customer) => {
@@ -54,7 +54,7 @@ export class CustomerDetailComponent implements OnInit {
         this.loadTickets(id);
         this.loadShopReviews(customer.shopId);
       },
-      error: () => { this.errorMessage.set('Could not load this customer.'); this.loading.set(false); }
+      error: () => { this.errorMessage.set(this.translate.instant('customerDetailPage.errLoad')); this.loading.set(false); }
     });
   }
 

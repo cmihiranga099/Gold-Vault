@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
 import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
-import { SidebarComponent } from '../../../shared/components/sidebar/sidebar.component';
+import { SidebarComponent } from '../../../shared/components/sidebar';
 import { LanguageService } from '../../../core/services/language.service';
 
 @Component({

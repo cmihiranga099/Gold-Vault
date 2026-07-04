@@ -1,174 +1,171 @@
 <div class="calc-page">
 
-    <!-- Header -->
-    <div class="calc-hero">
-      <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
-        <circle cx="20" cy="20" r="18" stroke="#C9A14A" stroke-width="2"/>
-        <path d="M12 20 L20 12 L28 20 L20 28 Z" stroke="#C9A14A" stroke-width="1.5" fill="none"/>
-        <circle cx="20" cy="20" r="3" fill="#C9A14A"/>
-      </svg>
-      <div>
-        <h1>Pawn loan calculator</h1>
-        <p class="calc-sub">Estimate your repayments before visiting a shop. No account needed.</p>
-      </div>
-      <a routerLink="/auth/login" class="login-link">
-        <i class="pi pi-sign-in"></i> Login to GoldVault
-      </a>
+  <!-- Header -->
+  <div class="calc-hero">
+    <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="20" r="18" stroke="#C9A14A" stroke-width="2"/>
+      <path d="M12 20 L20 12 L28 20 L20 28 Z" stroke="#C9A14A" stroke-width="1.5" fill="none"/>
+      <circle cx="20" cy="20" r="3" fill="#C9A14A"/>
+    </svg>
+    <div>
+      <h1>{{ 'calculator.title' | translate }}</h1>
+      <p class="calc-sub">{{ 'calculator.subtitle' | translate }}</p>
     </div>
-  
-    <div class="calc-layout">
-  
-      <!-- ── Input panel ──────────────────────────────────────────────────────── -->
-      <div class="calc-inputs gv-card">
-        <h2 class="panel-title">Loan details</h2>
-  
-        <!-- Gold details -->
-        <div class="input-section">
-          <span class="input-section-label">Your gold</span>
-          <div class="input-row">
-            <label>Weight (grams)</label>
-            <input type="range" min="1" max="200" step="0.5"
-                   [ngModel]="goldWeight()" (ngModelChange)="goldWeight.set($event)" />
-            <span class="range-val gv-mono">{{ goldWeight() }}g</span>
-          </div>
-          <div class="input-row">
-            <label>Purity</label>
-            <div class="purity-pills">
-              @for (p of purities; track p) {
-                <button class="purity-pill"
-                        [class.purity-pill-active]="goldPurity() === p"
-                        (click)="goldPurity.set(p)">{{ p }}</button>
-              }
-            </div>
-          </div>
-          <div class="ltv-box" [class.ltv-warn]="loanToValueRatio() > 70">
-            <span>Estimated gold value:</span>
-            <strong class="gv-mono">LKR {{ formatCurrency(maxSafeLoan() / 0.7) }}</strong>
-            <span class="ltv-sub">Max safe loan (70% LTV): LKR {{ formatCurrency(maxSafeLoan()) }}</span>
-          </div>
+    <a routerLink="/auth/login" class="login-link">
+      <i class="pi pi-sign-in"></i> {{ 'calculator.loginLink' | translate }}
+    </a>
+  </div>
+
+  <div class="calc-layout">
+
+    <!-- ── Input panel ──────────────────────────────────────────────────────── -->
+    <div class="calc-inputs gv-card">
+      <h2 class="panel-title">{{ 'calculator.loanDetails' | translate }}</h2>
+
+      <!-- Gold details -->
+      <div class="input-section">
+        <span class="input-section-label">{{ 'calculator.yourGold' | translate }}</span>
+        <div class="input-row">
+          <label>{{ 'calculator.weightGrams' | translate }}</label>
+          <input type="range" min="1" max="200" step="0.5"
+                 [ngModel]="goldWeight()" (ngModelChange)="goldWeight.set($event)" />
+          <span class="range-val gv-mono">{{ goldWeight() }}g</span>
         </div>
-  
-        <!-- Loan details -->
-        <div class="input-section">
-          <span class="input-section-label">Loan terms</span>
-          <div class="input-row">
-            <label>Loan amount (LKR)</label>
-            <input type="range" min="5000" max="500000" step="1000"
-                   [ngModel]="loanAmount()" (ngModelChange)="loanAmount.set($event)" />
-            <span class="range-val gv-mono">LKR {{ formatCurrency(loanAmount()) }}</span>
-          </div>
-          <div class="input-row">
-            <label>Monthly interest rate (%)</label>
-            <input type="range" min="0.5" max="10" step="0.5"
-                   [ngModel]="interestRate()" (ngModelChange)="interestRate.set($event)" />
-            <span class="range-val gv-mono">{{ interestRate() }}%</span>
-          </div>
-          <div class="input-row">
-            <label>Loan period (months)</label>
-            <input type="range" min="1" max="24" step="1"
-                   [ngModel]="periodMonths()" (ngModelChange)="periodMonths.set($event)" />
-            <span class="range-val gv-mono">{{ periodMonths() }} months</span>
-          </div>
-          <div class="input-row">
-            <label>Interest type</label>
-            <div class="type-toggle">
-              <button class="type-btn"
-                      [class.type-btn-active]="interestType() === 'FLAT'"
-                      (click)="interestType.set('FLAT')">Flat</button>
-              <button class="type-btn"
-                      [class.type-btn-active]="interestType() === 'REDUCING'"
-                      (click)="interestType.set('REDUCING')">Reducing</button>
-            </div>
-          </div>
-        </div>
-      </div>
-  
-      <!-- ── Results panel ────────────────────────────────────────────────────── -->
-      <div class="calc-results">
-  
-        <!-- Summary KPIs -->
-        <div class="results-kpis gv-card">
-          <h2 class="panel-title">Your estimate</h2>
-  
-          <div class="kpi-row">
-            <div class="kpi">
-              <span class="kpi-label">First payment</span>
-              <span class="kpi-val gv-mono">LKR {{ formatCurrency(monthlyPayment()) }}</span>
-            </div>
-            <div class="kpi">
-              <span class="kpi-label">Total interest</span>
-              <span class="kpi-val gv-mono interest-val">LKR {{ formatCurrency(totalInterest()) }}</span>
-            </div>
-            <div class="kpi">
-              <span class="kpi-label">Total payable</span>
-              <span class="kpi-val gv-mono">LKR {{ formatCurrency(totalPayable()) }}</span>
-            </div>
-            <div class="kpi" [class.kpi-warn]="effectiveCostPct() > 20">
-              <span class="kpi-label">Effective cost</span>
-              <span class="kpi-val">{{ effectiveCostPct().toFixed(1) }}%</span>
-            </div>
-          </div>
-  
-          <!-- LTV warning -->
-          @if (loanToValueRatio() > 70) {
-            <div class="ltv-warning">
-              <i class="pi pi-exclamation-triangle"></i>
-              Your loan (LKR {{ formatCurrency(loanAmount()) }}) is
-              {{ loanToValueRatio().toFixed(0) }}% of your gold's value.
-              Most shops lend up to 70%. Consider reducing the loan amount.
-            </div>
-          }
-  
-          <!-- Breakdown bar chart -->
-          <div class="breakdown">
-            <div class="breakdown-track">
-              <div class="breakdown-principal"
-                   [style.width.%]="(loanAmount() / totalPayable()) * 100"></div>
-              <div class="breakdown-interest"
-                   [style.width.%]="(totalInterest() / totalPayable()) * 100"></div>
-            </div>
-            <div class="breakdown-legend">
-              <span><span class="legend-dot dot-principal"></span>Principal LKR {{ formatCurrency(loanAmount()) }}</span>
-              <span><span class="legend-dot dot-interest"></span>Interest LKR {{ formatCurrency(totalInterest()) }}</span>
-            </div>
-          </div>
-        </div>
-  
-        <!-- Month-by-month schedule -->
-        <div class="schedule-card gv-card">
-          <h2 class="panel-title">Month-by-month schedule</h2>
-          <div class="schedule-table">
-            <div class="schedule-header">
-              <span>Month</span>
-              <span>Opening balance</span>
-              <span>Interest</span>
-              <span>Payment</span>
-              <span>Closing balance</span>
-            </div>
-            @for (row of schedule(); track row.month) {
-              <div class="schedule-row" [class.schedule-row-last]="row.closingBalance === 0">
-                <span class="month-num">{{ row.month }}</span>
-                <span class="gv-mono">{{ formatCurrency(row.openingBalance) }}</span>
-                <div class="interest-cell">
-                  <span class="gv-mono interest-amount">{{ formatCurrency(row.interest) }}</span>
-                  <div class="interest-bar-track">
-                    <div class="interest-bar"
-                         [style.width]="barWidth(row.interest, maxInterest())"></div>
-                  </div>
-                </div>
-                <span class="gv-mono payment-amount">{{ formatCurrency(row.payment) }}</span>
-                <span class="gv-mono">{{ formatCurrency(row.closingBalance) }}</span>
-              </div>
+        <div class="input-row">
+          <label>{{ 'calculator.purity' | translate }}</label>
+          <div class="purity-pills">
+            @for (p of purities; track p) {
+              <button class="purity-pill"
+                      [class.purity-pill-active]="goldPurity() === p"
+                      (click)="goldPurity.set(p)">{{ p }}</button>
             }
           </div>
         </div>
-  
-        <!-- Disclaimer -->
-        <p class="disclaimer">
-          This is an estimate only. Actual rates vary by shop. Interest type, grace periods,
-          and fees may differ. Visit a <a routerLink="/gold-rates">GoldVault shop</a> for exact terms.
-        </p>
+        <div class="ltv-box" [class.ltv-warn]="loanToValueRatio() > 70">
+          <span>{{ 'calculator.estimatedGoldValue' | translate }}</span>
+          <strong class="gv-mono">LKR {{ formatCurrency(maxSafeLoan() / 0.7) }}</strong>
+          <span class="ltv-sub">{{ 'calculator.maxSafeLoan' | translate: { amount: formatCurrency(maxSafeLoan()) } }}</span>
+        </div>
       </div>
-  
+
+      <!-- Loan details -->
+      <div class="input-section">
+        <span class="input-section-label">{{ 'calculator.loanTerms' | translate }}</span>
+        <div class="input-row">
+          <label>{{ 'calculator.loanAmount' | translate }}</label>
+          <input type="range" min="5000" max="500000" step="1000"
+                 [ngModel]="loanAmount()" (ngModelChange)="loanAmount.set($event)" />
+          <span class="range-val gv-mono">LKR {{ formatCurrency(loanAmount()) }}</span>
+        </div>
+        <div class="input-row">
+          <label>{{ 'calculator.monthlyInterestRate' | translate }}</label>
+          <input type="range" min="0.5" max="10" step="0.5"
+                 [ngModel]="interestRate()" (ngModelChange)="interestRate.set($event)" />
+          <span class="range-val gv-mono">{{ interestRate() }}%</span>
+        </div>
+        <div class="input-row">
+          <label>{{ 'calculator.loanPeriod' | translate }}</label>
+          <input type="range" min="1" max="24" step="1"
+                 [ngModel]="periodMonths()" (ngModelChange)="periodMonths.set($event)" />
+          <span class="range-val gv-mono">{{ periodMonths() }} {{ 'calculator.months' | translate }}</span>
+        </div>
+        <div class="input-row">
+          <label>{{ 'calculator.interestType' | translate }}</label>
+          <div class="type-toggle">
+            <button class="type-btn"
+                    [class.type-btn-active]="interestType() === 'FLAT'"
+                    (click)="interestType.set('FLAT')">{{ 'calculator.flat' | translate }}</button>
+            <button class="type-btn"
+                    [class.type-btn-active]="interestType() === 'REDUCING'"
+                    (click)="interestType.set('REDUCING')">{{ 'calculator.reducing' | translate }}</button>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- ── Results panel ────────────────────────────────────────────────────── -->
+    <div class="calc-results">
+
+      <!-- Summary KPIs -->
+      <div class="results-kpis gv-card">
+        <h2 class="panel-title">{{ 'calculator.yourEstimate' | translate }}</h2>
+
+        <div class="kpi-row">
+          <div class="kpi">
+            <span class="kpi-label">{{ 'calculator.firstPayment' | translate }}</span>
+            <span class="kpi-val gv-mono">LKR {{ formatCurrency(monthlyPayment()) }}</span>
+          </div>
+          <div class="kpi">
+            <span class="kpi-label">{{ 'calculator.totalInterest' | translate }}</span>
+            <span class="kpi-val gv-mono interest-val">LKR {{ formatCurrency(totalInterest()) }}</span>
+          </div>
+          <div class="kpi">
+            <span class="kpi-label">{{ 'calculator.totalPayable' | translate }}</span>
+            <span class="kpi-val gv-mono">LKR {{ formatCurrency(totalPayable()) }}</span>
+          </div>
+          <div class="kpi" [class.kpi-warn]="effectiveCostPct() > 20">
+            <span class="kpi-label">{{ 'calculator.effectiveCost' | translate }}</span>
+            <span class="kpi-val">{{ effectiveCostPct().toFixed(1) }}%</span>
+          </div>
+        </div>
+
+        <!-- LTV warning -->
+        @if (loanToValueRatio() > 70) {
+          <div class="ltv-warning">
+            <i class="pi pi-exclamation-triangle"></i>
+            {{ 'calculator.ltvWarning' | translate: { amount: formatCurrency(loanAmount()), pct: loanToValueRatio().toFixed(0) } }}
+          </div>
+        }
+
+        <!-- Breakdown bar chart -->
+        <div class="breakdown">
+          <div class="breakdown-track">
+            <div class="breakdown-principal"
+                 [style.width.%]="(loanAmount() / totalPayable()) * 100"></div>
+            <div class="breakdown-interest"
+                 [style.width.%]="(totalInterest() / totalPayable()) * 100"></div>
+          </div>
+          <div class="breakdown-legend">
+            <span><span class="legend-dot dot-principal"></span>{{ 'calculator.principalLabel' | translate: { amount: formatCurrency(loanAmount()) } }}</span>
+            <span><span class="legend-dot dot-interest"></span>{{ 'calculator.interestLabel' | translate: { amount: formatCurrency(totalInterest()) } }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Month-by-month schedule -->
+      <div class="schedule-card gv-card">
+        <h2 class="panel-title">{{ 'calculator.scheduleTitle' | translate }}</h2>
+        <div class="schedule-table">
+          <div class="schedule-header">
+            <span>{{ 'calculator.colMonth' | translate }}</span>
+            <span>{{ 'calculator.colOpeningBalance' | translate }}</span>
+            <span>{{ 'calculator.colInterest' | translate }}</span>
+            <span>{{ 'calculator.colPayment' | translate }}</span>
+            <span>{{ 'calculator.colClosingBalance' | translate }}</span>
+          </div>
+          @for (row of schedule(); track row.month) {
+            <div class="schedule-row" [class.schedule-row-last]="row.closingBalance === 0">
+              <span class="month-num">{{ row.month }}</span>
+              <span class="gv-mono">{{ formatCurrency(row.openingBalance) }}</span>
+              <div class="interest-cell">
+                <span class="gv-mono interest-amount">{{ formatCurrency(row.interest) }}</span>
+                <div class="interest-bar-track">
+                  <div class="interest-bar"
+                       [style.width]="barWidth(row.interest, maxInterest())"></div>
+                </div>
+              </div>
+              <span class="gv-mono payment-amount">{{ formatCurrency(row.payment) }}</span>
+              <span class="gv-mono">{{ formatCurrency(row.closingBalance) }}</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Disclaimer -->
+      <p class="disclaimer">
+        {{ 'calculator.disclaimer' | translate }} <a routerLink="/gold-rates">{{ 'calculator.goldVaultShop' | translate }}</a> {{ 'calculator.disclaimerSuffix' | translate }}
+      </p>
+    </div>
+
   </div>
+</div>

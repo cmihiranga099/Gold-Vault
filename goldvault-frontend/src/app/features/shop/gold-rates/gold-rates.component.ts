@@ -7,7 +7,6 @@ import { SelectModule } from 'primeng/select';
 import { MessageModule } from 'primeng/message';
 import { TagModule } from 'primeng/tag';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MarketplaceService } from '../../../core/services/marketplace.service';
 import { MarketRateService } from '../../../core/services/market-rate.service';
@@ -20,7 +19,7 @@ import { MarketRateResponse, RateComparisonResponse, PURITIES } from '../../../c
   imports: [
     CommonModule, ReactiveFormsModule,
     ButtonModule, InputNumberModule, SelectModule, MessageModule, TagModule,
-    TranslatePipe, TopnavComponent
+    TranslatePipe
   ],
   templateUrl: './gold-rates.component.html',
   styleUrl: './gold-rates.component.scss'

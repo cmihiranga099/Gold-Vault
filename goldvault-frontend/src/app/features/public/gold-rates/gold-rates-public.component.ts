@@ -6,11 +6,12 @@ import { MarketRateService } from '../../../core/services/market-rate.service';
 import { MarketRateResponse, RateComparisonResponse, PURITIES } from '../../../core/models/market-rate.model';
 import { CurrencyConvertPipe } from '../../../core/pipes/currency-convert.pipe';
 import { CurrencyService } from '../../../core/services/currency.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-gold-rates-public',
   standalone: true,
-  imports: [CommonModule, RouterLink, ProgressSpinnerModule, CurrencyConvertPipe],
+  imports: [CommonModule, RouterLink, ProgressSpinnerModule, CurrencyConvertPipe, TranslatePipe],
   templateUrl: './gold-rates-public.component.html',
   styleUrl:    './gold-rates-public.component.scss',
 })

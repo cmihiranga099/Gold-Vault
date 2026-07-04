@@ -11,7 +11,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { MessageModule } from 'primeng/message';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { TicketService } from '../../../core/services/ticket.service';
 import { PaymentService } from '../../../core/services/payment.service';
 import { PawnTicketResponse } from '../../../core/models/ticket.model';
@@ -24,7 +23,7 @@ import { PaymentResponse, PaymentType, PaymentMethod } from '../../../core/model
     CommonModule, ReactiveFormsModule, RouterLink,
     TagModule, ButtonModule, ProgressSpinnerModule, DialogModule,
     InputNumberModule, InputTextModule, SelectModule, MessageModule,
-    TranslatePipe, TopnavComponent
+    TranslatePipe
   ],
   templateUrl: './ticket-detail.component.html',
   styleUrl: './ticket-detail.component.scss'

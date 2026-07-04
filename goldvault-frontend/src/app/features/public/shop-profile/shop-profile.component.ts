@@ -6,11 +6,12 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ShopProfileService } from '../../../core/services/shop-profile.service';
 import { ShopProfileResponse } from '../../../core/models/shop-profile.model';
 import { CurrencyConvertPipe } from '../../../core/pipes/currency-convert.pipe';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-shop-profile',
   standalone: true,
-  imports: [CommonModule, RouterLink, TagModule, ProgressSpinnerModule, CurrencyConvertPipe],
+  imports: [CommonModule, RouterLink, TagModule, ProgressSpinnerModule, CurrencyConvertPipe, TranslatePipe],
   templateUrl: './shop-profile.component.html',
   styleUrl:    './shop-profile.component.scss'
 })
@@ -23,16 +24,17 @@ export class PublicShopProfileComponent implements OnInit {
 
   constructor(
     private route:              ActivatedRoute,
-    private shopProfileService: ShopProfileService
+    private shopProfileService: ShopProfileService,
+    private translate:          TranslateService
   ) {}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (!id) { this.error.set('Invalid shop.'); this.loading.set(false); return; }
+    if (!id) { this.error.set(this.translate.instant('shopProfile.errInvalidShop')); this.loading.set(false); return; }
 
     this.shopProfileService.getProfile(id).subscribe({
       next:  (p) => { this.profile.set(p); this.loading.set(false); },
-      error: ()  => { this.error.set('Could not load this shop\'s profile.'); this.loading.set(false); }
+      error: ()  => { this.error.set(this.translate.instant('shopProfile.errLoad')); this.loading.set(false); }
     });
   }
 
@@ -53,12 +55,12 @@ export class PublicShopProfileComponent implements OnInit {
 
   promoTypeLabel(type: string): string {
     const map: Record<string, string> = {
-      REDUCED_INTEREST: '🏷️ Reduced interest',
-      BONUS_POINTS:     '⭐ Bonus points',
-      FREE_RENEWAL:     '🔄 Free renewal',
-      CUSTOM:           '🎁 Special offer'
+      REDUCED_INTEREST: 'shopProfile.promoReducedInterest',
+      BONUS_POINTS:     'shopProfile.promoBonusPoints',
+      FREE_RENEWAL:     'shopProfile.promoFreeRenewal',
+      CUSTOM:           'shopProfile.promoCustom'
     };
-    return map[type] ?? type;
+    return map[type] ? this.translate.instant(map[type]) : type;
   }
 
   shareUrl(): string {

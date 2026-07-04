@@ -1,8 +1,6 @@
-<app-topnav />
-
 <div class="detail-page">
   <a routerLink="/shop/customers" class="back-link">
-    <i class="pi pi-arrow-left"></i> Back to customers
+    <i class="pi pi-arrow-left"></i> {{ 'customerDetailPage.backToCustomers' | translate }}
   </a>
 
   @if (loading()) {
@@ -17,7 +15,7 @@
         <div class="detail-card gv-card gv-ticket-edge">
           <div class="detail-card-header">
             <div>
-              <span class="gv-eyebrow">Customer</span>
+              <span class="gv-eyebrow">{{ 'customerDetailPage.eyebrow' | translate }}</span>
               <h1>{{ customer()!.fullName }}</h1>
               <span class="customer-nic gv-mono">{{ customer()!.nic }}</span>
             </div>
@@ -27,19 +25,19 @@
           <div class="detail-stats">
             @if (customer()!.phone) {
               <div class="stat">
-                <span class="stat-label">Phone</span>
+                <span class="stat-label">{{ 'customerDetailPage.phone' | translate }}</span>
                 <span class="stat-value">{{ customer()!.phone }}</span>
               </div>
             }
             @if (customer()!.email) {
               <div class="stat">
-                <span class="stat-label">Email</span>
+                <span class="stat-label">{{ 'customerDetailPage.email' | translate }}</span>
                 <span class="stat-value">{{ customer()!.email }}</span>
               </div>
             }
             @if (customer()!.address) {
               <div class="stat">
-                <span class="stat-label">Address</span>
+                <span class="stat-label">{{ 'customerDetailPage.address' | translate }}</span>
                 <span class="stat-value">{{ customer()!.address }}</span>
               </div>
             }
@@ -54,7 +52,7 @@
                   <span [class]="s <= Math.round(shopRating()!.averageRating) ? 'star-filled' : 'star-empty'">★</span>
                 }
               </div>
-              <span class="rating-count">{{ shopRating()!.totalReviews }} review(s)</span>
+              <span class="rating-count">{{ shopRating()!.totalReviews }} {{ 'customerDetailPage.reviewsSuffix' | translate }}</span>
             </div>
           }
         </div>
@@ -66,14 +64,14 @@
             [class.tab-btn-active]="activeTab() === 'tickets'"
             (click)="activeTab.set('tickets')"
           >
-            <i class="pi pi-ticket"></i> Tickets ({{ tickets().length }})
+            <i class="pi pi-ticket"></i> {{ 'customerDetailPage.ticketsTab' | translate }} ({{ tickets().length }})
           </button>
           <button
             class="tab-btn"
             [class.tab-btn-active]="activeTab() === 'reviews'"
             (click)="activeTab.set('reviews')"
           >
-            <i class="pi pi-star"></i> Reviews ({{ reviews().length }})
+            <i class="pi pi-star"></i> {{ 'customerDetailPage.reviewsTab' | translate }} ({{ reviews().length }})
           </button>
         </div>
 
@@ -81,7 +79,7 @@
         @if (activeTab() === 'tickets') {
           <div class="detail-card gv-card">
             @if (tickets().length === 0) {
-              <p class="detail-empty-text">No tickets for this customer.</p>
+              <p class="detail-empty-text">{{ 'customerDetailPage.noTickets' | translate }}</p>
             } @else {
               <div class="ticket-list">
                 @for (ticket of tickets(); track ticket.id) {
@@ -105,7 +103,7 @@
         @if (activeTab() === 'reviews') {
           <div class="detail-card gv-card">
             @if (reviews().length === 0) {
-              <p class="detail-empty-text">No reviews for this shop yet.</p>
+              <p class="detail-empty-text">{{ 'customerDetailPage.noReviews' | translate }}</p>
             } @else {
               <div class="reviews-list">
                 @for (review of reviews(); track review.id) {
@@ -120,7 +118,7 @@
                       <span class="review-ticket gv-mono">{{ review.ticketNumber }}</span>
                       <span class="review-date">{{ review.createdAt | date:'MMM d, y' }}</span>
                       @if (review.status === 'HIDDEN') {
-                        <span class="hidden-badge">Hidden</span>
+                        <span class="hidden-badge">{{ 'customerDetailPage.hidden' | translate }}</span>
                       }
                     </div>
                     @if (review.comment) {
@@ -139,7 +137,7 @@
       <div class="detail-side">
         @if (customer()!.nicPhotoUrl) {
           <div class="gv-card nic-photo-card">
-            <span class="gv-eyebrow">NIC Photo</span>
+            <span class="gv-eyebrow">{{ 'customerDetailPage.nicPhoto' | translate }}</span>
             <img [src]="customer()!.nicPhotoUrl" alt="NIC photo" class="nic-photo" />
           </div>
         }

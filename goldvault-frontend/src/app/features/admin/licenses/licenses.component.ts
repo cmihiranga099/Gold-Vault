@@ -34,6 +34,16 @@ export class LicenseVerificationComponent implements OnInit {
   actionLoading = signal(false);
   successMsg    = signal<string | null>(null);
 
+  filterOptions: Array<'PENDING' | 'VERIFIED' | 'REJECTED' | 'ALL'> = ['PENDING', 'VERIFIED', 'REJECTED', 'ALL'];
+
+  setFilter(f: 'PENDING' | 'VERIFIED' | 'REJECTED' | 'ALL'): void {
+    this.filter.set(f);
+  }
+
+  countForFilter(f: 'PENDING' | 'VERIFIED' | 'REJECTED' | 'ALL'): number {
+    if (f === 'ALL') return this.shops().length;
+    return this.shops().filter(s => s.licenseStatus === f).length;
+  }
   constructor(private http: HttpClient, private translate: TranslateService) {}
 
   ngOnInit(): void { this.load(); }

@@ -4,15 +4,14 @@ import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { TranslatePipe } from '@ngx-translate/core';
-import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../../core/auth/auth.service';
 import { TicketService, CsvImportSummary } from '../../../core/services/ticket.service';
 
 @Component({
   selector: 'app-bulk-import',
   standalone: true,
-  imports: [CommonModule, RouterLink, ButtonModule, TagModule, ProgressSpinnerModule, TranslatePipe, TopnavComponent],
+  imports: [CommonModule, RouterLink, ButtonModule, TagModule, ProgressSpinnerModule, TranslatePipe],
   templateUrl: './bulk-import.component.html',
   styleUrl:    './bulk-import.component.scss'
 })
@@ -28,7 +27,8 @@ export class BulkImportComponent {
 
   constructor(
     private authService:  AuthService,
-    private ticketService: TicketService
+    private ticketService: TicketService,
+    private translate:     TranslateService
   ) {}
 
   onFileSelected(event: Event): void {
@@ -37,7 +37,7 @@ export class BulkImportComponent {
     if (!file) return;
 
     if (!file.name.toLowerCase().endsWith('.csv')) {
-      this.uploadError.set('Please select a .csv file.');
+      this.uploadError.set(this.translate.instant('bulkImport.errNotCsv'));
       return;
     }
 
@@ -74,8 +74,8 @@ export class BulkImportComponent {
     const file = this.selectedFile();
     const shopId = this.authService.currentUser()?.shopId;
 
-    if (!file) { this.uploadError.set('Please select a CSV file first.'); return; }
-    if (!shopId) { this.uploadError.set('No shop linked to this account.'); return; }
+    if (!file) { this.uploadError.set(this.translate.instant('bulkImport.errSelectFirst')); return; }
+    if (!shopId) { this.uploadError.set(this.translate.instant('bulkImport.errNoShop')); return; }
 
     this.uploading.set(true);
     this.uploadError.set(null);
@@ -88,7 +88,7 @@ export class BulkImportComponent {
       },
       error: (err) => {
         this.uploading.set(false);
-        this.uploadError.set(err?.error?.message || 'Import failed. Please check your file and try again.');
+        this.uploadError.set(err?.error?.message || this.translate.instant('bulkImport.errImportFailed'));
       }
     });
   }
