@@ -10,21 +10,7 @@
 
   <div class="gv-topnav-user">
     <app-lang-selector />
-    <div class="gv-topnav-user">
-      <app-lang-selector />
-      <app-currency-switcher />
-  
-      @if (authService.currentUser()) {
-        <span class="gv-topnav-name">{{ authService.currentUser()!.fullName }}</span>
-        <p-button
-          icon="pi pi-sign-out"
-          [text]="true"
-          severity="secondary"
-          (onClick)="logout()"
-          [pTooltip]="'nav.logout' | translate"
-        />
-      }
-    </div>
+    <app-currency-switcher />
 
     @if (authService.currentUser()) {
       <span class="gv-topnav-name">{{ authService.currentUser()!.fullName }}</span>

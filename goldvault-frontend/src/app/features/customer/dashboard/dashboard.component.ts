@@ -5,7 +5,6 @@ import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { AuthService } from '../../../core/auth/auth.service';
 import { TicketService } from '../../../core/services/ticket.service';
 import { PawnTicketResponse } from '../../../core/models/ticket.model';
@@ -18,7 +17,7 @@ import { CurrencyConvertPipe } from '../../../core/pipes/currency-convert.pipe';
 @Component({
   selector: 'app-customer-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, TagModule, ButtonModule, ProgressSpinnerModule, TranslatePipe, TopnavComponent,CurrencyConvertPipe],
+  imports: [CommonModule, RouterLink, TagModule, ButtonModule, ProgressSpinnerModule, TranslatePipe,CurrencyConvertPipe],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })

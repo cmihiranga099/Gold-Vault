@@ -1,13 +1,11 @@
-<app-topnav />
-
 <div class="licenses-page">
   <div class="page-header">
     <div>
-      <span class="gv-eyebrow">Admin</span>
-      <h1>License Verification</h1>
-      <p class="page-sub">Review and verify pawn broker license documents submitted by shops.</p>
+      <span class="gv-eyebrow">{{ 'licenses.eyebrow' | translate }}</span>
+      <h1>{{ 'licenses.title' | translate }}</h1>
+      <p class="page-sub">{{ 'licenses.subtitle' | translate }}</p>
     </div>
-    <a routerLink="/admin/dashboard" class="back-link">← Dashboard</a>
+    <a routerLink="/admin/dashboard" class="back-link">← {{ 'licenses.backToDashboard' | translate }}</a>
   </div>
 
   @if (successMsg()) {
@@ -22,7 +20,7 @@
         [class.filter-tab-active]="filter() === f"
         (click)="filter.set(f as any)"
       >
-        {{ f }}
+        {{ filterLabel(f) }}
         <span class="tab-count">{{ f === 'ALL' ? shops().length : shops().filter(s => s.licenseStatus === f).length }}</span>
       </button>
     }
@@ -33,7 +31,7 @@
   } @else if (filtered().length === 0) {
     <div class="empty-card gv-card">
       <i class="pi pi-check-circle" style="font-size:36px;color:#16a34a;"></i>
-      <p>No shops with {{ filter() === 'ALL' ? '' : filter().toLowerCase() + ' ' }}license status.</p>
+      <p>{{ 'licenses.noShopsFiltered' | translate }}</p>
     </div>
   } @else {
     <div class="shops-list">
@@ -71,23 +69,23 @@
               <div class="license-doc">
                 <i class="pi pi-file-pdf doc-icon"></i>
                 <div>
-                  <span class="doc-label">License document uploaded</span>
+                  <span class="doc-label">{{ 'licenses.docUploaded' | translate }}</span>
                   <button class="view-doc-btn" (click)="openDocument(shop.licenseDocumentUrl)">
-                    <i class="pi pi-external-link"></i> View document
+                    <i class="pi pi-external-link"></i> {{ 'licenses.viewDocument' | translate }}
                   </button>
                 </div>
               </div>
             } @else {
               <div class="no-doc">
                 <i class="pi pi-exclamation-triangle" style="color:#d97706;"></i>
-                <span>No license document uploaded yet.</span>
+                <span>{{ 'licenses.noDocument' | translate }}</span>
               </div>
             }
 
             @if (shop.licenseStatus === 'VERIFIED') {
               <span class="verified-by">
-                Verified by {{ shop.licenseVerifiedBy }}
-                on {{ shop.licenseVerifiedAt | date:'MMM d, y' }}
+                {{ 'licenses.verifiedByLabel' | translate }} {{ shop.licenseVerifiedBy }}
+                {{ 'licenses.onLabel' | translate }} {{ shop.licenseVerifiedAt | date:'MMM d, y' }}
               </span>
             }
 
@@ -103,14 +101,14 @@
           @if (shop.licenseStatus === 'PENDING' && shop.licenseDocumentUrl) {
             <div class="card-actions">
               <p-button
-                label="Verify license"
+                [label]="'licenses.verifyBtn' | translate"
                 icon="pi pi-check"
                 severity="success"
                 [loading]="actionLoading()"
                 (onClick)="verify(shop)"
               />
               <p-button
-                label="Reject"
+                [label]="'licenses.rejectBtn' | translate"
                 icon="pi pi-times"
                 severity="danger"
                 [text]="true"
@@ -122,7 +120,7 @@
           @if (shop.licenseStatus === 'REJECTED') {
             <div class="card-actions">
               <p-button
-                label="Re-verify after resubmission"
+                [label]="'licenses.reVerifyBtn' | translate"
                 icon="pi pi-check"
                 severity="success"
                 [text]="true"
@@ -140,7 +138,7 @@
 
 <!-- Reject dialog -->
 <p-dialog
-  header="Reject License"
+  [header]="'licenses.rejectDialogTitle' | translate"
   [(visible)]="showReject"
   [modal]="true"
   [style]="{ width: '420px' }"
@@ -149,16 +147,16 @@
     <div class="reject-dialog">
       <p class="reject-shop">{{ selectedShop()!.name }} — {{ selectedShop()!.regNumber }}</p>
       <div class="field">
-        <label>Rejection reason <span style="color:#dc2626;">*</span></label>
+        <label>{{ 'licenses.rejectReasonLabel' | translate }} <span style="color:#dc2626;">*</span></label>
         <textarea
           [(ngModel)]="rejectReason"
           rows="4"
-          placeholder="e.g. License number does not match provincial council records. Please resubmit with correct document."
+          [placeholder]="'licenses.rejectPlaceholder' | translate"
           class="reject-textarea w-full"
         ></textarea>
       </div>
       <p-button
-        label="Submit rejection"
+        [label]="'licenses.submitRejection' | translate"
         icon="pi pi-times"
         severity="danger"
         styleClass="w-full"

@@ -4,7 +4,6 @@ import { RouterLink } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TranslatePipe } from '@ngx-translate/core';
 import * as L from 'leaflet';
-import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { ShopService } from '../../../core/services/shop.service';
 import { ShopResponse } from '../../../core/models/shop.model';
 
@@ -34,7 +33,7 @@ const userIcon = L.icon({
 @Component({
   selector: 'app-shop-finder',
   standalone: true,
-  imports: [CommonModule, RouterLink, ProgressSpinnerModule, TranslatePipe, TopnavComponent],
+  imports: [CommonModule, RouterLink, ProgressSpinnerModule, TranslatePipe],
   templateUrl: './shop-finder.component.html',
   styleUrl: './shop-finder.component.scss'
 })

@@ -8,7 +8,6 @@ import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
 import { MessageModule } from 'primeng/message';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { TicketService } from '../../../core/services/ticket.service';
 import { PaymentService } from '../../../core/services/payment.service';
 import { ReviewService } from '../../../core/services/review.service';
@@ -24,7 +23,7 @@ import { ReviewResponse } from '../../../core/models/review.model';
     CommonModule, RouterLink, ReactiveFormsModule,
     TagModule, ProgressSpinnerModule, ButtonModule,
     TextareaModule, MessageModule,
-    TranslatePipe, TopnavComponent
+    TranslatePipe
   ],
   templateUrl: './ticket-detail.component.html',
   styleUrl: './ticket-detail.component.scss'

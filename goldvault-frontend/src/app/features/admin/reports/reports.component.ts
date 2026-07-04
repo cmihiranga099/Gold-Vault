@@ -5,14 +5,13 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { AdminService } from '../../../core/services/admin.service';
 import { RevenueReportResponse } from '../../../core/models/admin.model';
 
 @Component({
   selector: 'app-admin-reports',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DatePickerModule, ButtonModule, ProgressSpinnerModule, TranslatePipe, TopnavComponent],
+  imports: [CommonModule, ReactiveFormsModule, DatePickerModule, ButtonModule, ProgressSpinnerModule, TranslatePipe],
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.scss'
 })

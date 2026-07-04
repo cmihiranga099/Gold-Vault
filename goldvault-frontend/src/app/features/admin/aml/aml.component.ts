@@ -7,7 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
+import { TranslatePipe } from '@ngx-translate/core';
 import { AmlService } from '../../../core/services/aml.service';
 import { AmlFlagResponse, AmlSummary } from '../../../core/models/aml.model';
 
@@ -17,7 +17,7 @@ import { AmlFlagResponse, AmlSummary } from '../../../core/models/aml.model';
   imports: [
     CommonModule, RouterLink, FormsModule,
     TagModule, ButtonModule, DialogModule, MessageModule, ProgressSpinnerModule,
-    TopnavComponent
+    TranslatePipe
   ],
   templateUrl: './aml.component.html',
   styleUrl:    './aml.component.scss'

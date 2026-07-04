@@ -5,7 +5,6 @@ import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MarketplaceService } from '../../../core/services/marketplace.service';
 import { GoldListingResponse, OfferStatus } from '../../../core/models/marketplace.model';
@@ -13,7 +12,7 @@ import { GoldListingResponse, OfferStatus } from '../../../core/models/marketpla
 @Component({
   selector: 'app-listing-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, TagModule, ButtonModule, ProgressSpinnerModule, TranslatePipe, TopnavComponent],
+  imports: [CommonModule, RouterLink, TagModule, ButtonModule, ProgressSpinnerModule, TranslatePipe],
   templateUrl: './listing-detail.component.html',
   styleUrl: './listing-detail.component.scss'
 })

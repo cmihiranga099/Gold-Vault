@@ -6,6 +6,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { HttpClient } from '@angular/common/http';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../../environments/environment';
 
 @Component({
@@ -13,7 +14,7 @@ import { environment } from '../../../../environments/environment';
   standalone: true,
   imports: [
     CommonModule, ReactiveFormsModule, RouterLink,
-    InputTextModule, ButtonModule, MessageModule
+    InputTextModule, ButtonModule, MessageModule, TranslatePipe
   ],
   templateUrl: './shop-register.component.html',
   styleUrl:    './shop-register.component.scss'
@@ -27,6 +28,22 @@ export class ShopRegisterComponent {
   licenseFileName  = signal<string | null>(null);
   licenseError     = signal<string | null>(null);
 
+  constructor(
+    private fb:        FormBuilder,
+    private http:      HttpClient,
+    private router:    Router,
+    private translate: TranslateService
+  ) {
+    this.form = this.fb.group({
+      name:      ['', Validators.required],
+      regNumber: ['', Validators.required],
+      ownerName: ['', Validators.required],
+      phone:     [''],
+      email:     ['', Validators.email],
+      address:   ['']
+    });
+  }
+
   onLicenseSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
@@ -34,11 +51,11 @@ export class ShopRegisterComponent {
 
     const allowed = ['image/jpeg','image/png','image/webp','application/pdf'];
     if (!allowed.includes(file.type)) {
-      this.licenseError.set('Only PDF, JPEG, or PNG files allowed.');
+      this.licenseError.set(this.translate.instant('shopRegister.errOnlyPdfImages'));
       return;
     }
     if (file.size > 10 * 1024 * 1024) {
-      this.licenseError.set('File must be under 10 MB.');
+      this.licenseError.set(this.translate.instant('shopRegister.errFileTooBig'));
       return;
     }
 
@@ -55,7 +72,7 @@ export class ShopRegisterComponent {
         this.licenseUploading.set(false);
       },
       error: () => {
-        this.licenseError.set('Upload failed. Try again.');
+        this.licenseError.set(this.translate.instant('shopRegister.errUploadFailed'));
         this.licenseUploading.set(false);
       }
     });
@@ -63,24 +80,9 @@ export class ShopRegisterComponent {
 
   form: FormGroup;
 
-  constructor(
-    private fb:     FormBuilder,
-    private http:   HttpClient,
-    private router: Router
-  ) {
-    this.form = this.fb.group({
-      name:      ['', Validators.required],
-      regNumber: ['', Validators.required],
-      ownerName: ['', Validators.required],
-      phone:     [''],
-      email:     ['', Validators.email],
-      address:   ['']
-    });
-  }
-
   onSubmit(): void {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
-    if (this.licenseUploading()) { this.errorMessage.set('License is still uploading.'); return; }
+    if (this.licenseUploading()) { this.errorMessage.set(this.translate.instant('shopRegister.errStillUploading')); return; }
 
     this.loading.set(true);
     this.errorMessage.set(null);
@@ -90,7 +92,7 @@ export class ShopRegisterComponent {
       licenseDocumentUrl: this.licenseUrl() ?? undefined
     }).subscribe({
       next:  ()    => { this.loading.set(false); this.success.set(true); },
-      error: (err) => { this.loading.set(false); this.errorMessage.set(err?.error?.message || 'Registration failed.'); }
+      error: (err) => { this.loading.set(false); this.errorMessage.set(err?.error?.message || this.translate.instant('shopRegister.errRegistrationFailed')); }
     });
   }
 }

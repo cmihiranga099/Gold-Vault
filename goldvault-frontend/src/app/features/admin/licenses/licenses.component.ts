@@ -7,8 +7,8 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessageModule } from 'primeng/message';
-import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
 import { HttpClient } from '@angular/common/http';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../../environments/environment';
 import { ShopResponse } from '../../../core/models/shop.model';
 
@@ -18,7 +18,7 @@ import { ShopResponse } from '../../../core/models/shop.model';
   imports: [
     CommonModule, RouterLink, FormsModule,
     TagModule, ButtonModule, DialogModule, ProgressSpinnerModule, MessageModule,
-    TopnavComponent
+    TranslatePipe
   ],
   templateUrl: './licenses.component.html',
   styleUrl:    './licenses.component.scss'
@@ -34,7 +34,7 @@ export class LicenseVerificationComponent implements OnInit {
   actionLoading = signal(false);
   successMsg    = signal<string | null>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private translate: TranslateService) {}
 
   ngOnInit(): void { this.load(); }
 
@@ -52,15 +52,26 @@ export class LicenseVerificationComponent implements OnInit {
     return this.shops().filter(s => s.licenseStatus === f);
   }
 
+  filterLabel(f: string): string {
+    const map: Record<string, string> = {
+      PENDING: 'licenses.filterPending',
+      VERIFIED: 'licenses.filterVerified',
+      REJECTED: 'licenses.filterRejected',
+      ALL: 'licenses.filterAll'
+    };
+    return this.translate.instant(map[f] ?? f);
+  }
+
   verify(shop: ShopResponse): void {
-    if (!confirm(`Verify license for ${shop.name}? This will activate the shop.`)) return;
+    const confirmMsg = this.translate.instant('licenses.confirmVerify', { name: shop.name });
+    if (!confirm(confirmMsg)) return;
     this.actionLoading.set(true);
     this.http.put<any>(
       `${environment.apiUrl}/admin/licenses/${shop.id}/verify?verifiedBy=Admin`, {}
     ).subscribe({
       next: () => {
         this.actionLoading.set(false);
-        this.successMsg.set(`${shop.name} license verified and shop activated.`);
+        this.successMsg.set(this.translate.instant('licenses.successVerified', { name: shop.name }));
         this.load();
         setTimeout(() => this.successMsg.set(null), 3000);
       },
@@ -86,7 +97,7 @@ export class LicenseVerificationComponent implements OnInit {
       next: () => {
         this.actionLoading.set(false);
         this.showReject = false;
-        this.successMsg.set(`License rejected for ${shop.name}.`);
+        this.successMsg.set(this.translate.instant('licenses.successRejected', { name: shop.name }));
         this.load();
         setTimeout(() => this.successMsg.set(null), 3000);
       },

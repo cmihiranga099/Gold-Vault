@@ -1,0 +1,8 @@
+<aside class="gv-sidebar">
+    <button class="gv-sidebar-toggle-all" type="button" (click)="toggleAll()">
+      <i class="pi" [class.pi-angle-double-down]="!allExpanded()" [class.pi-angle-double-up]="allExpanded()"></i>
+      {{ (allExpanded() ? 'sidebar.collapseAll' : 'sidebar.expandAll') | translate }}
+    </button>
+  
+    <p-panelMenu [model]="items" styleClass="gv-panel-menu" />
+  </aside>

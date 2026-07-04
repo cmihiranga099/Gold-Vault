@@ -1,0 +1,113 @@
+@import '../../../../styles/tokens';
+
+:host {
+  display: block;
+  width: 260px;
+  flex-shrink: 0;
+}
+
+.gv-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--gv-paper);
+  border-right: 1px solid var(--gv-line);
+  padding: var(--gv-space-4) var(--gv-space-3);
+  box-sizing: border-box;
+}
+
+.gv-sidebar-toggle-all {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-2);
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--gv-gold-deep);
+  font-family: var(--gv-font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: var(--gv-space-2) var(--gv-space-2);
+  margin-bottom: var(--gv-space-3);
+  border-radius: var(--gv-radius-sm);
+
+  &:hover {
+    background: var(--gv-paper-dim);
+  }
+}
+
+::ng-deep .gv-panel-menu {
+  border: none;
+  background: transparent;
+
+  .p-panelmenu-panel {
+    margin-bottom: var(--gv-space-2);
+  }
+
+  .p-panelmenu-header-content,
+  .p-panelmenu-item-content {
+    border-radius: var(--gv-radius-sm) !important;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  .p-panelmenu-header-link,
+  .p-panelmenu-item-link {
+    padding: var(--gv-space-3) var(--gv-space-3) !important;
+    color: var(--gv-ink) !important;
+    font-family: var(--gv-font-body);
+    font-weight: 500;
+    font-size: 0.92rem;
+    border-radius: var(--gv-radius-sm) !important;
+    gap: var(--gv-space-2);
+  }
+
+  .p-panelmenu-header-link:hover,
+  .p-panelmenu-item-link:hover {
+    background: var(--gv-paper-dim) !important;
+  }
+
+  .p-panelmenu-header.p-panelmenu-header-active > .p-panelmenu-header-content {
+    background: var(--gv-ink) !important;
+  }
+
+  .p-panelmenu-header.p-panelmenu-header-active > .p-panelmenu-header-content .p-panelmenu-header-link {
+    color: var(--gv-white) !important;
+  }
+
+  .p-panelmenu-header.p-panelmenu-header-active > .p-panelmenu-header-content .p-panelmenu-icon,
+  .p-panelmenu-header.p-panelmenu-header-active > .p-panelmenu-header-content .p-panelmenu-submenu-icon {
+    color: var(--gv-gold-soft) !important;
+  }
+
+  .p-panelmenu-icon {
+    color: var(--gv-gold-deep);
+  }
+
+  .router-link-active .p-panelmenu-item-link {
+    background: var(--gv-gold);
+    color: var(--gv-ink) !important;
+    font-weight: 600;
+  }
+
+  .p-panelmenu-submenu {
+    padding-left: var(--gv-space-3);
+  }
+}
+
+@media (max-width: 900px) {
+  :host {
+    width: 100%;
+  }
+
+  .gv-sidebar {
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--gv-line);
+  }
+}
