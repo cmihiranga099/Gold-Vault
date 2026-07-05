@@ -1,0 +1,49 @@
+@import '../../../../styles/tokens';
+
+.gv-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 0 var(--gv-space-4);
+  background: var(--gv-ink);
+  box-shadow: var(--gv-shadow-md);
+}
+
+.gv-topbar-left,
+.gv-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-2);
+}
+
+.gv-topbar-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: none;
+  border-radius: var(--gv-radius-sm);
+  color: var(--gv-white);
+  opacity: 0.85;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+
+  i { font-size: 1.05rem; }
+
+  &:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+[data-theme="dark"] .gv-topbar {
+  background: var(--gv-paper-dim);
+  border-bottom: 1px solid var(--gv-line);
+}
+
+[data-theme="dark"] .gv-topbar-icon-btn {
+  color: var(--gv-ink);
+}
