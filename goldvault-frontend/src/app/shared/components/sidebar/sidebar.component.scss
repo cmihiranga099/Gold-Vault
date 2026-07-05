@@ -134,9 +134,20 @@
   }
 
   .gv-sidebar {
-    position: static;
-    height: auto;
-    border-right: none;
-    border-bottom: 1px solid var(--gv-line);
+    position: fixed;
+    top: 56px;
+    left: 0;
+    height: calc(100vh - 56px);
+    width: 260px;
+    z-index: 900;
+    border-right: 1px solid var(--gv-line);
+    border-bottom: none;
+    box-shadow: var(--gv-shadow-lg);
+    transform: translateX(0);
+    transition: transform 0.2s ease;
+  }
+
+  .gv-sidebar-closed {
+    transform: translateX(-100%);
   }
 }

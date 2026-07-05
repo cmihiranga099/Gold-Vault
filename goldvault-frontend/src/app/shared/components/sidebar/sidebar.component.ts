@@ -20,6 +20,9 @@ export class SidebarComponent {
   /** Portal-specific navigation items (Dashboard, Customers, etc.) */
   @Input({ required: true }) items: MenuItem[] = [];
 
+  /** Controls visibility on narrow viewports (toggled by the topbar hamburger). Always visible on desktop widths. */
+  @Input() open = true;
+
   allExpanded = signal(false);
 
   constructor(
