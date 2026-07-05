@@ -9,6 +9,12 @@
     "grantTicket": "Grant ticket",
     "sellGold": "Sell gold"
   },
+  "topbar": {
+  "switchLanguage": "Switch language",
+  "darkMode": "Switch to dark mode",
+  "lightMode": "Switch to light mode",
+  "account": "Account"
+  },
   "login": {
     "eyebrow": "Sign in",
     "title": "Welcome back",

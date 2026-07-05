@@ -1,22 +1,29 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
 import { SidebarComponent } from '../../../shared/components/sidebar/sidebar.component';
+import { TopbarComponent } from '../../../shared/components/topbar/topbar.component';
 import { LanguageService } from '../../../core/services/language.service';
 
 @Component({
   selector: 'app-admin-shell',
   standalone: true,
-  imports: [RouterOutlet, SidebarComponent],
+  imports: [RouterOutlet, SidebarComponent, TopbarComponent],
   templateUrl: './admin-shell.component.html',
   styleUrl: './admin-shell.component.scss'
 })
 export class AdminShellComponent {
+  sidebarOpen = signal(true);
+
   constructor(
     private translate: TranslateService,
     private lang: LanguageService
   ) {}
+
+  toggleSidebar(): void {
+    this.sidebarOpen.set(!this.sidebarOpen());
+  }
 
   menuItems = computed<MenuItem[]>(() => {
     this.lang.currentLang();

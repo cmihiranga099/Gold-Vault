@@ -1,5 +1,6 @@
+<app-topbar (menuToggle)="toggleSidebar()" />
 <div class="gv-shell-body">
-  <app-sidebar [items]="menuItems()" />
+  <app-sidebar [items]="menuItems()" [open]="sidebarOpen()" />
   <main class="gv-shell-content">
     <router-outlet />
   </main>
