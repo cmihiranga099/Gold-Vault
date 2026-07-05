@@ -304,7 +304,9 @@
     "licenseVerification": "License verification",
     "management": "Management",
     "shops": "Shops",
-    "reports": "Reports"
+    "reports": "Reports",
+    "language": "Language",
+"currency": "Currency"
   },
   "licenses": {
     "eyebrow": "Admin",

@@ -1,8 +1,25 @@
 <aside class="gv-sidebar">
+
+    <div class="gv-sidebar-brand">
+      <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="18" stroke="#C9A14A" stroke-width="2"/>
+        <path d="M12 20 L20 12 L28 20 L20 28 Z" stroke="#C9A14A" stroke-width="1.5" fill="none"/>
+        <circle cx="20" cy="20" r="3" fill="#C9A14A"/>
+      </svg>
+      <span class="gv-sidebar-brand-name">GoldVault</span>
+    </div>
+  
+    @if (authService.currentUser()) {
+      <div class="gv-sidebar-user">
+        <i class="pi pi-user-circle"></i>
+        <span>{{ authService.currentUser()!.fullName }}</span>
+      </div>
+    }
+  
     <button class="gv-sidebar-toggle-all" type="button" (click)="toggleAll()">
       <i class="pi" [class.pi-angle-double-down]="!allExpanded()" [class.pi-angle-double-up]="allExpanded()"></i>
       {{ (allExpanded() ? 'sidebar.collapseAll' : 'sidebar.expandAll') | translate }}
     </button>
   
-    <p-panelMenu [model]="items" styleClass="gv-panel-menu" />
+    <p-panelMenu [model]="fullItems()" styleClass="gv-panel-menu" />
   </aside>

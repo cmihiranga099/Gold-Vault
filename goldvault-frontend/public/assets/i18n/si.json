@@ -304,7 +304,9 @@
     "licenseVerification": "බලපත්‍ර සත්‍යාපනය",
     "management": "කළමනාකරණය",
     "shops": "සාප්පු",
-    "reports": "වාර්තා"
+    "reports": "වාර්තා",
+    "language": "භාෂාව",
+"currency": "මුදල් වර්ගය"
   },
   "licenses": {
     "eyebrow": "පරිපාලක",

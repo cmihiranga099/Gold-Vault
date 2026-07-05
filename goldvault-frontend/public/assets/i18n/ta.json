@@ -304,7 +304,9 @@
     "licenseVerification": "உரிமம் சரிபார்ப்பு",
     "management": "மேலாண்மை",
     "shops": "கடைகள்",
-    "reports": "அறிக்கைகள்"
+    "reports": "அறிக்கைகள்",
+    "language": "மொழி",
+"currency": "நாணயம்"
   },
   "licenses": {
     "eyebrow": "நிர்வாகி",

@@ -2,19 +2,21 @@ import { Component, computed } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
-import { TopnavComponent } from '../../../shared/components/topnav/topnav.component';
-import { SidebarComponent } from '../../../shared/components/sidebar';
+import { SidebarComponent } from '../../../shared/components/sidebar/sidebar.component';
 import { LanguageService } from '../../../core/services/language.service';
 
 @Component({
   selector: 'app-shop-shell',
   standalone: true,
-  imports: [RouterOutlet, TopnavComponent, SidebarComponent],
+  imports: [RouterOutlet, SidebarComponent],
   templateUrl: './shop-shell.component.html',
   styleUrl: './shop-shell.component.scss'
 })
 export class ShopShellComponent {
-  constructor(private translate: TranslateService, private lang: LanguageService) {}
+  constructor(
+    private translate: TranslateService,
+    private lang: LanguageService
+  ) {}
 
   menuItems = computed<MenuItem[]>(() => {
     this.lang.currentLang();
