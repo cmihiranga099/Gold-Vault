@@ -29,10 +29,10 @@
   font-size: 0.875rem;
   font-weight: 600;
   text-decoration: none;
-  background: var(--gv-ink);
-  color: var(--gv-white);
+  background: var(--gv-ink-fixed);
+  color: var(--gv-white-fixed);
 
-  &:hover { background: var(--gv-ink-soft); }
+  &:hover { background: var(--gv-ink-soft-fixed); }
   i { font-size: 0.8rem; }
 }
 

@@ -47,12 +47,12 @@
   }
   
   .action-link-primary {
-    background: var(--gv-ink);
-    color: var(--gv-white);
-    border-color: var(--gv-ink);
+    background: var(--gv-ink-fixed);
+    color: var(--gv-white-fixed);
+    border-color: var(--gv-ink-fixed);
   
     &:hover {
-      background: var(--gv-ink-soft);
+      background: var(--gv-ink-soft-fixed);
     }
   }
   
@@ -91,15 +91,15 @@
   }
   
   .stat-card-highlight {
-    background: var(--gv-ink);
-    border-color: var(--gv-ink);
+    background: var(--gv-ink-fixed);
+    border-color: var(--gv-ink-fixed);
   
     .stat-label, .stat-sub {
       color: var(--gv-gold-soft);
     }
   
     .stat-value {
-      color: var(--gv-white);
+      color: var(--gv-white-fixed);
     }
   }
   

@@ -79,14 +79,14 @@
     align-items: center;
     gap: var(--gv-space-2);
     padding: var(--gv-space-3) var(--gv-space-4);
-    background: var(--gv-ink);
-    color: var(--gv-white);
+    background: var(--gv-ink-fixed);
+    color: var(--gv-white-fixed);
     border-radius: var(--gv-radius-sm);
     text-decoration: none;
     font-size: 0.875rem;
     font-weight: 600;
   
-    &:hover { background: var(--gv-ink-soft); }
+    &:hover { background: var(--gv-ink-soft-fixed); }
     i { font-size: 0.8rem; }
   }
   

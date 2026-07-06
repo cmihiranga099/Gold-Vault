@@ -69,10 +69,10 @@
   }
   
   :host ::ng-deep .gv-submit-btn .p-button {
-    background: var(--gv-ink) !important;
-    border-color: var(--gv-ink) !important;
+    background: var(--gv-ink-fixed) !important;
+    border-color: var(--gv-ink-fixed) !important;
   
-    &:hover { background: var(--gv-ink-soft) !important; }
+    &:hover { background: var(--gv-ink-soft-fixed) !important; }
   }
   
   .dialog-context {

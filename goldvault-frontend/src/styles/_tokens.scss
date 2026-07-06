@@ -19,6 +19,15 @@
     --gv-stone-light: #9a9286;
     --gv-line: #e3dcc9;         /* hairline borders on paper */
     --gv-white: #ffffff;
+
+    /* Fixed accent tokens — deliberately do NOT flip in dark mode.
+       Used for "always dark surface + always light text" accents (primary
+       buttons, active nav states, highlight cards) that should look the
+       same regardless of theme, as opposed to --gv-ink/--gv-white which
+       flip meaning between light and dark mode. */
+    --gv-ink-fixed: #1c2b33;
+    --gv-white-fixed: #ffffff;
+    --gv-ink-soft-fixed: #2a3d47;
   
     /* Status colors */
     --gv-success: #3d5a52;
@@ -46,39 +55,39 @@
     --gv-radius-md: 10px;
     --gv-radius-lg: 16px;
   
-   /* Shadow */
-   --gv-shadow-sm: 0 1px 3px rgba(28, 43, 51, 0.08);
-   --gv-shadow-md: 0 4px 16px rgba(28, 43, 51, 0.12);
-   --gv-shadow-lg: 0 12px 40px rgba(28, 43, 51, 0.18);
- }
+    /* Shadow */
+    --gv-shadow-sm: 0 1px 3px rgba(28, 43, 51, 0.08);
+    --gv-shadow-md: 0 4px 16px rgba(28, 43, 51, 0.12);
+    --gv-shadow-lg: 0 12px 40px rgba(28, 43, 51, 0.18);
+  }
 
- /* ============================================================
-    Dark theme overrides — activated via [data-theme="dark"] on <html>
-    ============================================================ */
- [data-theme="dark"] {
-   --gv-ink: #eef1f2;              /* was dark teal-charcoal, now light text on dark bg */
-   --gv-ink-soft: #cfd8db;
-   --gv-paper: #16211f;            /* was warm ivory, now dark background */
-   --gv-paper-dim: #1e2c29;
-   --gv-line: #2c3c39;
-   --gv-white: #16211f;            /* surfaces that were pure white flip to dark */
-   --gv-stone: #9aa5a3;
-   --gv-stone-light: #6c7876;
+  /* ============================================================
+     Dark theme overrides — activated via [data-theme="dark"] on <html>
+     ============================================================ */
+  [data-theme="dark"] {
+    --gv-ink: #eef1f2;              /* was dark teal-charcoal, now light text on dark bg */
+    --gv-ink-soft: #cfd8db;
+    --gv-paper: #16211f;            /* was warm ivory, now dark background */
+    --gv-paper-dim: #1e2c29;
+    --gv-line: #2c3c39;
+    --gv-white: #16211f;            /* surfaces that were pure white flip to dark */
+    --gv-stone: #9aa5a3;
+    --gv-stone-light: #6c7876;
 
-   --gv-gold: #d8b565;             /* slightly brightened for contrast on dark bg */
-   --gv-gold-soft: #e8d19c;
-   --gv-gold-deep: #c9a14a;
-   --gv-jade: #6a9186;
-   --gv-jade-soft: #8bafa2;
-   --gv-brick: #d1655c;
-   --gv-brick-soft: #e08b83;
+    --gv-gold: #d8b565;             /* slightly brightened for contrast on dark bg */
+    --gv-gold-soft: #e8d19c;
+    --gv-gold-deep: #c9a14a;
+    --gv-jade: #6a9186;
+    --gv-jade-soft: #8bafa2;
+    --gv-brick: #d1655c;
+    --gv-brick-soft: #e08b83;
 
-   --gv-success: #6a9186;
-   --gv-warning: #d8b565;
-   --gv-danger: #d1655c;
-   --gv-info: #7bb0c4;
+    --gv-success: #6a9186;
+    --gv-warning: #d8b565;
+    --gv-danger: #d1655c;
+    --gv-info: #7bb0c4;
 
-   --gv-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
-   --gv-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
-   --gv-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.55);
- }
+    --gv-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+    --gv-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+    --gv-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.55);
+  }
