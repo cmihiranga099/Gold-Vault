@@ -312,7 +312,8 @@
     "shops": "Shops",
     "reports": "Reports",
     "language": "Language",
-"currency": "Currency"
+"currency": "Currency",
+"signOut": "Sign out"
   },
   "licenses": {
     "eyebrow": "Admin",

@@ -312,7 +312,8 @@
     "shops": "கடைகள்",
     "reports": "அறிக்கைகள்",
     "language": "மொழி",
-"currency": "நாணயம்"
+"currency": "நாணயம்",
+"signOut":"வெளியேறு"
   },
   "licenses": {
     "eyebrow": "நிர்வாகி",
