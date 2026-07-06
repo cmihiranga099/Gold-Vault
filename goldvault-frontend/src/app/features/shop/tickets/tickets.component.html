@@ -1,0 +1,71 @@
+<div class="tickets-page">
+    <div class="tickets-header">
+      <span class="gv-eyebrow">{{ 'shopTickets.eyebrow' | translate }}</span>
+      <h1>{{ 'shopTickets.title' | translate }}</h1>
+      <p class="tickets-sub">{{ 'shopTickets.subtitle' | translate }}</p>
+    </div>
+  
+    <div class="tickets-toolbar">
+      <span class="p-input-icon-left search-wrap">
+        <i class="pi pi-search"></i>
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="search"
+          [placeholder]="'shopTickets.searchPlaceholder' | translate"
+          class="w-full"
+        />
+      </span>
+  
+      <div class="filter-tabs">
+        @for (f of filterOptions; track f) {
+          <button
+            class="filter-tab"
+            [class.filter-tab-active]="filter() === f"
+            (click)="setFilter(f)"
+          >
+            {{ filterLabel(f) }}
+          </button>
+        }
+      </div>
+    </div>
+  
+    @if (loading()) {
+      <div class="tickets-loading"><p-progressSpinner strokeWidth="3" /></div>
+    } @else if (error()) {
+      <div class="tickets-empty gv-card"><p>{{ error() }}</p></div>
+    } @else {
+      <span class="result-count">{{ filtered().length }} {{ 'shopTickets.resultCount' | translate }}</span>
+  
+      @if (filtered().length === 0) {
+        <div class="tickets-empty gv-card">
+          <p>{{ 'shopTickets.noResults' | translate }}</p>
+        </div>
+      } @else {
+        <div class="tickets-list">
+          <div class="tickets-list-header">
+            <span>{{ 'shopTickets.colTicket' | translate }}</span>
+            <span>{{ 'shopTickets.colCustomer' | translate }}</span>
+            <span>{{ 'shopTickets.colLoanAmount' | translate }}</span>
+            <span>{{ 'shopTickets.colOutstanding' | translate }}</span>
+            <span>{{ 'shopTickets.colDueDate' | translate }}</span>
+            <span>{{ 'shopTickets.colStatus' | translate }}</span>
+          </div>
+  
+          @for (ticket of filtered(); track ticket.id) {
+            <a [routerLink]="['/shop/tickets', ticket.id]" class="ticket-row">
+              <span class="ticket-num gv-mono">{{ ticket.ticketNumber }}</span>
+              <div class="ticket-customer">
+                <span class="customer-name">{{ ticket.customerName }}</span>
+                <span class="customer-nic gv-mono">{{ ticket.customerNic }}</span>
+              </div>
+              <span class="gv-mono">LKR {{ formatCurrency(ticket.loanAmount) }}</span>
+              <span class="gv-mono">LKR {{ formatCurrency(ticket.outstandingBalance) }}</span>
+              <span [class.overdue]="ticket.overdue">{{ ticket.expiryDate | date:'MMM d, y' }}</span>
+              <p-tag [value]="ticket.status" [severity]="statusSeverity(ticket.status)" />
+            </a>
+          }
+        </div>
+      }
+    }
+  </div>

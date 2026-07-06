@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 
-
-
 export const SHOP_ROUTES: Routes = [
   {
     path: '',
@@ -26,6 +24,10 @@ export const SHOP_ROUTES: Routes = [
       {
         path: 'customers/:id',
         loadComponent: () => import('./customer-detail/customer-detail.component').then(m => m.CustomerDetailComponent)
+      },
+      {
+        path: 'tickets',
+        loadComponent: () => import('./tickets/tickets.component').then(m => m.ShopTicketsComponent)
       },
       {
         path: 'tickets/new',
