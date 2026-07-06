@@ -1,52 +1,7 @@
-<div class="shop-page">
-  <div class="shop-header">
-    <div>
-      <span class="gv-eyebrow">{{ 'shopDash.eyebrow' | translate }}</span>
-      <h1>{{ 'shopDash.title' | translate }}</h1>
-    </div>
-  </div>
-
-  @if (loading()) {
-    <div class="shop-loading">
-      <p-progressSpinner strokeWidth="3" />
-    </div>
-  } @else if (errorMessage()) {
-    <div class="shop-empty gv-card">
-      <p>{{ errorMessage() }}</p>
-    </div>
-  } @else if (summary()) {
-    <div class="stat-grid">
-      <div class="stat-card gv-card stat-card-highlight">
-        <span class="stat-label">{{ 'shopDash.todayCollection' | translate }}</span>
-        <span class="stat-value gv-mono">LKR {{ formatCurrency(summary()!.todayCollection) }}</span>
-        <span class="stat-sub">{{ summary()!.todayPaymentCount }} {{ 'shopDash.todayPayments' | translate }}</span>
-      </div>
-
-      <div class="stat-card gv-card">
-        <span class="stat-label">{{ 'shopDash.activeTickets' | translate }}</span>
-        <span class="stat-value">{{ summary()!.activeTickets }}</span>
-      </div>
-
-      <div class="stat-card gv-card" [class.stat-card-warning]="summary()!.expiringSoonCount > 0">
-        <span class="stat-label">{{ 'shopDash.expiringSoon' | translate }}</span>
-        <span class="stat-value">{{ summary()!.expiringSoonCount }}</span>
-      </div>
-
-      <div class="stat-card gv-card" [class.stat-card-danger]="summary()!.expiredTickets > 0">
-        <span class="stat-label">{{ 'shopDash.expiredTickets' | translate }}</span>
-        <span class="stat-value">{{ summary()!.expiredTickets }}</span>
-      </div>
-
-      <div class="stat-card gv-card">
-        <span class="stat-label">{{ 'shopDash.totalCustomers' | translate }}</span>
-        <span class="stat-value">{{ summary()!.totalCustomers }}</span>
-      </div>
-
-      <div class="stat-card gv-card">
-        <span class="stat-label">{{ 'shopDash.totalOutstanding' | translate }}</span>
-        <span class="stat-value gv-mono">LKR {{ formatCurrency(summary()!.totalOutstandingLoans) }}</span>
-      </div>
-    </div>
-    
-  }
+<app-topbar (menuToggle)="toggleSidebar()" />
+<div class="gv-shell-body">
+  <app-sidebar [items]="menuItems()" [open]="sidebarOpen()" />
+  <main class="gv-shell-content">
+    <router-outlet />
+  </main>
 </div>

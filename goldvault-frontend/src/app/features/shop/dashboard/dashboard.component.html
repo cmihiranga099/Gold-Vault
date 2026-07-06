@@ -1,4 +1,4 @@
-<div class="shop-page">
+﻿<div class="shop-page">
   <div class="shop-header">
     <div>
       <span class="gv-eyebrow">{{ 'shopDash.eyebrow' | translate }}</span>
@@ -46,67 +46,6 @@
         <span class="stat-label">{{ 'shopDash.totalOutstanding' | translate }}</span>
         <span class="stat-value gv-mono">LKR {{ formatCurrency(summary()!.totalOutstandingLoans) }}</span>
       </div>
-    </div>
-
-    <div class="quick-links">
-      <a routerLink="/shop/analytics" class="quick-link gv-card quick-link-analytics">
-        <i class="pi pi-chart-bar"></i>
-        <div>
-          <span class="quick-link-title">Analytics</span>
-          <span class="quick-link-sub">Loan volume, collection trends, top customers</span>
-        </div>
-        <span class="analytics-badge">PRO</span>
-      </a>
-      <a routerLink="/shop/tickets" class="quick-link gv-card">
-        <i class="pi pi-ticket"></i>
-        <div>
-          <span class="quick-link-title">All tickets</span>
-          <span class="quick-link-sub">View and manage pawn tickets</span>
-        </div>
-      </a>
-      <a routerLink="/shop/customers" class="quick-link gv-card">
-        <i class="pi pi-users"></i>
-        <div>
-          <span class="quick-link-title">Customers</span>
-          <span class="quick-link-sub">Search or register customers</span>
-        </div>
-      </a>
-      <a routerLink="/shop/gold-rates" class="quick-link gv-card">
-        <i class="pi pi-chart-line"></i>
-        <div>
-          <span class="quick-link-title">Gold rates</span>
-          <span class="quick-link-sub">Publish today's buying rates</span>
-        </div>
-      </a>
-      <a routerLink="/shop/marketplace" class="quick-link gv-card">
-        <i class="pi pi-shop"></i>
-        <div>
-          <span class="quick-link-title">Marketplace</span>
-          <span class="quick-link-sub">Browse listings and make offers</span>
-        </div>
-      </a>
-      <a routerLink="/shop/bulk-import" class="quick-link gv-card">
-        <i class="pi pi-upload"></i>
-        <div>
-          <span class="quick-link-title">Bulk import</span>
-          <span class="quick-link-sub">Import existing tickets via CSV</span>
-        </div>
-      </a>
-      <a routerLink="/shop/promotions" class="quick-link gv-card">
-        <i class="pi pi-megaphone"></i>
-        <div>
-          <span class="quick-link-title">Promotions</span>
-          <span class="quick-link-sub">Run campaigns and special offers</span>
-        </div>
-      </a>
-      <a routerLink="/shop/api-keys" class="quick-link gv-card quick-link-api">
-        <i class="pi pi-key"></i>
-        <div>
-          <span class="quick-link-title">API Keys</span>
-          <span class="quick-link-sub">Connect your POS system via API</span>
-        </div>
-        <span class="analytics-badge">DEV</span>
-      </a>
     </div>
     
   }
