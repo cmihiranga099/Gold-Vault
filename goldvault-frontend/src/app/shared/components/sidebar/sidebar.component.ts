@@ -1,4 +1,4 @@
-import { Component, Input, computed, signal } from '@angular/core';
+import { Component, HostBinding, Input, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PanelMenuModule } from 'primeng/panelmenu';
@@ -22,6 +22,11 @@ export class SidebarComponent {
 
   /** Controls visibility on narrow viewports (toggled by the topbar hamburger). Always visible on desktop widths. */
   @Input() open = true;
+
+  @HostBinding('class.gv-sidebar-collapsed')
+  get isCollapsed(): boolean {
+    return !this.open;
+  }
 
   allExpanded = signal(false);
 

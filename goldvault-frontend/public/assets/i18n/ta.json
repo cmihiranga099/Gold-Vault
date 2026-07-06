@@ -313,7 +313,8 @@
     "reports": "அறிக்கைகள்",
     "language": "மொழி",
 "currency": "நாணயம்",
-"signOut":"வெளியேறு"
+"signOut":"வெளியேறு",
+"liveGoldRates": "நேரடி தங்க விலைகள்"
   },
   "licenses": {
     "eyebrow": "நிர்வாகி",

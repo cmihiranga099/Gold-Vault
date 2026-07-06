@@ -313,7 +313,8 @@
     "reports": "Reports",
     "language": "Language",
 "currency": "Currency",
-"signOut": "Sign out"
+"signOut": "Sign out",
+"liveGoldRates": "Live gold rates"
   },
   "licenses": {
     "eyebrow": "Admin",

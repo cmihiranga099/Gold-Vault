@@ -4,18 +4,6 @@
       <span class="gv-eyebrow">{{ 'customerDash.eyebrow' | translate }}</span>
       <h1>{{ 'customerDash.title' | translate }}</h1>
     </div>
-    <a routerLink="/customer/marketplace" class="market-link">
-      <i class="pi pi-shop"></i> {{ 'nav.sellGold' | translate }}
-    </a>
-    <a routerLink="/customer/find-shops" class="market-link">
-      <i class="pi pi-map-marker"></i> {{ 'shopFinder.navLabel' | translate }}
-    </a>
-    <a routerLink="/gold-rates" class="market-link">
-      <i class="pi pi-chart-line"></i> Live gold rates
-    </a>
-    <a routerLink="/customer/calculator" class="market-link">
-      <i class="pi pi-calculator"></i> Loan calculator
-    </a>
   </div> 
 
   @if (loyalty()) {

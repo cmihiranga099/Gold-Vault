@@ -50,7 +50,8 @@ export class CustomerShellComponent {
         label: t('sidebar.tools'),
         icon: 'pi pi-calculator',
         items: [
-          { label: t('sidebar.calculator'), icon: 'pi pi-calculator', routerLink: '/customer/calculator' }
+          { label: t('sidebar.calculator'), icon: 'pi pi-calculator', routerLink: '/customer/calculator' },
+          { label: t('sidebar.liveGoldRates'), icon: 'pi pi-chart-line', routerLink: '/gold-rates' }
         ]
       }
     ];

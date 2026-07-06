@@ -4,23 +4,6 @@
       <span class="gv-eyebrow">{{ 'admin.eyebrow' | translate }}</span>
       <h1>{{ 'admin.dashTitle' | translate }} <span class="super-badge">PLATFORM</span></h1>
     </div>
-    <div class="admin-actions">
-      <a routerLink="/admin/shops" class="action-link">
-        <i class="pi pi-building"></i> {{ 'admin.shopsLink' | translate }}
-      </a>
-      <a routerLink="/admin/reports" class="action-link action-link-primary">
-        <i class="pi pi-chart-bar"></i> {{ 'admin.revenueReportLink' | translate }}
-      </a>
-      <a routerLink="/admin/aml" class="action-link action-link-aml">
-        <i class="pi pi-shield"></i> AML Monitoring
-        @if (summary() && summary()!.pendingShopApprovals > 0) {
-          <span class="aml-alert-dot"></span>
-        }
-      </a>
-      <a routerLink="/admin/licenses" class="action-link action-link-license">
-        <i class="pi pi-verified"></i> License Verification
-      </a>
-    </div>
   </div>
 
   @if (loading()) {

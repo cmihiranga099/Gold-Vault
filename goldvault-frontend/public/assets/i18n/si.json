@@ -313,7 +313,8 @@
     "reports": "වාර්තා",
     "language": "භාෂාව",
 "currency": "මුදල් වර්ගය",
-"signOut": "ඉවත් වන්න"
+"signOut": "ඉවත් වන්න",
+"liveGoldRates": "සජීවී රන් මිල ගණන්"
   },
   "licenses": {
     "eyebrow": "පරිපාලක",

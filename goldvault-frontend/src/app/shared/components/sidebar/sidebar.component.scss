@@ -4,12 +4,19 @@
   display: block;
   width: 260px;
   flex-shrink: 0;
+  overflow: hidden;
+  transition: width 0.2s ease;
+}
+
+:host(.gv-sidebar-collapsed) {
+  width: 0;
 }
 
 .gv-sidebar {
   position: sticky;
   top: 0;
   height: 100vh;
+  width: 260px;
   overflow-y: auto;
   background: var(--gv-paper);
   border-right: 1px solid var(--gv-line);
@@ -137,24 +144,16 @@
 
 @media (max-width: 900px) {
   :host {
-    width: 100%;
-  }
-
-  .gv-sidebar {
     position: fixed;
     top: 56px;
     left: 0;
     height: calc(100vh - 56px);
-    width: 260px;
     z-index: 900;
-    border-right: 1px solid var(--gv-line);
-    border-bottom: none;
-    box-shadow: var(--gv-shadow-lg);
-    transform: translateX(0);
-    transition: transform 0.2s ease;
+    transition: width 0.2s ease;
   }
 
-  .gv-sidebar-closed {
-    transform: translateX(-100%);
+  .gv-sidebar {
+    height: 100%;
+    box-shadow: var(--gv-shadow-lg);
   }
 }

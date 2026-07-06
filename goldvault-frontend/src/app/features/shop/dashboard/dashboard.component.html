@@ -4,14 +4,6 @@
       <span class="gv-eyebrow">{{ 'shopDash.eyebrow' | translate }}</span>
       <h1>{{ 'shopDash.title' | translate }}</h1>
     </div>
-    <div class="shop-actions">
-      <a routerLink="/shop/customers" class="action-link">
-        <i class="pi pi-users"></i> {{ 'nav.customers' | translate }}
-      </a>
-      <a routerLink="/shop/tickets/new" class="action-link action-link-primary">
-        <i class="pi pi-plus"></i> {{ 'nav.grantTicket' | translate }}
-      </a>
-    </div>
   </div>
 
   @if (loading()) {
