@@ -314,7 +314,8 @@
     "language": "භාෂාව",
 "currency": "මුදල් වර්ගය",
 "signOut": "ඉවත් වන්න",
-"liveGoldRates": "සජීවී රන් මිල ගණන්"
+"liveGoldRates": "සජීවී රන් මිල ගණන්",
+"allTickets": "සියලුම ටිකට්පත්"
   },
   "licenses": {
     "eyebrow": "පරිපාලක",
@@ -661,5 +662,18 @@
     "breakdownPartial": "අර්ධ",
     "breakdownRedemptions": "මුදාගැනීම්",
     "breakdownRenewals": "අලුත් කිරීම්"
-  }
+  },
+  "shopTickets": {
+  "eyebrow": "සාප්පු ද්වාරය",
+  "title": "සියලුම උකස් ටිකට්පත්",
+  "subtitle": "ඔබේ සාප්පුවේ ලබා දී ඇති සියලුම ටිකට්පත්.",
+  "searchPlaceholder": "ටිකට් අංකය, පාරිභෝගික නම හෝ හැඳුනුම්පත් අංකයෙන් සොයන්න…",
+  "filterAll": "සියල්ල", "filterActive": "සක්‍රීය", "filterExpired": "කල් ඉකුත් වූ", "filterRedeemed": "මුදාගත්", "filterAuctioned": "වෙන්දේසි කළ",
+  "colTicket": "ටිකට්පත", "colCustomer": "පාරිභෝගිකයා", "colLoanAmount": "ණය මුදල",
+  "colOutstanding": "ඉතිරි මුදල", "colDueDate": "නියමිත දිනය", "colStatus": "තත්ත්වය",
+  "noResults": "ඔබේ සෙවුමට ගැලපෙන ටිකට්පත් නැත.",
+  "errLoad": "ටිකට්පත් පූරණය කළ නොහැක.",
+  "errNoShop": "මෙම ගිණුම හා සම්බන්ධ සාප්පුවක් නැත.",
+  "resultCount": "ටිකට්පත්"
+}
 }

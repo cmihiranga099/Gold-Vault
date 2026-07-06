@@ -314,7 +314,8 @@
     "language": "மொழி",
 "currency": "நாணயம்",
 "signOut":"வெளியேறு",
-"liveGoldRates": "நேரடி தங்க விலைகள்"
+"liveGoldRates": "நேரடி தங்க விலைகள்",
+"allTickets": "அனைத்து டிக்கெட்டுகள்"
   },
   "licenses": {
     "eyebrow": "நிர்வாகி",
@@ -661,5 +662,18 @@
     "breakdownPartial": "பகுதி",
     "breakdownRedemptions": "மீட்புகள்",
     "breakdownRenewals": "புதுப்பித்தல்கள்"
-  }
+  },
+  "shopTickets": {
+  "eyebrow": "கடை போர்டல்",
+  "title": "அனைத்து அடகு டிக்கெட்டுகள்",
+  "subtitle": "உங்கள் கடையில் வழங்கப்பட்ட அனைத்து டிக்கெட்டுகளும்.",
+  "searchPlaceholder": "டிக்கெட் எண், வாடிக்கையாளர் பெயர் அல்லது அடையாள அட்டையால் தேடு…",
+  "filterAll": "அனைத்தும்", "filterActive": "செயலில்", "filterExpired": "காலாவதியானது", "filterRedeemed": "மீட்கப்பட்டது", "filterAuctioned": "ஏலம் விடப்பட்டது",
+  "colTicket": "டிக்கெட்", "colCustomer": "வாடிக்கையாளர்", "colLoanAmount": "கடன் தொகை",
+  "colOutstanding": "நிலுவை", "colDueDate": "நிலுவை தேதி", "colStatus": "நிலை",
+  "noResults": "உங்கள் தேடலுக்கு பொருந்தும் டிக்கெட்டுகள் இல்லை.",
+  "errLoad": "டிக்கெட்டுகளை ஏற்ற முடியவில்லை.",
+  "errNoShop": "இந்த கணக்குடன் இணைக்கப்பட்ட கடை இல்லை.",
+  "resultCount": "டிக்கெட்(கள்)"
+}
 }

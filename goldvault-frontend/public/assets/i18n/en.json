@@ -314,7 +314,8 @@
     "language": "Language",
 "currency": "Currency",
 "signOut": "Sign out",
-"liveGoldRates": "Live gold rates"
+"liveGoldRates": "Live gold rates",
+"allTickets": "All tickets"
   },
   "licenses": {
     "eyebrow": "Admin",
@@ -661,5 +662,18 @@
     "breakdownPartial": "Partial",
     "breakdownRedemptions": "Redemptions",
     "breakdownRenewals": "Renewals"
-  }
+  },
+  "shopTickets": {
+  "eyebrow": "Shop portal",
+  "title": "All pawn tickets",
+  "subtitle": "Every ticket ever granted at your shop.",
+  "searchPlaceholder": "Search by ticket number, customer name or NIC…",
+  "filterAll": "All", "filterActive": "Active", "filterExpired": "Expired", "filterRedeemed": "Redeemed", "filterAuctioned": "Auctioned",
+  "colTicket": "Ticket", "colCustomer": "Customer", "colLoanAmount": "Loan amount",
+  "colOutstanding": "Outstanding", "colDueDate": "Due date", "colStatus": "Status",
+  "noResults": "No tickets match your search.",
+  "errLoad": "Could not load tickets.",
+  "errNoShop": "No shop linked to this account.",
+  "resultCount": "ticket(s)"
+}
 }

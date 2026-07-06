@@ -51,6 +51,7 @@ export class ShopShellComponent {
         label: t('sidebar.pawnTickets'),
         icon: 'pi pi-ticket',
         items: [
+          { label: t('sidebar.allTickets'), icon: 'pi pi-list', routerLink: '/shop/tickets' },
           { label: t('sidebar.newTicket'), icon: 'pi pi-plus-circle', routerLink: '/shop/tickets/new' }
         ]
       },
