@@ -1,0 +1,57 @@
+<div class="gv-chat-launcher" [class.gv-chat-launcher-open]="open()">
+    <button class="gv-chat-fab" type="button" (click)="toggle()" [attr.aria-label]="'chatWidget.toggleLabel' | translate">
+      <i class="pi" [class.pi-comments]="!open()" [class.pi-times]="open()"></i>
+    </button>
+  
+    @if (open()) {
+      <div class="gv-chat-panel">
+        <div class="gv-chat-header">
+          <div class="gv-chat-header-brand">
+            <i class="pi pi-comments"></i>
+            <span>{{ 'chatWidget.title' | translate }}</span>
+          </div>
+          <button class="gv-chat-close" type="button" (click)="toggle()">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+  
+        <div class="gv-chat-messages">
+          @for (msg of messages(); track $index) {
+            <div class="gv-chat-msg" [class.gv-chat-msg-user]="msg.role === 'user'">
+              <div class="gv-chat-bubble">
+                {{ msg.content }}
+                @if (msg.links && msg.links.length > 0) {
+                  <div class="gv-chat-links">
+                    @for (link of msg.links; track link.url) {
+                      <a [routerLink]="link.url" class="gv-chat-link-btn" (click)="toggle()">{{ link.label }}</a>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          }
+          @if (sending()) {
+            <div class="gv-chat-msg">
+              <div class="gv-chat-bubble gv-chat-typing">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          }
+          <div #scrollAnchor></div>
+        </div>
+  
+        <div class="gv-chat-input-row">
+          <input
+            type="text"
+            [(ngModel)]="draft"
+            (keyup.enter)="send()"
+            [placeholder]="'chatWidget.placeholder' | translate"
+            [disabled]="sending()"
+          />
+          <button type="button" (click)="send()" [disabled]="sending() || !draft.trim()" class="gv-chat-send">
+            <i class="pi pi-send"></i>
+          </button>
+        </div>
+      </div>
+    }
+  </div>
