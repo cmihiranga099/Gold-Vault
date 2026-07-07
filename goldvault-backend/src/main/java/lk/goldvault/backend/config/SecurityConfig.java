@@ -48,6 +48,7 @@ public class SecurityConfig {
                                 "/api/shops/register",
                                 "/api/shops/active",
                                 "/api/public/**",
+                                "/api/chatbot/**",
                                 "/api/v1/pos/**",      // POS API — auth handled by ApiKeyFilter
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",

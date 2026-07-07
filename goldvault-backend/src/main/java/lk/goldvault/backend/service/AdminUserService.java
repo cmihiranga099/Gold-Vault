@@ -1,4 +1,4 @@
-package lk.goldvault.backend.service;
+ package lk.goldvault.backend.service;
 
 import lk.goldvault.backend.dto.response.AdminUserResponse;
 import lk.goldvault.backend.entity.AppUser;
