@@ -675,5 +675,12 @@
   "errLoad": "Could not load tickets.",
   "errNoShop": "No shop linked to this account.",
   "resultCount": "ticket(s)"
+},
+"chatWidget": {
+  "title": "GoldVault Assistant",
+  "toggleLabel": "Chat with GoldVault assistant",
+  "greeting": "Hi! I'm the GoldVault assistant. I can check gold rates, look up a ticket by number, estimate a loan, or answer questions about how GoldVault works. What do you need?",
+  "placeholder": "Type a message…",
+  "errorGeneric": "Something went wrong on my end. Please try again in a moment."
 }
 }
