@@ -255,6 +255,8 @@
     "totalPaymentVolume": "Total payment volume",
     "platformCommission": "Platform commission",
     "totalPayments": "Total payments",
+    "exportPdf": "Export PDF",
+"exportExcel": "Export Excel",
     "breakdownByShop": "Breakdown by shop",
     "noActivity": "No payment activity in this period.",
     "commission": "Commission",

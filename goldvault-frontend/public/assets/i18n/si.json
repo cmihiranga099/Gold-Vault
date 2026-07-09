@@ -255,6 +255,8 @@
     "totalPaymentVolume": "මුළු ගෙවීම් ප්‍රමාණය",
     "platformCommission": "වේදිකා කොමිස්",
     "totalPayments": "මුළු ගෙවීම්",
+    "exportPdf": "PDF බාගන්න",
+"exportExcel": "Excel බාගන්න",
     "breakdownByShop": "සාප්පු අනුව බිඳවැටීම",
     "noActivity": "මෙම කාලය තුළ ගෙවීම් ක්‍රියාකාරකම් නොමැත.",
     "commission": "කොමිස්",

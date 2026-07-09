@@ -255,6 +255,8 @@
     "totalPaymentVolume": "மொத்த கட்டண அளவு",
     "platformCommission": "தள கமிஷன்",
     "totalPayments": "மொத்த கட்டணங்கள்",
+    "exportPdf": "PDF ஏற்றுமதி",
+"exportExcel": "Excel ஏற்றுமதி",
     "breakdownByShop": "கடை வாரியாக பிரிவு",
     "noActivity": "இந்த காலகட்டத்தில் கட்டண செயல்பாடு இல்லை.",
     "commission": "கமிஷன்",
