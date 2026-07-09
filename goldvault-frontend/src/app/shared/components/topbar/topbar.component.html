@@ -1,56 +1,116 @@
 <header class="gv-topbar">
-    <div class="gv-topbar-left">
-      <button class="gv-topbar-icon-btn" type="button" (click)="menuToggle.emit()" aria-label="Toggle menu">
-        <i class="pi pi-bars"></i>
+  <div class="gv-topbar-left">
+    <button class="gv-topbar-icon-btn" type="button" (click)="menuToggle.emit()" aria-label="Toggle menu">
+      <i class="pi pi-bars"></i>
+    </button>
+
+    <svg width="26" height="26" viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="20" r="18" stroke="#C9A14A" stroke-width="2"/>
+      <path d="M12 20 L20 12 L28 20 L20 28 Z" stroke="#C9A14A" stroke-width="1.5" fill="none"/>
+      <circle cx="20" cy="20" r="3" fill="#C9A14A"/>
+    </svg>
+  </div>
+
+  <div class="gv-topbar-right">
+    <button
+      class="gv-topbar-icon-btn"
+      type="button"
+      (click)="themeService.toggle()"
+      [pTooltip]="themeTooltip()"
+      tooltipPosition="bottom"
+    >
+      <i class="pi" [class.pi-sun]="!themeService.isDark()" [class.pi-moon]="themeService.isDark()"></i>
+    </button>
+
+    <button
+      class="gv-topbar-icon-btn"
+      type="button"
+      (click)="cycleLang()"
+      [pTooltip]="langTooltip()"
+      tooltipPosition="bottom"
+    >
+      <i class="pi pi-language"></i>
+    </button>
+
+    @if (hasNotificationBell()) {
+      <button
+        class="gv-topbar-icon-btn gv-topbar-bell-btn"
+        type="button"
+        (click)="onBellClick($event, notifPanel)"
+        [pTooltip]="notificationsTooltip()"
+        tooltipPosition="bottom"
+      >
+        <i class="pi pi-bell"></i>
+        @if (unreadCount() > 0) {
+          <span class="gv-notif-badge">{{ unreadCount() > 9 ? '9+' : unreadCount() }}</span>
+        }
       </button>
-  
-      <svg width="26" height="26" viewBox="0 0 40 40" fill="none">
-        <circle cx="20" cy="20" r="18" stroke="#C9A14A" stroke-width="2"/>
-        <path d="M12 20 L20 12 L28 20 L20 28 Z" stroke="#C9A14A" stroke-width="1.5" fill="none"/>
-        <circle cx="20" cy="20" r="3" fill="#C9A14A"/>
-      </svg>
-    </div>
-  
-    <div class="gv-topbar-right">
+
+      <p-popover #notifPanel styleClass="gv-notif-popover">
+        <div class="gv-notif-panel">
+          <div class="gv-notif-header">
+            <span class="gv-notif-title">Notifications</span>
+            @if (canMarkAllRead() && unreadCount() > 0) {
+              <button type="button" class="gv-notif-mark-all" (click)="markAllRead($event)">
+                Mark all as read
+              </button>
+            }
+          </div>
+
+          <div class="gv-notif-list">
+            @if (notificationsLoading() && notifications().length === 0) {
+              <div class="gv-notif-empty">Loading…</div>
+            } @else if (notifications().length === 0) {
+              <div class="gv-notif-empty">
+                <i class="pi pi-bell-slash"></i>
+                <span>You're all caught up</span>
+              </div>
+            } @else {
+              @for (item of notifications(); track item.id) {
+                <button
+                  type="button"
+                  class="gv-notif-item"
+                  [class.gv-notif-item-unread]="!item.read"
+                  (click)="onNotificationClick(item, notifPanel)"
+                >
+                  <span class="gv-notif-item-icon" [ngClass]="item.type.toLowerCase()">
+                    <i class="pi" [ngClass]="iconFor(item.type)"></i>
+                  </span>
+                  <span class="gv-notif-item-body">
+                    <span class="gv-notif-item-title">{{ item.title }}</span>
+                    <span class="gv-notif-item-message">{{ item.message }}</span>
+                    <span class="gv-notif-item-time">{{ timeAgo(item.createdAt) }}</span>
+                  </span>
+                  @if (!item.read) {
+                    <span class="gv-notif-dot"></span>
+                  }
+                </button>
+              }
+            }
+          </div>
+        </div>
+      </p-popover>
+    }
+
+    @if (authService.currentUser()) {
       <button
         class="gv-topbar-icon-btn"
         type="button"
-        (click)="themeService.toggle()"
-        [pTooltip]="themeTooltip()"
+        [pTooltip]="accountTooltip()"
         tooltipPosition="bottom"
       >
-        <i class="pi" [class.pi-sun]="!themeService.isDark()" [class.pi-moon]="themeService.isDark()"></i>
+        <i class="pi pi-user"></i>
       </button>
-  
+
       <button
         class="gv-topbar-icon-btn"
         type="button"
-        (click)="cycleLang()"
-        [pTooltip]="langTooltip()"
+        (click)="logout()"
+        [pTooltip]="logoutTooltip()"
         tooltipPosition="bottom"
       >
-        <i class="pi pi-language"></i>
+        <i class="pi pi-sign-out"></i>
       </button>
-  
-      @if (authService.currentUser()) {
-        <button
-          class="gv-topbar-icon-btn"
-          type="button"
-          [pTooltip]="accountTooltip()"
-          tooltipPosition="bottom"
-        >
-          <i class="pi pi-user"></i>
-        </button>
-  
-        <button
-          class="gv-topbar-icon-btn"
-          type="button"
-          (click)="logout()"
-          [pTooltip]="logoutTooltip()"
-          tooltipPosition="bottom"
-        >
-          <i class="pi pi-sign-out"></i>
-        </button>
-      }
-    </div>
-  </header>
+    }
+  </div>
+</header>

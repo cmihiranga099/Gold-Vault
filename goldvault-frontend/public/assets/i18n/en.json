@@ -13,7 +13,8 @@
   "switchLanguage": "Switch language",
   "darkMode": "Switch to dark mode",
   "lightMode": "Switch to light mode",
-  "account": "Account"
+  "account": "Account",
+  "notifications": "Notifications"
   },
   "login": {
     "eyebrow": "Sign in",
