@@ -45,6 +45,15 @@ public class Notification {
     @Column(name = "sent_at")
     private LocalDateTime sentAt;
 
+    /** In-app "seen in the notification bell" state — separate from {@link #sent},
+     *  which tracks whether the SMS/email/etc. actually went out. */
+    @Column(name = "is_read", nullable = false)
+    @Builder.Default
+    private boolean read = false;
+
+    @Column(name = "read_at")
+    private LocalDateTime readAt;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 

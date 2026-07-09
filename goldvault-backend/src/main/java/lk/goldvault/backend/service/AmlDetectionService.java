@@ -231,7 +231,7 @@ public class AmlDetectionService {
                 type, customer.getId(), customer.getNic(), desc);
     }
 
-    private String flagTypeLabel(String type) {
+    public String flagTypeLabel(String type) {
         return switch (type) {
             case "LARGE_TRANSACTION" -> "Large transaction (≥ LKR 500K)";
             case "HIGH_VOLUME"       -> "High volume (≥ LKR 1M / 30 days)";
