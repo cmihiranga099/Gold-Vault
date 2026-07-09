@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
@@ -75,5 +75,21 @@ export class AdminService {
         params: { startDate, endDate }
       })
       .pipe(map((res) => res.data));
+  }
+
+  downloadRevenueReportPdf(startDate: string, endDate: string): Observable<HttpResponse<Blob>> {
+    return this.http.get(`${this.apiUrl}/admin/reports/revenue/pdf`, {
+      params: { startDate, endDate },
+      observe: 'response',
+      responseType: 'blob'
+    });
+  }
+
+  downloadRevenueReportExcel(startDate: string, endDate: string): Observable<HttpResponse<Blob>> {
+    return this.http.get(`${this.apiUrl}/admin/reports/revenue/excel`, {
+      params: { startDate, endDate },
+      observe: 'response',
+      responseType: 'blob'
+    });
   }
 }

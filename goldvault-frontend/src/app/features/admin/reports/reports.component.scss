@@ -101,6 +101,18 @@
     font-weight: 600;
     color: var(--gv-ink);
   }
+  .export-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--gv-space-3);
+    margin-bottom: var(--gv-space-4);
+    flex-wrap: wrap;
+  }
+
+  .export-error {
+    font-size: 0.85rem;
+    color: var(--gv-brick);
+  }
   
   .breakdown-card {
     padding: var(--gv-space-5);

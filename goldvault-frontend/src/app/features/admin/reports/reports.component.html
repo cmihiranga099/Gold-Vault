@@ -42,6 +42,26 @@
       </div>
     </div>
 
+    <div class="export-bar">
+      <p-button
+        [label]="'admin.exportPdf' | translate"
+        icon="pi pi-file-pdf"
+        styleClass="p-button-outlined"
+        [loading]="exportingPdf()"
+        (onClick)="exportPdf()"
+      />
+      <p-button
+        [label]="'admin.exportExcel' | translate"
+        icon="pi pi-file-excel"
+        styleClass="p-button-outlined"
+        [loading]="exportingExcel()"
+        (onClick)="exportExcel()"
+      />
+      @if (exportError()) {
+        <span class="export-error">{{ exportError() }}</span>
+      }
+    </div>
+
     <div class="breakdown-card gv-card">
       <h2>{{ 'admin.breakdownByShop' | translate }}</h2>
       @if (report()!.byShop.length === 0) {
