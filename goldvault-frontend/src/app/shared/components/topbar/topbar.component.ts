@@ -81,9 +81,11 @@ export class TopbarComponent implements OnInit, OnDestroy {
   onNotificationClick(item: NotificationItemResponse, panel: Popover): void {
     const user = this.authService.currentUser();
 
-    // Only reminder items are individually markable — AML flags follow the
-    // existing review workflow, and promotions have no per-customer read state.
-    if (item.type === 'DUE_REMINDER' && !item.read && user?.customerId) {
+    // Reminder-table-backed items (ticket-expiry alerts, payment confirmations)
+    // are individually markable — AML flags follow the existing review
+    // workflow, and promotions have no per-customer read state.
+    const markable = item.type === 'DUE_REMINDER' || item.type === 'PAYMENT_CONFIRM';
+    if (markable && !item.read && user?.customerId) {
       const notificationId = Number(item.id.replace('reminder-', ''));
       this.notificationService.markReminderRead(user.customerId, notificationId).subscribe(() => {
         this.notifications.update(items =>
@@ -105,7 +107,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
 
     this.notificationService.markAllCustomerRead(user.customerId).subscribe(() => {
       this.notifications.update(items =>
-        items.map(i => i.type === 'DUE_REMINDER' ? { ...i, read: true } : i));
+        items.map(i => (i.type === 'DUE_REMINDER' || i.type === 'PAYMENT_CONFIRM') ? { ...i, read: true } : i));
       this.unreadCount.update(() =>
         this.notifications().filter(i => !i.read).length);
     });
@@ -130,6 +132,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   iconFor(type: string): string {
     switch (type) {
       case 'DUE_REMINDER': return 'pi-clock';
+      case 'PAYMENT_CONFIRM': return 'pi-check-circle';
       case 'AML_ALERT': return 'pi-shield';
       case 'PROMOTION': return 'pi-megaphone';
       default: return 'pi-bell';

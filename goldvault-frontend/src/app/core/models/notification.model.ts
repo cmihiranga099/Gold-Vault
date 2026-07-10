@@ -1,5 +1,4 @@
-export type NotificationItemType = 'DUE_REMINDER' | 'AML_ALERT' | 'PROMOTION';
-
+export type NotificationItemType = 'DUE_REMINDER' | 'PAYMENT_CONFIRM' | 'AML_ALERT' | 'PROMOTION';
 export interface NotificationItemResponse {
   id:        string;
   type:      NotificationItemType;
