@@ -110,13 +110,22 @@ public class NotificationFeedService {
     private NotificationItemResponse toReminderItem(Notification n) {
         return NotificationItemResponse.builder()
                 .id("reminder-" + n.getId())
-                .type("DUE_REMINDER")
-                .title("Ticket Expiry Reminder")
+                .type(n.getType().name())
+                .title(titleFor(n.getType()))
                 .message(n.getMessage())
                 .link("/customer/dashboard")
                 .createdAt(n.getCreatedAt())
                 .read(n.isRead())
                 .build();
+    }
+
+    private String titleFor(lk.goldvault.backend.enums.NotificationType type) {
+        return switch (type) {
+            case DUE_REMINDER -> "Ticket Expiry Reminder";
+            case PAYMENT_CONFIRM -> "Payment Update";
+            case OFFER_RECEIVED -> "New Offer";
+            case AUCTION_NOTICE -> "Auction Notice";
+        };
     }
 
     private NotificationItemResponse toPromotionItem(Promotion p, LocalDateTime now) {
