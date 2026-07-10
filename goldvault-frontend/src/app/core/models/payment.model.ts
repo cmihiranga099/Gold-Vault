@@ -1,31 +1,40 @@
-export type SubmissionStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
-export type PaymentType = 'CASH' | 'BANK_TRANSFER' | 'CARD' | 'CHEQUE';
+export type PaymentType   = 'INTEREST' | 'PARTIAL' | 'FULL_REDEMPTION' | 'RENEWAL';
+export type PaymentMethod = 'CASH' | 'CARD' | 'ONLINE_TRANSFER' | 'LANKAQR';
 
 export interface PaymentRequest {
-  ticketId:         number;
-  amount:           number;
-  paymentType:      PaymentType;
-  bankName?:        string;
+  ticketId:        number;
+  amount:          number;
+  paymentType:     PaymentType;
+  paymentMethod?:  PaymentMethod;
   referenceNumber?: string;
-  notes?:           string;
-  recordedBy?:      number;
+  receivedBy?:     number;
 }
 
 export interface PaymentResponse {
   id:               number;
   ticketId:         number;
   ticketNumber:     string;
-  customerId:       number;
-  customerName:     string;
   amount:           number;
   paymentType:      PaymentType;
-  bankName:         string | null;
+  paymentMethod:    PaymentMethod;
   referenceNumber:  string | null;
-  notes:            string | null;
-  recordedBy:       number | null;
-  recordedByName:   string | null;
-  createdAt:        string;
+  paymentDate:      string;
+  receivedBy:       number | null;
+  remainingBalance: number;
+  ticketRedeemed:   boolean;
 }
+
+export interface DailyCollectionResponse {
+  date:                string;
+  totalCollected:      number;
+  paymentCount:        number;
+  totalInterest:       number;
+  totalPartial:        number;
+  totalFullRedemption: number;
+  payments:            PaymentResponse[];
+}
+
+export type SubmissionStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
 
 export interface PaymentSubmissionResponse {
   id:                  number;
@@ -44,4 +53,4 @@ export interface PaymentSubmissionResponse {
   resultingPaymentId:  number | null;
   submittedAt:         string;
   reviewedAt:          string | null;
-} 
+}

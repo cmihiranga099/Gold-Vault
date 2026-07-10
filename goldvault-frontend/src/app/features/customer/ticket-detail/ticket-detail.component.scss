@@ -304,3 +304,79 @@
   align-items: center;
   gap: 6px;
 }
+.pay-online-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pay-online-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pay-online-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pay-online-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.receipt-input {
+  display: block;
+  width: 100%;
+  padding: 8px 0;
+  font-size: 13px;
+}
+
+.receipt-filename {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.submission-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.submission-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid #eee;
+}
+
+.submission-type {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c2c2c;
+}
+
+.submission-date {
+  display: block;
+  font-size: 12px;
+  color: #888;
+}
+
+.submission-reason {
+  display: block;
+  font-size: 12px;
+  color: #b91c1c;
+  margin-top: 2px;
+}

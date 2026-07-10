@@ -95,6 +95,91 @@
             </div>
           }
         </div>
+        <!-- Pay online (bank transfer + receipt) -->
+        @if (canPayOnline()) {
+          <div class="detail-card gv-card pay-online-card">
+            <div class="pay-online-header">
+              <h2>Pay online</h2>
+              @if (!showPayOnlineForm()) {
+                <p-button
+                  label="Pay via bank transfer"
+                  icon="pi pi-building-columns"
+                  styleClass="gv-submit-btn"
+                  [disabled]="hasPendingSubmission()"
+                  (onClick)="togglePayOnlineForm()"
+                />
+              }
+            </div>
+
+            @if (hasPendingSubmission()) {
+              <p-message severity="info" styleClass="w-full"
+                text="You have a payment awaiting confirmation from the shop." />
+            } @else if (!showPayOnlineForm()) {
+              <p class="detail-empty-text">
+                Transfer to the shop's bank account, then upload your receipt here — no need to visit in person.
+              </p>
+            }
+
+            @if (showPayOnlineForm()) {
+              <form [formGroup]="payOnlineForm" (ngSubmit)="submitOnlinePayment()" class="pay-online-form">
+                <div class="field">
+                  <label for="poAmount">Amount (LKR)</label>
+                  <p-inputNumber inputId="poAmount" formControlName="amount" mode="decimal"
+                    [minFractionDigits]="2" [maxFractionDigits]="2" styleClass="w-full" />
+                </div>
+                <div class="field">
+                  <label for="poType">Payment type</label>
+                  <p-select inputId="poType" formControlName="paymentType" [options]="paymentTypes"
+                    optionLabel="label" optionValue="value" styleClass="w-full" />
+                </div>
+                <div class="field">
+                  <label for="poBank">Bank name <span class="optional-tag">optional</span></label>
+                  <input id="poBank" pInputText formControlName="bankName" class="w-full" placeholder="e.g. Commercial Bank" />
+                </div>
+                <div class="field">
+                  <label for="poRef">Bank transaction reference</label>
+                  <input id="poRef" pInputText formControlName="referenceNumber" class="w-full" placeholder="e.g. TXN00234511" />
+                </div>
+                <div class="field">
+                  <label for="poReceipt">Receipt (image or PDF)</label>
+                  <input id="poReceipt" type="file" accept="image/*,application/pdf" (change)="onReceiptSelected($event)" class="receipt-input" />
+                  @if (selectedReceipt()) {
+                    <span class="receipt-filename"><i class="pi pi-paperclip"></i> {{ selectedReceipt()!.name }}</span>
+                  }
+                </div>
+
+                @if (payOnlineSuccess()) {
+                  <p-message severity="success" [text]="payOnlineSuccess()!" styleClass="w-full" />
+                }
+                @if (payOnlineError()) {
+                  <p-message severity="error" [text]="payOnlineError()!" styleClass="w-full" />
+                }
+
+                <div class="pay-online-actions">
+                  <p-button type="submit" label="Submit payment" icon="pi pi-check" styleClass="gv-submit-btn" [loading]="payOnlineLoading()" />
+                  <p-button type="button" label="Cancel" styleClass="p-button-text" (onClick)="togglePayOnlineForm()" />
+                </div>
+              </form>
+            }
+
+            @if (submissions().length > 0) {
+              <div class="submission-list">
+                @for (s of submissions(); track s.id) {
+                  <div class="submission-row">
+                    <div>
+                      <span class="submission-type">{{ s.paymentType }} &middot; LKR {{ formatCurrency(s.amount) }}</span>
+                      <span class="submission-date">{{ s.submittedAt | date:'MMM d, y, h:mm a' }}</span>
+                      @if (s.status === 'REJECTED' && s.rejectionReason) {
+                        <span class="submission-reason">{{ s.rejectionReason }}</span>
+                      }
+                    </div>
+                    <p-tag [value]="s.status" [severity]="submissionSeverity(s.status)" />
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
 
         <!-- ── Review section — only shown for REDEEMED tickets ── -->
         @if (ticket()!.status === 'REDEEMED') {

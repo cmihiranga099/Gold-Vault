@@ -142,6 +142,50 @@
             </div>
           }
         </div>
+
+        <!-- Pending online payments (bank transfer + receipt) -->
+        @if (pendingSubmissions().length > 0) {
+          <div class="detail-card gv-card pending-submissions-card">
+            <h2>Pending online payments</h2>
+            @if (reviewError()) {
+              <p-message severity="error" [text]="reviewError()!" styleClass="w-full" />
+            }
+            <div class="submission-list">
+              @for (s of pendingSubmissions(); track s.id) {
+                <div class="submission-row">
+                  <div class="submission-info">
+                    <span class="submission-type">{{ s.paymentType }} &middot; LKR {{ formatCurrency(s.amount) }}</span>
+                    <span class="submission-date">
+                      {{ s.submittedAt | date:'MMM d, y, h:mm a' }}
+                      @if (s.bankName) { &middot; {{ s.bankName }} }
+                      &middot; Ref: {{ s.referenceNumber }}
+                    </span>
+                    <a [href]="receiptUrl(s.receiptUrl)" target="_blank" class="receipt-link">
+                      <i class="pi pi-file"></i> View receipt
+                    </a>
+                  </div>
+                  <div class="submission-actions">
+                    <p-button
+                      icon="pi pi-check"
+                      severity="success"
+                      [loading]="reviewingId() === s.id"
+                      (onClick)="approveSubmission(s)"
+                      pTooltip="Approve"
+                    />
+                    <p-button
+                      icon="pi pi-times"
+                      severity="danger"
+                      [outlined]="true"
+                      [disabled]="reviewingId() === s.id"
+                      (onClick)="openRejectDialog(s)"
+                      pTooltip="Reject"
+                    />
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
       </div>
 
       <div class="detail-side">
@@ -272,6 +316,40 @@
       icon="pi pi-refresh"
       styleClass="gv-submit-btn w-full"
       [loading]="renewalLoading()"
+    />
+  </form>
+</p-dialog>
+<!-- ── Reject payment dialog ──────────────────────────────────────────────────── -->
+<p-dialog
+  header="Reject online payment"
+  [(visible)]="showRejectDialog"
+  [modal]="true"
+  [style]="{ width: '420px' }"
+>
+  <form [formGroup]="rejectForm" (ngSubmit)="confirmReject()" class="payment-form">
+    <div class="field">
+      <label for="rejectReason">Reason</label>
+      <textarea
+        id="rejectReason"
+        pTextarea
+        formControlName="reason"
+        rows="3"
+        placeholder="e.g. Amount doesn't match the receipt"
+        class="w-full"
+      ></textarea>
+    </div>
+
+    @if (reviewError()) {
+      <p-message severity="error" [text]="reviewError()!" styleClass="w-full" />
+    }
+
+    <p-button
+      type="submit"
+      label="Reject payment"
+      icon="pi pi-times"
+      severity="danger"
+      styleClass="w-full"
+      [loading]="reviewingId() === rejectingSubmission?.id"
     />
   </form>
 </p-dialog>

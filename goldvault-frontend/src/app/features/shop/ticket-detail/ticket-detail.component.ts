@@ -8,13 +8,16 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
 import { SelectModule } from 'primeng/select';
 import { MessageModule } from 'primeng/message';
+import { TooltipModule } from 'primeng/tooltip';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { environment } from '../../../../environments/environment';
 import { TicketService } from '../../../core/services/ticket.service';
 import { PaymentService } from '../../../core/services/payment.service';
 import { PawnTicketResponse } from '../../../core/models/ticket.model';
-import { PaymentResponse, PaymentType, PaymentMethod } from '../../../core/models/payment.model';
+import { PaymentResponse, PaymentSubmissionResponse, PaymentType, PaymentMethod } from '../../../core/models/payment.model';
 
 @Component({
   selector: 'app-shop-ticket-detail',
@@ -22,7 +25,7 @@ import { PaymentResponse, PaymentType, PaymentMethod } from '../../../core/model
   imports: [
     CommonModule, ReactiveFormsModule, RouterLink,
     TagModule, ButtonModule, ProgressSpinnerModule, DialogModule,
-    InputNumberModule, InputTextModule, SelectModule, MessageModule,
+    InputNumberModule, InputTextModule, TextareaModule, SelectModule, MessageModule, TooltipModule,
     TranslatePipe
   ],
   templateUrl: './ticket-detail.component.html',
@@ -33,6 +36,14 @@ export class ShopTicketDetailComponent implements OnInit {
   payments = signal<PaymentResponse[]>([]);
   loading  = signal(true);
   errorMessage = signal<string | null>(null);
+
+  // ── Online payment submissions (bank transfer + receipt) ────────────────────
+  submissions = signal<PaymentSubmissionResponse[]>([]);
+  reviewingId = signal<number | null>(null);
+  reviewError = signal<string | null>(null);
+  showRejectDialog = false;
+  rejectingSubmission: PaymentSubmissionResponse | null = null;
+  rejectForm: ReturnType<FormBuilder['group']>;
 
   // ── Payment dialog ────────────────────────────────────────────────────────────
   showPaymentDialog = false;
@@ -88,6 +99,10 @@ export class ShopTicketDetailComponent implements OnInit {
       paymentMethod:   ['CASH' as PaymentMethod, Validators.required],
       referenceNumber: ['']
     });
+
+    this.rejectForm = this.fb.group({
+      reason: ['', Validators.required]
+    });
   }
 
   ngOnInit(): void {
@@ -107,6 +122,7 @@ export class ShopTicketDetailComponent implements OnInit {
         this.ticket.set(ticket);
         this.loading.set(false);
         this.loadPayments();
+        this.loadSubmissions();
         this.paymentForm.patchValue({ amount: ticket.outstandingBalance });
         // Pre-fill renewal interest field with today's accrued interest
         this.renewalForm.patchValue({ interestPaid: ticket.accruedInterestToday });
@@ -116,6 +132,76 @@ export class ShopTicketDetailComponent implements OnInit {
         this.loading.set(false);
       }
     });
+  }
+
+  private loadSubmissions(): void {
+    this.paymentService.getSubmissionsForTicket(this.ticketId, true).subscribe({
+      next: (s) => this.submissions.set(s),
+      error: () => this.submissions.set([])
+    });
+  }
+
+  // ── Online payment submissions (bank transfer + receipt) ────────────────────
+
+  pendingSubmissions(): PaymentSubmissionResponse[] {
+    return this.submissions().filter(s => s.status === 'PENDING');
+  }
+
+  approveSubmission(submission: PaymentSubmissionResponse): void {
+    this.reviewingId.set(submission.id);
+    this.reviewError.set(null);
+    this.paymentService.approveSubmission(submission.id).subscribe({
+      next: () => {
+        this.reviewingId.set(null);
+        this.loadTicket();
+      },
+      error: (err) => {
+        this.reviewingId.set(null);
+        this.reviewError.set(err?.error?.message || 'Could not approve this payment.');
+      }
+    });
+  }
+
+  openRejectDialog(submission: PaymentSubmissionResponse): void {
+    this.rejectingSubmission = submission;
+    this.rejectForm.reset();
+    this.reviewError.set(null);
+    this.showRejectDialog = true;
+  }
+
+  confirmReject(): void {
+    if (this.rejectForm.invalid || !this.rejectingSubmission) {
+      this.rejectForm.markAllAsTouched();
+      return;
+    }
+    const submission = this.rejectingSubmission;
+    this.reviewingId.set(submission.id);
+    this.paymentService.rejectSubmission(submission.id, this.rejectForm.getRawValue().reason!).subscribe({
+      next: () => {
+        this.reviewingId.set(null);
+        this.showRejectDialog = false;
+        this.loadSubmissions();
+      },
+      error: (err) => {
+        this.reviewingId.set(null);
+        this.reviewError.set(err?.error?.message || 'Could not reject this payment.');
+      }
+    });
+  }
+
+  submissionSeverity(status: string): 'success' | 'warn' | 'danger' | 'secondary' {
+    switch (status) {
+      case 'APPROVED': return 'success';
+      case 'REJECTED': return 'danger';
+      default:         return 'warn';
+    }
+  }
+
+  receiptUrl(relativePath: string): string {
+    // environment.apiUrl is e.g. "http://localhost:8080/api" — uploaded files
+    // are served from the app root ("/uploads/..."), not under /api.
+    const base = environment.apiUrl.replace(/\/api\/?$/, '');
+    return `${base}/${relativePath}`;
   }
 
   private loadPayments(): void {

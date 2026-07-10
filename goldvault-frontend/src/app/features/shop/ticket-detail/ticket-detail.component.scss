@@ -280,3 +280,61 @@
   color: #888;
   margin-top: 4px;
 }
+.pending-submissions-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.submission-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.submission-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fafaf8;
+}
+
+.submission-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.submission-type {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c2c2c;
+}
+
+.submission-date {
+  font-size: 12px;
+  color: #888;
+}
+
+.receipt-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #1D4E89;
+  margin-top: 2px;
+  width: fit-content;
+
+  &:hover { text-decoration: underline; }
+}
+
+.submission-actions {
+  display: flex;
+  gap: 8px;
+  flex: none;
+}
