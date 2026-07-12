@@ -1,0 +1,23 @@
+<ion-tabs>
+    <ion-router-outlet></ion-router-outlet>
+  
+    <ion-tab-bar slot="bottom" class="gv-tab-bar">
+      <ion-tab-button tab="dashboard" href="/tabs/dashboard">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Tickets</ion-label>
+      </ion-tab-button>
+  
+      <ion-tab-button tab="notifications" href="/tabs/notifications">
+        <ion-icon name="notifications-outline"></ion-icon>
+        @if (unreadCount() > 0) {
+          <ion-badge color="danger">{{ unreadCount() > 9 ? '9+' : unreadCount() }}</ion-badge>
+        }
+        <ion-label>Notifications</ion-label>
+      </ion-tab-button>
+  
+      <ion-tab-button tab="account" href="/tabs/account">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>Account</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>

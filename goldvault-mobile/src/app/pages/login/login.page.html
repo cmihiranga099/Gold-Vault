@@ -1,0 +1,52 @@
+<ion-content class="login-content" [fullscreen]="true">
+    <div class="login-wrap">
+      <div class="brand">
+        <svg width="56" height="56" viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="20" r="18" stroke="#C9A14A" stroke-width="2"/>
+          <path d="M12 20 L20 12 L28 20 L20 28 Z" stroke="#C9A14A" stroke-width="1.5" fill="none"/>
+          <circle cx="20" cy="20" r="3" fill="#C9A14A"/>
+        </svg>
+        <h1>GoldVault</h1>
+        <p>Sign in to manage your pawn tickets</p>
+      </div>
+  
+      <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+        <ion-item class="login-field" lines="none">
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          <ion-input
+            formControlName="username"
+            type="text"
+            placeholder="Username"
+            autocomplete="username"
+          ></ion-input>
+        </ion-item>
+  
+        <ion-item class="login-field" lines="none">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input
+            formControlName="password"
+            type="password"
+            placeholder="Password"
+            autocomplete="current-password"
+          ></ion-input>
+        </ion-item>
+  
+        @if (errorMessage()) {
+          <ion-text color="danger" class="login-error">{{ errorMessage() }}</ion-text>
+        }
+  
+        <ion-button
+          type="submit"
+          expand="block"
+          class="login-submit"
+          [disabled]="loading()"
+        >
+          @if (loading()) {
+            <ion-spinner name="dots"></ion-spinner>
+          } @else {
+            Sign in
+          }
+        </ion-button>
+      </form>
+    </div>
+  </ion-content>

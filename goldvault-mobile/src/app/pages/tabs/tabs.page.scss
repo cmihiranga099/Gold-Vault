@@ -1,0 +1,16 @@
+.gv-tab-bar {
+    --background: var(--gv-paper);
+    border-top: 1px solid var(--gv-line);
+  }
+  
+  ion-tab-button {
+    --color: var(--gv-jade);
+    --color-selected: var(--gv-gold-deep, #a8822f);
+  }
+  
+  ion-badge {
+    position: absolute;
+    top: 2px;
+    right: calc(50% - 20px);
+    font-size: 0.6rem;
+  }
