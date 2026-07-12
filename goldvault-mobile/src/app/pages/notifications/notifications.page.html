@@ -1,0 +1,46 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar class="gv-toolbar">
+      <ion-title>Notifications</ion-title>
+      @if (unreadCount() > 0) {
+        <ion-buttons slot="end">
+          <ion-button (click)="markAllRead()" fill="clear" size="small">Mark all read</ion-button>
+        </ion-buttons>
+      }
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content class="gv-content">
+    <ion-refresher slot="fixed" (ionRefresh)="load($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+  
+    @if (loading()) {
+      <div class="state-center">
+        <ion-spinner></ion-spinner>
+      </div>
+    } @else if (items().length === 0) {
+      <div class="state-center empty-state">
+        <ion-icon name="notifications-off-outline"></ion-icon>
+        <p>You're all caught up.</p>
+      </div>
+    } @else {
+      <ion-list class="notif-list">
+        @for (item of items(); track item.id) {
+          <ion-item button (click)="onItemClick(item)" lines="none"
+            class="notif-item" [class.notif-item-unread]="!item.read" detail="false">
+            <span class="notif-icon" [ngClass]="item.type.toLowerCase()" slot="start">
+              <ion-icon [name]="iconFor(item.type)"></ion-icon>
+            </span>
+            <ion-label class="notif-label">
+              <div class="notif-title">{{ item.title }}</div>
+              <div class="notif-message">{{ item.message }}</div>
+              <div class="notif-time">{{ timeAgo(item.createdAt) }}</div>
+            </ion-label>
+            @if (!item.read) {
+              <span class="notif-dot" slot="end"></span>
+            }
+          </ion-item>
+        }
+      </ion-list>
+    }
+  </ion-content>
