@@ -1,0 +1,46 @@
+/* GoldVault brand palette mapped onto Ionic's CSS variable system.
+   Values match src/styles/_tokens.scss in the goldvault-frontend web app —
+   keep these two in sync if the brand palette changes. */
+
+   :root {
+    --ion-color-primary: #c9a14a;
+    --ion-color-primary-rgb: 201, 161, 74;
+    --ion-color-primary-contrast: #1c2b33;
+    --ion-color-primary-contrast-rgb: 28, 43, 51;
+    --ion-color-primary-shade: #b18e41;
+    --ion-color-primary-tint: #cfab5c;
+  
+    --ion-color-secondary: #3d5a52;
+    --ion-color-secondary-rgb: 61, 90, 82;
+    --ion-color-secondary-contrast: #ffffff;
+    --ion-color-secondary-contrast-rgb: 255, 255, 255;
+    --ion-color-secondary-shade: #364f48;
+    --ion-color-secondary-tint: #516b64;
+  
+    --ion-color-danger: #a8332b;
+    --ion-color-danger-rgb: 168, 51, 43;
+    --ion-color-danger-contrast: #ffffff;
+    --ion-color-danger-contrast-rgb: 255, 255, 255;
+    --ion-color-danger-shade: #942d26;
+    --ion-color-danger-tint: #b14740;
+  
+    --ion-color-success: #3d5a52;
+    --ion-color-warning: #c9a14a;
+  
+    --ion-background-color: #fbf8f2;
+    --ion-background-color-rgb: 251, 248, 242;
+    --ion-text-color: #1c2b33;
+    --ion-text-color-rgb: 28, 43, 51;
+  
+    --ion-toolbar-background: #1c2b33;
+    --ion-toolbar-color: #fbf8f2;
+  
+    --gv-gold: #c9a14a;
+    --gv-gold-soft: #ddc285;
+    --gv-ink: #1c2b33;
+    --gv-paper: #fbf8f2;
+    --gv-paper-dim: #f1ece1;
+    --gv-jade: #3d5a52;
+    --gv-brick: #a8332b;
+    --gv-line: #e4ddc9;
+  }
