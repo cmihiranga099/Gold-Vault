@@ -1,0 +1,161 @@
+.gv-toolbar {
+    --background: var(--gv-ink);
+    --color: var(--gv-paper);
+  }
+  
+  .gv-content {
+    --background: var(--gv-paper);
+  }
+  
+  .state-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px;
+  }
+  
+  .gv-card {
+    background: #ffffff;
+    border: 1px solid var(--gv-line);
+    border-radius: 14px;
+    margin: 12px;
+    padding: 16px;
+  
+    h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gv-ink);
+      margin: 0 0 10px;
+    }
+  }
+  
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+  
+    h2 { margin: 0; }
+  }
+  
+  .hint-text {
+    display: block;
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+  
+  /* Ticket summary */
+  .summary-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  
+  .shop-name {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    color: var(--gv-jade);
+  }
+  
+  .summary-balance {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--gv-line);
+  
+    .label { font-size: 0.78rem; color: var(--gv-jade); }
+    .value { font-size: 1.5rem; font-weight: 700; color: var(--gv-gold-deep, #a8822f); }
+  }
+  
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--gv-ink);
+    padding: 4px 0;
+  }
+  
+  /* Pay online */
+  .pay-form {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 10px;
+  }
+  
+  .gv-field {
+    --background: var(--gv-paper-dim);
+    --border-radius: 10px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+  }
+  
+  .receipt-field {
+    margin: 4px 0 8px;
+  
+    input[type="file"] {
+      display: block;
+      width: 100%;
+      font-size: 0.8rem;
+      margin-top: 4px;
+    }
+  }
+  
+  .receipt-label {
+    font-size: 0.75rem;
+    color: var(--gv-jade);
+  }
+  
+  .receipt-filename {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    color: var(--gv-jade);
+    margin-top: 4px;
+  }
+  
+  .form-msg {
+    display: block;
+    font-size: 0.8rem;
+    margin: 4px 0;
+  }
+  
+  .pay-actions {
+    margin-top: 8px;
+  }
+  
+  .submission-list, .payment-list {
+    margin-top: 8px;
+    background: transparent;
+  }
+  
+  .submission-item, .payment-item {
+    --background: var(--gv-paper-dim);
+    --border-radius: 10px;
+    margin-bottom: 6px;
+    border-radius: 10px;
+  }
+  
+  .submission-type, .payment-amount {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gv-ink);
+  }
+  
+  .submission-date, .payment-date {
+    font-size: 0.72rem;
+    color: var(--gv-jade);
+  }
+  
+  .submission-reason {
+    font-size: 0.72rem;
+    color: var(--gv-brick);
+    margin-top: 2px;
+  }

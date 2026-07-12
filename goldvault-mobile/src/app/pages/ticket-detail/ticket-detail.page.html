@@ -1,0 +1,151 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar class="gv-toolbar">
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/tabs/dashboard" text=""></ion-back-button>
+      </ion-buttons>
+      <ion-title>{{ ticket()?.ticketNumber || 'Ticket' }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content class="gv-content">
+    @if (ticket(); as t) {
+  
+      <!-- Ticket summary card -->
+      <div class="gv-card ticket-summary">
+        <div class="summary-top">
+          <ion-badge [color]="statusColor(t.status)">{{ t.status }}</ion-badge>
+          <span class="shop-name"><ion-icon name="business-outline"></ion-icon> {{ t.shopName }}</span>
+        </div>
+        <div class="summary-balance">
+          <span class="label">Outstanding balance</span>
+          <span class="value">LKR {{ formatCurrency(t.outstandingBalance) }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Loan amount</span>
+          <span>LKR {{ formatCurrency(t.loanAmount) }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Due date</span>
+          <span>{{ t.expiryDate | date:'MMM d, y' }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Interest rate</span>
+          <span>{{ t.interestRate }}% ({{ t.interestType }})</span>
+        </div>
+      </div>
+  
+      <!-- Pay online -->
+      @if (canPayOnline()) {
+        <div class="gv-card">
+          <div class="card-header">
+            <h2>Pay online</h2>
+            @if (!showPayOnlineForm()) {
+              <ion-button size="small" [disabled]="hasPendingSubmission()" (click)="togglePayOnlineForm()">
+                Pay via bank transfer
+              </ion-button>
+            }
+          </div>
+  
+          @if (hasPendingSubmission()) {
+            <ion-text color="medium" class="hint-text">
+              You have a payment awaiting confirmation from the shop.
+            </ion-text>
+          } @else if (!showPayOnlineForm()) {
+            <ion-text color="medium" class="hint-text">
+              Transfer to the shop's bank account, then upload your receipt here — no need to visit in person.
+            </ion-text>
+          }
+  
+          @if (showPayOnlineForm()) {
+            <form [formGroup]="payOnlineForm" (ngSubmit)="submitOnlinePayment()" class="pay-form">
+              <ion-item lines="none" class="gv-field">
+                <ion-input label="Amount (LKR)" labelPlacement="stacked" type="number"
+                  formControlName="amount"></ion-input>
+              </ion-item>
+  
+              <ion-item lines="none" class="gv-field">
+                <ion-select label="Payment type" labelPlacement="stacked" formControlName="paymentType">
+                  <ion-select-option value="INTEREST">Interest</ion-select-option>
+                  <ion-select-option value="PARTIAL">Partial payment</ion-select-option>
+                  <ion-select-option value="FULL_REDEMPTION">Full redemption</ion-select-option>
+                </ion-select>
+              </ion-item>
+  
+              <ion-item lines="none" class="gv-field">
+                <ion-input label="Bank name (optional)" labelPlacement="stacked"
+                  formControlName="bankName" placeholder="e.g. Commercial Bank"></ion-input>
+              </ion-item>
+  
+              <ion-item lines="none" class="gv-field">
+                <ion-input label="Bank transaction reference" labelPlacement="stacked"
+                  formControlName="referenceNumber" placeholder="e.g. TXN00234511"></ion-input>
+              </ion-item>
+  
+              <div class="receipt-field">
+                <label class="receipt-label">Receipt (photo or PDF)</label>
+                <input type="file" accept="image/*,application/pdf" (change)="onReceiptSelected($event)" />
+                @if (selectedReceipt()) {
+                  <span class="receipt-filename"><ion-icon name="attach-outline"></ion-icon> {{ selectedReceipt()!.name }}</span>
+                }
+              </div>
+  
+              @if (payOnlineSuccess()) {
+                <ion-text color="success" class="form-msg">{{ payOnlineSuccess() }}</ion-text>
+              }
+              @if (payOnlineError()) {
+                <ion-text color="danger" class="form-msg">{{ payOnlineError() }}</ion-text>
+              }
+  
+              <div class="pay-actions">
+                <ion-button type="submit" expand="block" [disabled]="payOnlineLoading()">
+                  @if (payOnlineLoading()) { <ion-spinner name="dots"></ion-spinner> } @else { Submit payment }
+                </ion-button>
+                <ion-button type="button" fill="clear" expand="block" (click)="togglePayOnlineForm()">Cancel</ion-button>
+              </div>
+            </form>
+          }
+  
+          @if (submissions().length > 0) {
+            <ion-list class="submission-list">
+              @for (s of submissions(); track s.id) {
+                <ion-item lines="none" class="submission-item">
+                  <ion-label>
+                    <div class="submission-type">{{ s.paymentType }} &middot; LKR {{ formatCurrency(s.amount) }}</div>
+                    <div class="submission-date">{{ s.submittedAt | date:'MMM d, y, h:mm a' }}</div>
+                    @if (s.status === 'REJECTED' && s.rejectionReason) {
+                      <div class="submission-reason">{{ s.rejectionReason }}</div>
+                    }
+                  </ion-label>
+                  <ion-badge [color]="submissionColor(s.status)" slot="end">{{ s.status }}</ion-badge>
+                </ion-item>
+              }
+            </ion-list>
+          }
+        </div>
+      }
+  
+      <!-- Payment history -->
+      <div class="gv-card">
+        <h2>Payment history</h2>
+        @if (payments().length === 0) {
+          <ion-text color="medium" class="hint-text">No payments recorded yet.</ion-text>
+        } @else {
+          <ion-list class="payment-list">
+            @for (p of payments(); track p.id) {
+              <ion-item lines="none" class="payment-item">
+                <ion-icon name="checkmark-outline" slot="start" color="success"></ion-icon>
+                <ion-label>
+                  <div class="payment-amount">LKR {{ formatCurrency(p.amount) }} &middot; {{ p.paymentType }}</div>
+                  <div class="payment-date">{{ p.paymentDate | date:'MMM d, y, h:mm a' }} &middot; {{ p.paymentMethod }}</div>
+                </ion-label>
+              </ion-item>
+            }
+          </ion-list>
+        }
+      </div>
+    } @else if (loading()) {
+      <div class="state-center"><ion-spinner></ion-spinner></div>
+    } @else if (errorMessage()) {
+      <div class="state-center"><ion-text color="danger">{{ errorMessage() }}</ion-text></div>
+    }
+  </ion-content>
