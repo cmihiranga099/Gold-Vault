@@ -1,0 +1,120 @@
+.gv-toolbar {
+    --background: var(--gv-ink);
+    --color: var(--gv-paper);
+  }
+  
+  .gv-content {
+    --background: var(--gv-paper);
+  }
+  
+  .state-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px;
+  }
+  
+  .gv-card {
+    background: #ffffff;
+    border: 1px solid var(--gv-line);
+    border-radius: 14px;
+    margin: 12px;
+    padding: 16px;
+  
+    h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gv-ink);
+      margin: 0 0 10px;
+    }
+  }
+  
+  .listing-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .listing-weight {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--gv-ink);
+  }
+  
+  .listing-desc {
+    font-size: 0.85rem;
+    color: var(--gv-jade);
+    margin: 0 0 10px;
+  }
+  
+  .listing-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--gv-ink);
+    padding: 6px 0;
+    border-top: 1px solid var(--gv-line);
+  }
+  
+  .listing-price {
+    font-weight: 700;
+    color: var(--gv-gold-deep, #a8822f);
+  }
+  
+  .withdraw-btn {
+    margin-top: 14px;
+  }
+  
+  .hint-text {
+    display: block;
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+  
+  .offer-list {
+    background: transparent;
+  }
+  
+  .offer-item {
+    --background: var(--gv-paper-dim);
+    --border-radius: 10px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+  }
+  
+  .offer-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 8px;
+  }
+  
+  .offer-shop {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--gv-ink);
+  }
+  
+  .offer-price {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gv-gold-deep, #a8822f);
+    margin: 4px 0;
+  }
+  
+  .offer-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    font-size: 0.78rem;
+    color: var(--gv-jade);
+    margin-bottom: 8px;
+  }
+  
+  .offer-actions {
+    display: flex;
+    gap: 8px;
+    padding-bottom: 8px;
+  }

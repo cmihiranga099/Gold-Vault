@@ -1,0 +1,75 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar class="gv-toolbar">
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/tabs/marketplace" text=""></ion-back-button>
+      </ion-buttons>
+      <ion-title>Listing</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content class="gv-content">
+    @if (listing(); as l) {
+      <div class="gv-card">
+        <div class="listing-top">
+          <span class="listing-weight">{{ l.weightGrams }}g {{ l.purity }}</span>
+          <ion-badge color="medium">{{ l.status }}</ion-badge>
+        </div>
+        @if (l.description) {
+          <p class="listing-desc">{{ l.description }}</p>
+        }
+        @if (l.askingPrice) {
+          <div class="listing-row">
+            <span>Asking price</span>
+            <span class="listing-price">LKR {{ formatCurrency(l.askingPrice) }}</span>
+          </div>
+        }
+        <div class="listing-row">
+          <span>Listed on</span>
+          <span>{{ l.createdAt | date:'MMM d, y' }}</span>
+        </div>
+  
+        @if (canWithdraw()) {
+          <ion-button expand="block" fill="outline" color="danger" class="withdraw-btn"
+            [disabled]="withdrawing()" (click)="withdrawListing()">
+            @if (withdrawing()) { <ion-spinner name="dots"></ion-spinner> } @else { Withdraw listing }
+          </ion-button>
+        }
+      </div>
+  
+      <div class="gv-card">
+        <h2>Offers ({{ l.offers.length }})</h2>
+        @if (l.offers.length === 0) {
+          <ion-text color="medium" class="hint-text">No offers yet. Shops will see your listing and can make offers.</ion-text>
+        } @else {
+          <ion-list class="offer-list">
+            @for (offer of l.offers; track offer.id) {
+              <ion-item lines="none" class="offer-item">
+                <ion-label>
+                  <div class="offer-top">
+                    <span class="offer-shop">{{ offer.shopName }}</span>
+                    <ion-badge [color]="offerColor(offer.status)">{{ offer.status }}</ion-badge>
+                  </div>
+                  <div class="offer-price">LKR {{ formatCurrency(offer.offerPrice) }}</div>
+                  @if (offer.message) {
+                    <div class="offer-message"><ion-icon name="chatbubble-outline"></ion-icon> {{ offer.message }}</div>
+                  }
+                  @if (offer.status === 'PENDING') {
+                    <div class="offer-actions">
+                      <ion-button size="small" color="success" [disabled]="actionLoading() === offer.id"
+                        (click)="acceptOffer(offer.id)">Accept</ion-button>
+                      <ion-button size="small" fill="outline" color="danger" [disabled]="actionLoading() === offer.id"
+                        (click)="rejectOffer(offer.id)">Reject</ion-button>
+                    </div>
+                  }
+                </ion-label>
+              </ion-item>
+            }
+          </ion-list>
+        }
+      </div>
+    } @else if (loading()) {
+      <div class="state-center"><ion-spinner></ion-spinner></div>
+    } @else if (errorMessage()) {
+      <div class="state-center"><ion-text color="danger">{{ errorMessage() }}</ion-text></div>
+    }
+  </ion-content>
