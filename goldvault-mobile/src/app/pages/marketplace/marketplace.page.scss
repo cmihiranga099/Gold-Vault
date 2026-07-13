@@ -1,0 +1,143 @@
+.gv-toolbar {
+    --background: var(--gv-ink);
+    --color: var(--gv-paper);
+  }
+  
+  .gv-content {
+    --background: var(--gv-paper);
+  }
+  
+  .state-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 60px 24px;
+    text-align: center;
+  }
+  
+  .empty-state {
+    color: var(--gv-jade);
+    ion-icon { font-size: 2.5rem; opacity: 0.6; }
+    p { margin: 0; font-size: 0.9rem; }
+  }
+  
+  .gv-card {
+    background: #ffffff;
+    border: 1px solid var(--gv-line);
+    border-radius: 14px;
+    margin: 12px;
+    padding: 16px;
+  
+    h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gv-ink);
+      margin: 0 0 10px;
+    }
+  }
+  
+  .rates-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  
+  .rate-chip {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px;
+    background: var(--gv-paper-dim);
+    border-radius: 10px;
+  }
+  
+  .rate-purity {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--gv-jade);
+  }
+  
+  .rate-value {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--gv-gold-deep, #a8822f);
+  }
+  
+  .rate-shop {
+    font-size: 0.68rem;
+    color: #999;
+  }
+  
+  .listings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 16px 8px;
+  
+    h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gv-ink);
+      margin: 0;
+    }
+  }
+  
+  .listing-list {
+    background: transparent;
+    padding: 0 12px;
+  }
+  
+  .listing-item {
+    --background: #ffffff;
+    --border-radius: 14px;
+    --padding-start: 16px;
+    --inner-padding-end: 16px;
+    margin-bottom: 10px;
+    border: 1px solid var(--gv-line);
+    border-radius: 14px;
+  }
+  
+  .listing-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  
+  .listing-weight {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--gv-ink);
+  }
+  
+  .listing-desc {
+    font-size: 0.8rem;
+    color: var(--gv-jade);
+    margin-bottom: 6px;
+  }
+  
+  .listing-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  
+  .listing-offer {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--gv-gold-deep, #a8822f);
+  }
+  
+  .listing-no-offer {
+    color: #999;
+    font-weight: 400;
+  }
+  
+  .listing-count {
+    font-size: 0.72rem;
+    color: var(--gv-jade);
+  }

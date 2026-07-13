@@ -1,0 +1,77 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar class="gv-toolbar">
+      <ion-title>Marketplace</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="goToShopFinder()">
+          <ion-icon name="location-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content class="gv-content">
+    <ion-refresher slot="fixed" (ionRefresh)="load($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+  
+    @if (rates().length > 0) {
+      <div class="gv-card rates-card">
+        <h2>Best gold rates today</h2>
+        <div class="rates-grid">
+          @for (purity of ['K24','K22','K21','K18']; track purity) {
+            @if (bestRateFor(purity); as rate) {
+              <div class="rate-chip">
+                <span class="rate-purity">{{ purity }}</span>
+                <span class="rate-value">LKR {{ formatCurrency(rate.ratePerGram) }}/g</span>
+                <span class="rate-shop">{{ rate.shopName }}</span>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    }
+  
+    <div class="listings-header">
+      <h2>My listings</h2>
+      <ion-button size="small" (click)="goToCreateListing()">
+        <ion-icon name="add-outline" slot="start"></ion-icon>
+        New listing
+      </ion-button>
+    </div>
+  
+    @if (loading()) {
+      <div class="state-center"><ion-spinner></ion-spinner></div>
+    } @else if (errorMessage()) {
+      <div class="state-center"><ion-text color="danger">{{ errorMessage() }}</ion-text></div>
+    } @else if (listings().length === 0) {
+      <div class="state-center empty-state">
+        <ion-icon name="diamond-outline"></ion-icon>
+        <p>You haven't listed any gold for sale yet.</p>
+      </div>
+    } @else {
+      <ion-list class="listing-list">
+        @for (listing of listings(); track listing.id) {
+          <ion-item button (click)="goToListing(listing)" lines="none" class="listing-item" detail="false">
+            <ion-label>
+              <div class="listing-top">
+                <span class="listing-weight">{{ listing.weightGrams }}g {{ listing.purity }}</span>
+                <ion-badge [color]="listingColor(listing.status)">{{ listing.status }}</ion-badge>
+              </div>
+              @if (listing.description) {
+                <div class="listing-desc">{{ listing.description }}</div>
+              }
+              <div class="listing-bottom">
+                @if (listing.bestOfferPrice) {
+                  <span class="listing-offer">Best offer: LKR {{ formatCurrency(listing.bestOfferPrice) }}</span>
+                } @else {
+                  <span class="listing-offer listing-no-offer">No offers yet</span>
+                }
+                <span class="listing-count">{{ listing.offers.length }} offer(s)</span>
+              </div>
+            </ion-label>
+            <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          </ion-item>
+        }
+      </ion-list>
+    }
+  </ion-content>
