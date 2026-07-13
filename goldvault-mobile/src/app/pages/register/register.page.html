@@ -1,0 +1,72 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar class="gv-toolbar">
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/login" text=""></ion-back-button>
+      </ion-buttons>
+      <ion-title>Create account</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content class="gv-content">
+    <div class="register-wrap">
+      <form [formGroup]="form" (ngSubmit)="submit()" class="register-form">
+        <ion-item class="gv-field" lines="none">
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          <ion-input formControlName="fullName" type="text" placeholder="Full name"></ion-input>
+        </ion-item>
+  
+        <ion-item class="gv-field" lines="none">
+          <ion-icon name="card-outline" slot="start"></ion-icon>
+          <ion-input formControlName="nic" type="text" placeholder="NIC number"></ion-input>
+        </ion-item>
+        @if (form.get('nic')?.touched && form.get('nic')?.invalid) {
+          <ion-text color="danger" class="field-error">Enter a valid NIC (9 digits + V/X, or 12 digits).</ion-text>
+        }
+  
+        <ion-item class="gv-field" lines="none">
+          <ion-icon name="business-outline" slot="start"></ion-icon>
+          <ion-select formControlName="shopId" placeholder="Select your pawn shop" interface="action-sheet">
+            @for (shop of shops(); track shop.id) {
+              <ion-select-option [value]="shop.id">{{ shop.name }}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+  
+        <ion-item class="gv-field" lines="none">
+          <ion-icon name="call-outline" slot="start"></ion-icon>
+          <ion-input formControlName="phone" type="tel" placeholder="Phone (optional)"></ion-input>
+        </ion-item>
+  
+        <ion-item class="gv-field" lines="none">
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          <ion-input formControlName="username" type="text" placeholder="Username" autocomplete="username"></ion-input>
+        </ion-item>
+  
+        <ion-item class="gv-field" lines="none">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-input formControlName="email" type="email" placeholder="Email" autocomplete="email"></ion-input>
+        </ion-item>
+  
+        <ion-item class="gv-field" lines="none">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input formControlName="password" type="password" placeholder="Password (min. 8 characters)" autocomplete="new-password"></ion-input>
+        </ion-item>
+  
+        @if (errorMessage()) {
+          <ion-text color="danger" class="form-error">{{ errorMessage() }}</ion-text>
+        }
+  
+        <ion-button type="submit" expand="block" class="register-submit" [disabled]="loading()">
+          @if (loading()) {
+            <ion-spinner name="dots"></ion-spinner>
+          } @else {
+            Create account
+          }
+        </ion-button>
+  
+        <p class="login-link">
+          Already have an account? <a routerLink="/login">Sign in</a>
+        </p>
+      </form>
+    </div>
+  </ion-content>

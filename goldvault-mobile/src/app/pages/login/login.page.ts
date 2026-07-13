@@ -1,6 +1,5 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   IonContent, IonItem, IonInput, IonButton, IonSpinner, IonText, IonIcon
@@ -8,12 +7,13 @@ import {
 import { addIcons } from 'ionicons';
 import { lockClosedOutline, personOutline } from 'ionicons/icons';
 import { AuthService } from '../../core/auth/auth.service';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    CommonModule, ReactiveFormsModule,
+    CommonModule, RouterLink, ReactiveFormsModule,
     IonContent, IonItem, IonInput, IonButton, IonSpinner, IonText, IonIcon
   ],
   templateUrl: './login.page.html',

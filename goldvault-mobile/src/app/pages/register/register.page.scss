@@ -1,47 +1,26 @@
-.login-content {
+.gv-toolbar {
+    --background: var(--gv-ink);
+    --color: var(--gv-paper);
+  }
+  
+  .gv-content {
     --background: var(--gv-paper);
   }
   
-  .login-wrap {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 100%;
-    padding: 32px 24px;
+  .register-wrap {
+    padding: 20px 24px 40px;
   }
   
-  .brand {
+  .register-form {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 40px;
-  
-    h1 {
-      font-size: 1.7rem;
-      font-weight: 700;
-      color: var(--gv-ink);
-      margin: 8px 0 0;
-    }
-  
-    p {
-      font-size: 0.9rem;
-      color: var(--gv-jade);
-      margin: 0;
-    }
+    gap: 12px;
   }
   
-  .login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  
-  .login-field {
+  .gv-field {
     --background: #ffffff;
     --border-radius: 12px;
     --padding-start: 14px;
-    --highlight-color-focused: var(--gv-gold);
     border: 1px solid var(--gv-line);
     border-radius: 12px;
   
@@ -51,12 +30,20 @@
     }
   }
   
-  .login-error {
-    font-size: 0.85rem;
-    text-align: center;
+  .field-error {
+    display: block;
+    font-size: 0.75rem;
+    margin: -6px 0 0 4px;
   }
   
-  .login-submit {
+  .form-error {
+    display: block;
+    font-size: 0.85rem;
+    text-align: center;
+    margin-top: 4px;
+  }
+  
+  .register-submit {
     --background: var(--gv-ink);
     --background-activated: #0f1a1f;
     --border-radius: 12px;
@@ -65,11 +52,12 @@
     font-weight: 600;
     margin-top: 8px;
   }
-  .register-link {
+  
+  .login-link {
     text-align: center;
     font-size: 0.85rem;
     color: var(--gv-jade);
-    margin-top: 16px;
+    margin-top: 4px;
   
     a {
       color: var(--gv-gold-deep, #a8822f);
