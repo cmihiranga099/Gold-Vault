@@ -1,0 +1,39 @@
+.gv-toolbar {
+    --background: var(--gv-ink);
+    --color: var(--gv-paper);
+  }
+  
+  .gv-content {
+    --background: var(--gv-paper);
+  }
+  
+  .listing-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+  }
+  
+  .gv-field {
+    --background: #ffffff;
+    --border-radius: 12px;
+    --padding-start: 14px;
+    border: 1px solid var(--gv-line);
+    border-radius: 12px;
+  }
+  
+  .form-error {
+    display: block;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+  
+  .submit-btn {
+    --background: var(--gv-ink);
+    --background-activated: #0f1a1f;
+    --border-radius: 12px;
+    --box-shadow: none;
+    height: 48px;
+    font-weight: 600;
+    margin-top: 8px;
+  }

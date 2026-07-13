@@ -1,0 +1,47 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar class="gv-toolbar">
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/tabs/marketplace" text=""></ion-back-button>
+      </ion-buttons>
+      <ion-title>New listing</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content class="gv-content">
+    <form [formGroup]="form" (ngSubmit)="submit()" class="listing-form">
+      <ion-item class="gv-field" lines="none">
+        <ion-input label="Weight (grams)" labelPlacement="stacked" type="number"
+          formControlName="weightGrams" placeholder="e.g. 12.5"></ion-input>
+      </ion-item>
+  
+      <ion-item class="gv-field" lines="none">
+        <ion-select label="Purity" labelPlacement="stacked" formControlName="purity">
+          @for (p of purities; track p) {
+            <ion-select-option [value]="p">{{ p }}</ion-select-option>
+          }
+        </ion-select>
+      </ion-item>
+  
+      <ion-item class="gv-field" lines="none">
+        <ion-input label="Asking price (LKR, optional)" labelPlacement="stacked" type="number"
+          formControlName="askingPrice" placeholder="Leave blank to accept offers"></ion-input>
+      </ion-item>
+  
+      <ion-item class="gv-field" lines="none">
+        <ion-textarea label="Description (optional)" labelPlacement="stacked"
+          formControlName="description" rows="3" placeholder="e.g. 22K gold chain, good condition"></ion-textarea>
+      </ion-item>
+  
+      @if (errorMessage()) {
+        <ion-text color="danger" class="form-error">{{ errorMessage() }}</ion-text>
+      }
+  
+      <ion-button type="submit" expand="block" class="submit-btn" [disabled]="loading()">
+        @if (loading()) {
+          <ion-spinner name="dots"></ion-spinner>
+        } @else {
+          Publish listing
+        }
+      </ion-button>
+    </form>
+  </ion-content>
