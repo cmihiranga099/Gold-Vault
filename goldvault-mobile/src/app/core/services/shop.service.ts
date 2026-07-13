@@ -4,12 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../models/auth.model';
-
-export interface ShopOption {
-  id: number;
-  name: string;
-  status: string;
-}
+import { ShopResponse } from '../models/shop.model';
 
 @Injectable({ providedIn: 'root' })
 export class ShopService {
@@ -17,10 +12,10 @@ export class ShopService {
 
   constructor(private http: HttpClient) {}
 
-  /** Active shops, lightweight — used to populate the registration dropdown */
-  getActiveShopOptions(): Observable<ShopOption[]> {
+  /** All active shops — used by both the registration dropdown and the shop finder */
+  getActiveShops(): Observable<ShopResponse[]> {
     return this.http
-      .get<ApiResponse<ShopOption[]>>(`${this.apiUrl}/shops/active`)
+      .get<ApiResponse<ShopResponse[]>>(`${this.apiUrl}/shops/active`)
       .pipe(map((res) => res.data));
   }
 }

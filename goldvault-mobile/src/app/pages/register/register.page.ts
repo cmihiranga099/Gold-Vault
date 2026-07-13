@@ -13,7 +13,8 @@ import {
   callOutline, businessOutline
 } from 'ionicons/icons';
 import { AuthService } from '../../core/auth/auth.service';
-import { ShopService, ShopOption } from '../../core/services/shop.service';
+import { ShopService } from '../../core/services/shop.service';
+import { ShopResponse } from '../../core/models/shop.model';
 
 @Component({
   selector: 'app-register',
@@ -31,7 +32,7 @@ export class RegisterPage implements OnInit {
   form: FormGroup;
   loading = signal(false);
   errorMessage = signal<string | null>(null);
-  shops = signal<ShopOption[]>([]);
+  shops = signal<ShopResponse[]>([]);
 
   constructor(
     private fb: FormBuilder,
@@ -53,7 +54,7 @@ export class RegisterPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.shopService.getActiveShopOptions().subscribe({
+    this.shopService.getActiveShops().subscribe({
       next: (shops) => this.shops.set(shops),
       error: () => this.shops.set([])
     });

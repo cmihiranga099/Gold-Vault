@@ -2,10 +2,10 @@ import { Component, OnInit, signal } from '@angular/core';
 import {
   IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonBadge, IonRouterOutlet
 } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { homeOutline, notificationsOutline, personOutline } from 'ionicons/icons';
 import { AuthService } from '../../core/auth/auth.service';
 import { NotificationService } from '../../core/services/notification.service';
+import { addIcons } from 'ionicons';
+import { homeOutline, notificationsOutline, personOutline, diamondOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-tabs',
@@ -22,7 +22,7 @@ export class TabsPage implements OnInit {
     private authService: AuthService,
     private notificationService: NotificationService
   ) {
-    addIcons({ homeOutline, notificationsOutline, personOutline });
+    addIcons({ homeOutline, notificationsOutline, personOutline, diamondOutline });
   }
 
   ngOnInit(): void {

@@ -20,6 +20,10 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/dashboard/dashboard.page').then(m => m.DashboardPage)
       },
       {
+        path: 'marketplace',
+        loadComponent: () => import('./pages/marketplace/marketplace.page').then(m => m.MarketplacePage)
+      },
+      {
         path: 'notifications',
         loadComponent: () => import('./pages/notifications/notifications.page').then(m => m.NotificationsPage)
       },
@@ -34,6 +38,21 @@ export const routes: Routes = [
     path: 'tickets/:id',
     canActivate: [authGuard],
     loadComponent: () => import('./pages/ticket-detail/ticket-detail.page').then(m => m.TicketDetailPage)
+  },
+  {
+    path: 'create-listing',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/create-listing/create-listing.page').then(m => m.CreateListingPage)
+  },
+  {
+    path: 'listings/:id',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/listing-detail/listing-detail.page').then(m => m.ListingDetailPage)
+  },
+  {
+    path: 'shop-finder',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/shop-finder/shop-finder.page').then(m => m.ShopFinderPage)
   },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' }
