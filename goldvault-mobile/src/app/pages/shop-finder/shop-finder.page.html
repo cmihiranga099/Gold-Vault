@@ -1,0 +1,64 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar class="gv-toolbar">
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/tabs/marketplace" text=""></ion-back-button>
+      </ion-buttons>
+      <ion-title>Find a shop</ion-title>
+    </ion-toolbar>
+    <ion-toolbar class="gv-toolbar">
+      <ion-searchbar
+        placeholder="Search by name or area"
+        (ionInput)="onSearchChange($event)"
+      ></ion-searchbar>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content class="gv-content">
+    <ion-refresher slot="fixed" (ionRefresh)="load($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+  
+    @if (loading()) {
+      <div class="state-center"><ion-spinner></ion-spinner></div>
+    } @else if (errorMessage()) {
+      <div class="state-center"><ion-text color="danger">{{ errorMessage() }}</ion-text></div>
+    } @else if (filteredShops().length === 0) {
+      <div class="state-center empty-state">
+        <ion-icon name="storefront-outline"></ion-icon>
+        <p>No shops match your search.</p>
+      </div>
+    } @else {
+      <ion-list class="shop-list">
+        @for (shop of filteredShops(); track shop.id) {
+          <ion-item lines="none" class="shop-item">
+            <ion-label>
+              <div class="shop-name">{{ shop.name }}</div>
+              @if (shop.address) {
+                <div class="shop-address">{{ shop.address }}</div>
+              }
+              @if (shop.averageRating) {
+                <div class="shop-rating">
+                  @for (filled of starsArray(shop.averageRating); track $index) {
+                    <ion-icon [name]="filled ? 'star' : 'star-outline'"></ion-icon>
+                  }
+                  <span>{{ shop.averageRating.toFixed(1) }} ({{ shop.totalReviews }})</span>
+                </div>
+              }
+              <div class="shop-actions">
+                @if (shop.phone) {
+                  <ion-button size="small" fill="outline" (click)="callShop(shop)">
+                    <ion-icon name="call-outline" slot="start"></ion-icon> Call
+                  </ion-button>
+                }
+                @if (shop.address || (shop.latitude && shop.longitude)) {
+                  <ion-button size="small" fill="outline" (click)="directionsTo(shop)">
+                    <ion-icon name="navigate-outline" slot="start"></ion-icon> Directions
+                  </ion-button>
+                }
+              </div>
+            </ion-label>
+          </ion-item>
+        }
+      </ion-list>
+    }
+  </ion-content>
