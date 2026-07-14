@@ -1,7 +1,14 @@
 .gv-toolbar {
-    --background: var(--gv-ink);
-    --color: var(--gv-paper);
+  --background: var(--gv-ink);
+  --color: var(--gv-paper);
+
+  ion-searchbar {
+    --background: var(--gv-paper-dim);
+    --color: var(--gv-ink);
+    --placeholder-color: var(--gv-jade);
+    padding: 0 8px 8px;
   }
+}
   
   .gv-content {
     --background: var(--gv-paper);

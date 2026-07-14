@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent, IonRefresher, IonRefresherContent,
-  IonList, IonItem, IonLabel, IonBadge, IonSpinner, IonIcon, IonText
+  IonList, IonItem, IonLabel, IonBadge, IonSpinner, IonIcon, IonText, IonSearchbar
 } from '@ionic/angular/standalone';
 import { RefresherCustomEvent } from '@ionic/angular';
 import { addIcons } from 'ionicons';
@@ -18,7 +18,7 @@ import { PawnTicketResponse, TicketStatus } from '../../core/models/ticket.model
   imports: [
     CommonModule,
     IonHeader, IonToolbar, IonTitle, IonContent, IonRefresher, IonRefresherContent,
-    IonList, IonItem, IonLabel, IonBadge, IonSpinner, IonIcon, IonText
+    IonList, IonItem, IonLabel, IonBadge, IonSpinner, IonIcon, IonText, IonSearchbar
   ],
   templateUrl: './dashboard.page.html',
   styleUrl: './dashboard.page.scss'
@@ -27,6 +27,7 @@ export class DashboardPage implements OnInit {
   tickets = signal<PawnTicketResponse[]>([]);
   loading = signal(true);
   errorMessage = signal<string | null>(null);
+  searchTerm = signal('');
 
   constructor(
     private authService: AuthService,
@@ -71,6 +72,18 @@ export class DashboardPage implements OnInit {
         event?.target.complete();
       }
     });
+  }
+
+  filteredTickets(): PawnTicketResponse[] {
+    const term = this.searchTerm().trim().toLowerCase();
+    if (!term) return this.tickets();
+    return this.tickets().filter(t =>
+      t.ticketNumber.toLowerCase().includes(term) ||
+      t.shopName.toLowerCase().includes(term));
+  }
+
+  onSearchChange(event: CustomEvent): void {
+    this.searchTerm.set((event.detail as { value: string }).value ?? '');
   }
 
   openTicket(ticket: PawnTicketResponse): void {

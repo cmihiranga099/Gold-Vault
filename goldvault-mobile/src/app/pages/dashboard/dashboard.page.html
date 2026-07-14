@@ -1,45 +1,58 @@
 <ion-header class="ion-no-border">
+  <ion-toolbar class="gv-toolbar">
+    <ion-title>My Tickets</ion-title>
+  </ion-toolbar>
+  @if (tickets().length > 0) {
     <ion-toolbar class="gv-toolbar">
-      <ion-title>My Tickets</ion-title>
+      <ion-searchbar
+        placeholder="Search by ticket number or shop"
+        (ionInput)="onSearchChange($event)"
+      ></ion-searchbar>
     </ion-toolbar>
-  </ion-header>
-  
-  <ion-content class="gv-content">
-    <ion-refresher slot="fixed" (ionRefresh)="loadTickets($event)">
-      <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
-  
-    @if (loading()) {
-      <div class="state-center">
-        <ion-spinner></ion-spinner>
-      </div>
-    } @else if (errorMessage()) {
-      <div class="state-center">
-        <ion-text color="danger">{{ errorMessage() }}</ion-text>
-      </div>
-    } @else if (tickets().length === 0) {
-      <div class="state-center empty-state">
-        <ion-icon name="wallet-outline"></ion-icon>
-        <p>You don't have any pawn tickets yet.</p>
-      </div>
-    } @else {
-      <ion-list class="ticket-list">
-        @for (ticket of tickets(); track ticket.id) {
-          <ion-item button (click)="openTicket(ticket)" lines="none" class="ticket-item" detail="false">
-            <ion-label>
-              <div class="ticket-top">
-                <span class="ticket-number">{{ ticket.ticketNumber }}</span>
-                <ion-badge [color]="statusColor(ticket.status)">{{ ticket.status }}</ion-badge>
-              </div>
-              <div class="ticket-shop">{{ ticket.shopName }}</div>
-              <div class="ticket-bottom">
-                <span class="ticket-balance">LKR {{ formatCurrency(ticket.outstandingBalance) }}</span>
-                <span class="ticket-expiry">Due {{ ticket.expiryDate | date:'MMM d, y' }}</span>
-              </div>
-            </ion-label>
-            <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
-          </ion-item>
-        }
-      </ion-list>
-    }
-  </ion-content>
+  }
+</ion-header>
+
+<ion-content class="gv-content">
+  <ion-refresher slot="fixed" (ionRefresh)="loadTickets($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  @if (loading()) {
+    <div class="state-center">
+      <ion-spinner></ion-spinner>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="state-center">
+      <ion-text color="danger">{{ errorMessage() }}</ion-text>
+    </div>
+  } @else if (tickets().length === 0) {
+    <div class="state-center empty-state">
+      <ion-icon name="wallet-outline"></ion-icon>
+      <p>You don't have any pawn tickets yet.</p>
+    </div>
+  } @else if (filteredTickets().length === 0) {
+    <div class="state-center empty-state">
+      <ion-icon name="wallet-outline"></ion-icon>
+      <p>No tickets match your search.</p>
+    </div>
+  } @else {
+    <ion-list class="ticket-list">
+      @for (ticket of filteredTickets(); track ticket.id) {
+        <ion-item button (click)="openTicket(ticket)" lines="none" class="ticket-item" detail="false">
+          <ion-label>
+            <div class="ticket-top">
+              <span class="ticket-number">{{ ticket.ticketNumber }}</span>
+              <ion-badge [color]="statusColor(ticket.status)">{{ ticket.status }}</ion-badge>
+            </div>
+            <div class="ticket-shop">{{ ticket.shopName }}</div>
+            <div class="ticket-bottom">
+              <span class="ticket-balance">LKR {{ formatCurrency(ticket.outstandingBalance) }}</span>
+              <span class="ticket-expiry">Due {{ ticket.expiryDate | date:'MMM d, y' }}</span>
+            </div>
+          </ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+      }
+    </ion-list>
+  }
+</ion-content>
