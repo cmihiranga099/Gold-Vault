@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import {
   IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, IonContent,
   IonSpinner, IonText, IonBadge, IonItem, IonInput, IonSelect, IonSelectOption,
-  IonButton, IonIcon, IonList, IonLabel
+  IonButton, IonIcon, IonList, IonLabel, IonTextarea
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { businessOutline, attachOutline, checkmarkOutline, timeOutline } from 'ionicons/icons';
@@ -14,6 +14,8 @@ import { TicketService } from '../../core/services/ticket.service';
 import { PaymentService } from '../../core/services/payment.service';
 import { PawnTicketResponse, TicketStatus } from '../../core/models/ticket.model';
 import { PaymentResponse, PaymentSubmissionResponse, PaymentType, SubmissionStatus } from '../../core/models/payment.model';
+import { ReviewService } from '../../core/services/review.service';
+import { ReviewResponse } from '../../core/models/review.model';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -42,6 +44,17 @@ export class TicketDetailPage implements OnInit {
   payOnlineSuccess = signal<string | null>(null);
   payOnlineForm: FormGroup;
 
+  // Review
+  existingReview = signal<ReviewResponse | null>(null);
+  alreadyReviewed = signal(false);
+  reviewLoading = signal(false);
+  reviewError = signal<string | null>(null);
+  reviewSuccess = signal<string | null>(null);
+  hoveredStar = signal(0);
+  selectedRating = signal(0);
+  reviewForm: FormGroup;
+  starLabels = ['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
+
   private ticketId!: number;
 
   constructor(
@@ -49,7 +62,8 @@ export class TicketDetailPage implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private ticketService: TicketService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private reviewService: ReviewService
   ) {
     addIcons({ businessOutline, attachOutline, checkmarkOutline, timeOutline });
 
@@ -58,6 +72,9 @@ export class TicketDetailPage implements OnInit {
       paymentType: ['INTEREST' as PaymentType, Validators.required],
       bankName: [''],
       referenceNumber: ['', Validators.required]
+    });
+    this.reviewForm = this.fb.group({
+      comment: ['', Validators.maxLength(500)]
     });
   }
 
@@ -80,11 +97,33 @@ export class TicketDetailPage implements OnInit {
         this.loadPayments();
         this.loadSubmissions();
         this.payOnlineForm.patchValue({ amount: ticket.outstandingBalance });
+        if (ticket.status === 'REDEEMED') {
+          this.checkReview();
+        }
       },
       error: () => {
         this.errorMessage.set('Could not load this ticket.');
         this.loading.set(false);
       }
+    });
+  }
+
+  private checkReview(): void {
+    this.reviewService.hasReviewed(this.ticketId).subscribe({
+      next: (has) => {
+        this.alreadyReviewed.set(has);
+        if (has) {
+          const shopId = this.ticket()?.shopId;
+          if (!shopId) return;
+          this.reviewService.getShopReviews(shopId).subscribe({
+            next: (reviews) => {
+              const mine = reviews.find(r => r.ticketId === this.ticketId);
+              if (mine) this.existingReview.set(mine);
+            }
+          });
+        }
+      },
+      error: () => {}
     });
   }
 
@@ -159,6 +198,51 @@ export class TicketDetailPage implements OnInit {
       error: (err) => {
         this.payOnlineLoading.set(false);
         this.payOnlineError.set(err?.error?.message || 'Could not submit payment.');
+      }
+    });
+  }
+
+  // ── Review ────────────────────────────────────────────────────────────────
+
+  hoverStar(star: number): void { this.hoveredStar.set(star); }
+  clearHover(): void { this.hoveredStar.set(0); }
+  selectStar(star: number): void { this.selectedRating.set(star); }
+
+  starClass(star: number): string {
+    const active = this.hoveredStar() || this.selectedRating();
+    return star <= active ? 'star-filled' : 'star-empty';
+  }
+
+  starsArray(n: number): number[] {
+    return Array.from({ length: n }, (_, i) => i + 1);
+  }
+
+  submitReview(): void {
+    if (this.selectedRating() === 0) {
+      this.reviewError.set('Please select a star rating.');
+      return;
+    }
+
+    const customerId = this.authService.currentUser()?.customerId;
+    if (!customerId) { this.reviewError.set('Not logged in as customer.'); return; }
+
+    this.reviewLoading.set(true);
+    this.reviewError.set(null);
+
+    this.reviewService.submitReview(customerId, {
+      ticketId: this.ticketId,
+      rating: this.selectedRating(),
+      comment: this.reviewForm.get('comment')?.value || undefined
+    }).subscribe({
+      next: (review) => {
+        this.reviewLoading.set(false);
+        this.reviewSuccess.set('Thank you for your review!');
+        this.alreadyReviewed.set(true);
+        this.existingReview.set(review);
+      },
+      error: (err) => {
+        this.reviewLoading.set(false);
+        this.reviewError.set(err?.error?.message || 'Could not submit review.');
       }
     });
   }

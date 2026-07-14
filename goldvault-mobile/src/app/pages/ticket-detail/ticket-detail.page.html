@@ -143,7 +143,67 @@
           </ion-list>
         }
       </div>
-    } @else if (loading()) {
+    </div>
+
+    <!-- Review — only for REDEEMED tickets -->
+    @if (t.status === 'REDEEMED') {
+      <div class="gv-card review-card">
+        <h2>Rate your experience</h2>
+
+        @if (alreadyReviewed() && existingReview(); as r) {
+          <div class="existing-review">
+            <div class="star-row">
+              @for (s of starsArray(5); track s) {
+                <span [class]="s <= r.rating ? 'star-filled' : 'star-empty'">&#9733;</span>
+              }
+            </div>
+            <span class="review-date">{{ r.createdAt | date:'MMM d, y' }}</span>
+            @if (r.comment) {
+              <p class="review-comment">"{{ r.comment }}"</p>
+            }
+            <div class="review-thanks">
+              <ion-icon name="checkmark-outline"></ion-icon> Thanks for your feedback
+            </div>
+          </div>
+        } @else {
+          <form [formGroup]="reviewForm" (ngSubmit)="submitReview()" class="review-form">
+            <div class="star-picker" (mouseleave)="clearHover()">
+              @for (s of starsArray(5); track s) {
+                <span
+                  [class]="starClass(s)"
+                  (mouseenter)="hoverStar(s)"
+                  (click)="selectStar(s)"
+                  [attr.aria-label]="starLabels[s]"
+                >&#9733;</span>
+              }
+            </div>
+            @if (hoveredStar() > 0) {
+              <span class="star-label">{{ starLabels[hoveredStar()] }}</span>
+            } @else if (selectedRating() > 0) {
+              <span class="star-label">{{ starLabels[selectedRating()] }}</span>
+            }
+
+            <ion-item lines="none" class="gv-field review-comment-field">
+              <ion-textarea label="Comment (optional)" labelPlacement="stacked"
+                formControlName="comment" rows="3" placeholder="Tell others about your experience"></ion-textarea>
+            </ion-item>
+
+            @if (reviewSuccess()) {
+              <ion-text color="success" class="form-msg">{{ reviewSuccess() }}</ion-text>
+            }
+            @if (reviewError()) {
+              <ion-text color="danger" class="form-msg">{{ reviewError() }}</ion-text>
+            }
+
+            <ion-button type="submit" expand="block" class="submit-review-btn"
+              [disabled]="reviewLoading() || selectedRating() === 0">
+              @if (reviewLoading()) { <ion-spinner name="dots"></ion-spinner> } @else { Submit review }
+            </ion-button>
+          </form>
+        }
+      </div>
+    }
+  } @else if (loading()) {
       <div class="state-center"><ion-spinner></ion-spinner></div>
     } @else if (errorMessage()) {
       <div class="state-center"><ion-text color="danger">{{ errorMessage() }}</ion-text></div>
