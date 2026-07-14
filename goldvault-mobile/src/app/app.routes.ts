@@ -54,6 +54,11 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./pages/shop-finder/shop-finder.page').then(m => m.ShopFinderPage)
   },
+  {
+    path: 'calculator',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/calculator/calculator.page').then(m => m.CalculatorPage)
+  },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' }
 ];

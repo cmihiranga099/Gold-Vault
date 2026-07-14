@@ -1,0 +1,130 @@
+.gv-toolbar {
+    --background: var(--gv-ink);
+    --color: var(--gv-paper);
+  }
+  
+  .gv-content {
+    --background: var(--gv-paper);
+  }
+  
+  .gv-card {
+    background: #ffffff;
+    border: 1px solid var(--gv-line);
+    border-radius: 14px;
+    margin: 12px;
+    padding: 16px;
+  
+    h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gv-ink);
+      margin: 0 0 10px;
+    }
+  }
+  
+  .gv-field {
+    --background: var(--gv-paper-dim);
+    --border-radius: 10px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+  }
+  
+  .type-segment {
+    margin-top: 8px;
+    --background: var(--gv-paper-dim);
+  }
+  
+  .summary-card {
+    background: var(--gv-paper-dim);
+    border: none;
+  }
+  
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  
+  .summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .s-label {
+    font-size: 0.72rem;
+    color: var(--gv-jade);
+  }
+  
+  .s-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gv-ink);
+  }
+  
+  .ltv-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid var(--gv-line);
+  
+    .s-value {
+      color: var(--gv-gold-deep, #a8822f);
+    }
+  
+    .ltv-high {
+      color: var(--gv-brick);
+    }
+  }
+  
+  .ltv-hint {
+    font-size: 0.72rem;
+    color: var(--gv-jade);
+    line-height: 1.4;
+    margin: 8px 0 0;
+  }
+  
+  .schedule-list {
+    background: transparent;
+  }
+  
+  .schedule-item {
+    --background: var(--gv-paper-dim);
+    --border-radius: 10px;
+    margin-bottom: 6px;
+    border-radius: 10px;
+  }
+  
+  .schedule-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gv-ink);
+    padding-top: 8px;
+  }
+  
+  .schedule-payment {
+    color: var(--gv-gold-deep, #a8822f);
+  }
+  
+  .interest-bar-track {
+    height: 4px;
+    background: var(--gv-line);
+    border-radius: 2px;
+    margin: 6px 0;
+    overflow: hidden;
+  }
+  
+  .interest-bar-fill {
+    height: 100%;
+    background: var(--gv-gold);
+  }
+  
+  .schedule-detail {
+    font-size: 0.7rem;
+    color: var(--gv-jade);
+    padding-bottom: 8px;
+  }

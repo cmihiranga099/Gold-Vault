@@ -1,17 +1,18 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonIcon
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { personCircleOutline, logOutOutline, callOutline, mailOutline } from 'ionicons/icons';
+import { personCircleOutline, logOutOutline, callOutline, mailOutline, calculatorOutline } from 'ionicons/icons';
 import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-account',
   standalone: true,
   imports: [
-    CommonModule,
+    CommonModule, RouterLink,
     IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonIcon
   ],
   templateUrl: './account.page.html',
@@ -19,7 +20,7 @@ import { AuthService } from '../../core/auth/auth.service';
 })
 export class AccountPage {
   constructor(public authService: AuthService) {
-    addIcons({ personCircleOutline, logOutOutline, callOutline, mailOutline });
+    addIcons({ personCircleOutline, logOutOutline, callOutline, mailOutline, calculatorOutline });
   }
 
   logout(): void {

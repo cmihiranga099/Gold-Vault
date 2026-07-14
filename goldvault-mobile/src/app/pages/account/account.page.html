@@ -1,20 +1,27 @@
 <ion-header class="ion-no-border">
-    <ion-toolbar class="gv-toolbar">
-      <ion-title>Account</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content class="gv-content">
-    <div class="account-header">
-      <ion-icon name="person-circle-outline" class="account-avatar"></ion-icon>
-      <h2>{{ authService.currentUser()?.fullName }}</h2>
-      <p>{{ authService.currentUser()?.username }}</p>
-    </div>
-  
-    <ion-list class="account-list" inset="true">
-      <ion-item button (click)="logout()" lines="none">
-        <ion-icon name="log-out-outline" slot="start" color="danger"></ion-icon>
-        <ion-label color="danger">Sign out</ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-content>
+  <ion-toolbar class="gv-toolbar">
+    <ion-title>Account</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="gv-content">
+  <div class="account-header">
+    <ion-icon name="person-circle-outline" class="account-avatar"></ion-icon>
+    <h2>{{ authService.currentUser()?.fullName }}</h2>
+    <p>{{ authService.currentUser()?.username }}</p>
+  </div>
+
+  <ion-list class="account-list" inset="true">
+    <ion-item button routerLink="/calculator" lines="none">
+      <ion-icon name="calculator-outline" slot="start"></ion-icon>
+      <ion-label>Loan calculator</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="account-list" inset="true">
+    <ion-item button (click)="logout()" lines="none">
+      <ion-icon name="log-out-outline" slot="start" color="danger"></ion-icon>
+      <ion-label color="danger">Sign out</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

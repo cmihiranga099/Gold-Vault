@@ -1,0 +1,108 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar class="gv-toolbar">
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/tabs/account" text=""></ion-back-button>
+      </ion-buttons>
+      <ion-title>Loan calculator</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content class="gv-content">
+    <div class="gv-card">
+      <h2>Loan details</h2>
+  
+      <ion-item class="gv-field" lines="none">
+        <ion-input label="Loan amount (LKR)" labelPlacement="stacked" type="number"
+          [value]="loanAmount()" (ionInput)="onLoanAmountChange($event)"></ion-input>
+      </ion-item>
+  
+      <ion-item class="gv-field" lines="none">
+        <ion-input label="Interest rate (% per month)" labelPlacement="stacked" type="number"
+          [value]="interestRate()" (ionInput)="onInterestRateChange($event)"></ion-input>
+      </ion-item>
+  
+      <ion-item class="gv-field" lines="none">
+        <ion-input label="Period (months)" labelPlacement="stacked" type="number"
+          [value]="periodMonths()" (ionInput)="onPeriodMonthsChange($event)"></ion-input>
+      </ion-item>
+  
+      <ion-segment [value]="interestType()" (ionChange)="onInterestTypeChange($event)" class="type-segment">
+        <ion-segment-button value="FLAT">
+          <ion-label>Flat</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="REDUCING">
+          <ion-label>Reducing</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+  
+    <div class="gv-card">
+      <h2>Gold details (for loan-to-value)</h2>
+  
+      <ion-item class="gv-field" lines="none">
+        <ion-input label="Gold weight (grams)" labelPlacement="stacked" type="number"
+          [value]="goldWeight()" (ionInput)="onGoldWeightChange($event)"></ion-input>
+      </ion-item>
+  
+      <ion-item class="gv-field" lines="none">
+        <ion-select label="Purity" labelPlacement="stacked" [value]="goldPurity()" (ionChange)="onGoldPurityChange($event)">
+          @for (p of purities; track p) {
+            <ion-select-option [value]="p">{{ p }}</ion-select-option>
+          }
+        </ion-select>
+      </ion-item>
+    </div>
+  
+    <div class="gv-card summary-card">
+      <h2>Summary</h2>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <span class="s-label">Monthly payment</span>
+          <span class="s-value">LKR {{ formatCurrency(monthlyPayment()) }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="s-label">Total interest</span>
+          <span class="s-value">LKR {{ formatCurrency(totalInterest()) }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="s-label">Total payable</span>
+          <span class="s-value">LKR {{ formatCurrency(totalPayable()) }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="s-label">Effective cost</span>
+          <span class="s-value">{{ effectiveCostPct().toFixed(1) }}%</span>
+        </div>
+      </div>
+  
+      <div class="ltv-row">
+        <span class="s-label">Loan-to-value</span>
+        <span class="s-value" [class.ltv-high]="loanToValueRatio() > 70">{{ loanToValueRatio().toFixed(0) }}%</span>
+      </div>
+      <p class="ltv-hint">
+        Suggested max loan at 70% LTV: <strong>LKR {{ formatCurrency(maxSafeLoan()) }}</strong>
+        (using an approximate reference rate — actual shop rates vary; check the Marketplace tab for live rates)
+      </p>
+    </div>
+  
+    <div class="gv-card">
+      <h2>Repayment schedule</h2>
+      <ion-list class="schedule-list">
+        @for (row of schedule(); track row.month) {
+          <ion-item lines="none" class="schedule-item">
+            <ion-label>
+              <div class="schedule-top">
+                <span>Month {{ row.month }}</span>
+                <span class="schedule-payment">LKR {{ formatCurrency(row.payment) }}</span>
+              </div>
+              <div class="interest-bar-track">
+                <div class="interest-bar-fill" [style.width]="barWidth(row.interest)"></div>
+              </div>
+              <div class="schedule-detail">
+                Interest: LKR {{ formatCurrency(row.interest) }} &middot; Balance: LKR {{ formatCurrency(row.closingBalance) }}
+              </div>
+            </ion-label>
+          </ion-item>
+        }
+      </ion-list>
+    </div>
+  </ion-content>
