@@ -75,14 +75,18 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(
+        // Use origin PATTERNS (not setAllowedOrigins) so "*" and specific
+        // origins can safely coexist. This also means you can flip
+        // setAllowCredentials(true) later (e.g. for cookie-based auth)
+        // without Spring throwing "allowCredentials cannot be true with allowedOrigins *".
+        config.setAllowedOriginPatterns(List.of(
                 "http://localhost:4200",
                 "http://localhost:3000",
                 "*"   // POS systems can be on any origin
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(false); // must be false when origin is *
+        config.setAllowCredentials(false); // JWT is sent via Authorization header, not cookies — no credentials needed
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
