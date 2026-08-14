@@ -40,7 +40,7 @@ public class NicOcrService {
 
         try {
             Tesseract tesseract = new Tesseract();
-            tesseract.setDatapath(tessdataPath);
+            tesseract.setDatapath(resolveTessdataPath());
             tesseract.setLanguage("eng");
             tesseract.setPageSegMode(6); // Assume a single uniform block of text
             tesseract.setOcrEngineMode(1); // LSTM neural net mode — most accurate
@@ -57,6 +57,46 @@ public class NicOcrService {
                     .message("Could not read the image. Please try a clearer photo.")
                     .build();
         }
+    }
+
+    /**
+     * Resolves the Tesseract tessdata directory.
+     * Priority: 1) app.ocr.tessdata.path if explicitly set, 2) a sensible
+     * per-OS default so the same jar works unmodified on Windows, Linux, and macOS
+     * (e.g. when this backend runs on a Linux server instead of your Windows dev machine).
+     */
+    private String resolveTessdataPath() {
+        if (tessdataPath != null && !tessdataPath.isBlank()) {
+            return tessdataPath;
+        }
+
+        String os = System.getProperty("os.name", "").toLowerCase();
+        String[] candidates;
+        if (os.contains("win")) {
+            candidates = new String[]{
+                    "C:/Program Files/Tesseract-OCR/tessdata"
+            };
+        } else if (os.contains("mac")) {
+            candidates = new String[]{
+                    "/opt/homebrew/share/tessdata",
+                    "/usr/local/share/tessdata"
+            };
+        } else {
+            candidates = new String[]{
+                    "/usr/share/tesseract-ocr/5/tessdata",
+                    "/usr/share/tesseract-ocr/4.00/tessdata",
+                    "/usr/share/tessdata"
+            };
+        }
+
+        for (String candidate : candidates) {
+            if (new File(candidate).isDirectory()) {
+                return candidate;
+            }
+        }
+
+        log.warn("[NIC OCR] No tessdata directory found for OS '{}'. Set app.ocr.tessdata.path explicitly.", os);
+        return candidates[0]; // best effort — will throw a clear TesseractException if missing
     }
 
     // ── Parsing ──────────────────────────────────────────────────────────────────
