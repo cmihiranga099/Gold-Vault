@@ -18,4 +18,4 @@ export class ShopService {
       .get<ApiResponse<ShopResponse[]>>(`${this.apiUrl}/shops/active`)
       .pipe(map((res) => res.data));
   }
-}
+} 
